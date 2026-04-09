@@ -56,9 +56,9 @@ const sectors = [
     description:
       'Dedicated R&D centre for new formulations, quality assurance testing, and COA generation. Double-blind testing protocols on every batch.',
     images: [
-      { src: 'public/images/products/product1.jpg', alt: 'QA laboratory', span: 'col-span-1' },
-      { src: 'public/images/products/product2.jpg', alt: 'HPLC analysis', span: 'col-span-1' },
-      { src: 'public/images/products/product3.jpg', alt: 'Microscopy lab', span: 'col-span-1' },
+      { src: '/images/products/product1.jpg', alt: 'QA laboratory', span: 'col-span-1' },
+      { src: '/images/products/product2.jpg', alt: 'HPLC analysis', span: 'col-span-1' },
+      { src: '/images/products/product3.jpg', alt: 'Microscopy lab', span: 'col-span-1' },
     ],
     stat: { label: 'Test Methods', value: '12+ QC' },
     eco: 'ISO 17025 Lab',
