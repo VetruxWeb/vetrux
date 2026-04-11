@@ -10,6 +10,7 @@ import EquipmentPage from './pages/EquipmentPage';
 import InsightsPage from './pages/InsightsPage';
 import ArticlePage from './pages/ArticlePage';
 import ProductPage from './pages/ProductPage';
+import PlantingPage from './pages/PlantingPage';
 
 function NotFound() {
   return (
@@ -41,6 +42,7 @@ export default function App() {
           <Route path="/insights" element={<InsightsPage />} />
           <Route path="/insights/:slug" element={<ArticlePage />} />
           <Route path="/products/cbd-isolate" element={<ProductPage />} />
+          <Route path="/planting" element={<PlantingPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>

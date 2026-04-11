@@ -1,0 +1,330 @@
+// src/pages/PlantingPage.tsx
+// Planting Base — "From the Source. Quality You Can Trace."
+// Sections: Hero, Stats, Growing Zones, Photo Gallery Grid, Traceability, CTA
+
+import { Leaf, Thermometer, Droplets, Sun, Shield, CheckCircle } from 'lucide-react';
+import Badge from '../components/atoms/Badge';
+import SectionLabel from '../components/atoms/SectionLabel';
+
+const stats = [
+  { value: '12,000 m²', label: 'Greenhouse Area' },
+  { value: '100%', label: 'Organic Certified' },
+  { value: '3rd Gen', label: 'Selective Breeding' },
+  { value: '15+', label: 'Years of Cultivation' },
+];
+
+const zones = [
+  {
+    id: '01',
+    tag: 'Zone 01 — Seedling Nursery',
+    title: 'Precision Germination & Propagation',
+    description:
+      'Every plant begins in our climate-controlled nursery, where humidity, temperature, and light spectra are dialed in to sub-degree precision. Only seedlings meeting our phytochemical baseline are selected for transfer to the main grow zones.',
+    images: [
+      { src: '/images/planting/plant1.jpg', alt: 'Seedling trays under grow lights' },
+      { src: '/images/planting/plant2.jpg', alt: 'Young hemp seedlings' },
+    ],
+    specs: [
+      { label: 'Temperature Control', value: '22°C ± 0.5°C' },
+      { label: 'Humidity Range', value: '65–75% RH' },
+      { label: 'Light Cycle', value: '18h / 6h (VPD Optimised)' },
+      { label: 'Germination Rate', value: '≥ 97%' },
+    ],
+    icon: Leaf,
+  },
+  {
+    id: '02',
+    tag: 'Zone 02 — Vegetative Growth',
+    title: 'Controlled Environment Agriculture',
+    description:
+      'Our steel-frame greenhouse spans over 8,000 m² of climate-regulated growing space. Plants are cultivated in hydroponic and soil-based beds, fed with precision-dosed nutrient programs that maximise cannabinoid expression while eliminating heavy metal risk from the ground up.',
+    images: [
+      { src: '/images/planting/plant3.jpg', alt: 'Main greenhouse interior rows' },
+      { src: '/images/planting/plant4.jpg', alt: 'Hemp canopy in full vegetative stage' },
+    ],
+    specs: [
+      { label: 'Growing Method', value: 'Hydroponic + Substrate' },
+      { label: 'CO₂ Enrichment', value: '800–1200 ppm' },
+      { label: 'Water Source', value: 'Filtered Mountain Spring' },
+      { label: 'Pesticide Policy', value: 'Zero Synthetic Inputs' },
+    ],
+    icon: Sun,
+  },
+  {
+    id: '03',
+    tag: 'Zone 03 — Flowering & Harvest',
+    title: 'Peak Cannabinoid Accumulation',
+    description:
+      'Harvest timing is determined by in-house HPLC spot-testing, ensuring plants are cut at peak CBD accumulation. Post-harvest biomass is immediately dried and transferred to our extraction facility under sealed cold-chain logistics — never more than 400 metres from plant to processor.',
+    images: [
+      { src: '/images/planting/plant5.jpg', alt: 'Flowering hemp plants' },
+      { src: '/images/planting/plant6.jpg', alt: 'Harvest preparation' },
+    ],
+    specs: [
+      { label: 'CBD Content at Harvest', value: '8–14% (DW)' },
+      { label: 'THC Compliance', value: '< 0.2% (EU Limit)' },
+      { label: 'Harvest-to-Extraction', value: '< 6 Hours' },
+      { label: 'Drying Method', value: 'Low-Temp Airflow Dehydration' },
+    ],
+    icon: Thermometer,
+  },
+];
+
+const galleryImages = [
+  { src: '/images/planting/plant7.jpg', alt: 'Greenhouse rows from above' },
+  { src: '/images/planting/plant8.jpg', alt: 'Irrigation system detail' },
+  { src: '/images/planting/plant9.jpg', alt: 'Hemp plant close-up' },
+  { src: '/images/planting/plant10.jpg', alt: 'Workers tending to plants' },
+  { src: '/images/planting/plant11.jpg', alt: 'Biomass post-harvest' },
+  { src: '/images/planting/plant12.jpg', alt: 'Aerial view of planting base' },
+];
+
+const traceabilityItems = [
+  { icon: Shield, label: 'Seed Certification', desc: 'All cultivars registered under EU approved hemp seed varieties' },
+  { icon: Droplets, label: 'Water Quality Testing', desc: 'Weekly analysis of irrigation water for heavy metals and pathogens' },
+  { icon: Leaf, label: 'Soil & Substrate Audits', desc: 'Monthly substrate composition reports, zero persistent pesticide residues' },
+  { icon: CheckCircle, label: 'Batch-Level COA', desc: 'Every harvest lot receives a unique batch ID traceable through to final product COA' },
+];
+
+export default function PlantingPage() {
+  return (
+    <div className="bg-surface">
+
+      {/* ── HERO ─────────────────────────────────────────────────────────── */}
+      <section className="relative min-h-[60vh] flex items-end bg-on-background overflow-hidden">
+        <img
+          src="/images/planting/plant3.jpg"
+          alt="Vertrux planting base"
+          className="absolute inset-0 w-full h-full object-cover opacity-35"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-on-background via-on-background/40 to-transparent" />
+
+        <div className="relative z-10 max-w-container mx-auto px-6 lg:px-12 pb-20 pt-36">
+          <Badge variant="glass" className="mb-6">Cultivation Base · Yunnan Province</Badge>
+          <h1 className="text-5xl md:text-7xl font-extrabold text-white tracking-tighter leading-[0.95] max-w-3xl mb-6">
+            From the Source.
+            <br />
+            <span className="text-primary-fixed">Quality You Can Trace.</span>
+          </h1>
+          <p className="text-sm text-white/60 leading-relaxed max-w-xl">
+            We don't just process hemp — we grow it. Our 12,000 m² controlled-environment
+            planting base gives us full command over raw material quality before a single
+            gram reaches the extraction floor.
+          </p>
+        </div>
+      </section>
+
+      {/* ── STATS STRIP ─────────────────────────────────────────────────── */}
+      <section className="bg-primary py-10">
+        <div className="max-w-container mx-auto px-6 lg:px-12">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+            {stats.map((s) => (
+              <div key={s.label} className="text-center lg:text-left">
+                <p className="text-3xl md:text-4xl font-extrabold text-white tracking-tighter">{s.value}</p>
+                <p className="text-xs font-semibold tracking-widest uppercase text-white/50 mt-1">{s.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── INTRO BLOCK ─────────────────────────────────────────────────── */}
+      <section className="py-24 bg-surface-container-low">
+        <div className="max-w-container mx-auto px-6 lg:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            <div className="lg:col-span-5">
+              <SectionLabel>Why Vertical Integration Matters</SectionLabel>
+              <h2 className="text-4xl font-extrabold text-on-background tracking-tighter leading-tight mt-4">
+                The Best Extracts Begin
+                <br />Long Before the Lab.
+              </h2>
+            </div>
+            <div className="lg:col-span-7 space-y-5 pt-2">
+              <p className="text-sm text-on-surface-variant leading-relaxed">
+                Most CBD processors purchase biomass from third-party farms, inheriting variability in phytochemical profiles, pesticide histories, and moisture content. At Vertrux, we eliminated that dependency entirely.
+              </p>
+              <p className="text-sm text-on-surface-variant leading-relaxed">
+                Our cultivation base sits within 400 metres of our extraction facility in Yunnan Province — a region recognised internationally for its clean-air environment, high-altitude UV exposure, and consistent seasonal patterns ideal for hemp cannabinoid expression.
+              </p>
+              <p className="text-sm text-on-surface-variant leading-relaxed">
+                Every plant is monitored from germination through harvest, with in-house HPLC testing at key growth milestones. This gives our clients the assurance that the 99.9% purity on their COA starts with biomass that was never compromised.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── GROWING ZONES ───────────────────────────────────────────────── */}
+      <section className="py-24 bg-surface">
+        <div className="max-w-container mx-auto px-6 lg:px-12">
+          <SectionLabel>Growing Zones</SectionLabel>
+          <h2 className="text-4xl font-extrabold text-on-background tracking-tighter mb-16 max-w-xl">
+            Three Zones. One Controlled Process.
+          </h2>
+
+          <div className="space-y-28">
+            {zones.map((zone, idx) => {
+              const Icon = zone.icon;
+              const isReversed = idx % 2 === 1;
+              return (
+                <div
+                  key={zone.id}
+                  className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center`}
+                >
+                  {/* Images side */}
+                  <div className={`grid grid-cols-2 gap-3 ${isReversed ? 'lg:order-2' : ''}`}>
+                    {zone.images.map((img, i) => (
+                      <div key={i} className={`overflow-hidden ${i === 0 ? 'row-span-1' : ''}`}>
+                        <img
+                          src={img.src}
+                          alt={img.alt}
+                          className="w-full h-52 object-cover hover:scale-[1.03] transition-transform duration-500"
+                        />
+                      </div>
+                    ))}
+                    {/* Zone number accent */}
+                    <div className="col-span-2 flex items-center gap-3 mt-1">
+                      <span className="text-xs font-mono tracking-widest text-on-surface-variant">#{zone.id}</span>
+                      <div className="flex-1 h-px bg-outline-variant/30" />
+                    </div>
+                  </div>
+
+                  {/* Text side */}
+                  <div className={isReversed ? 'lg:order-1' : ''}>
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="p-2 bg-primary/10 rounded">
+                        <Icon size={16} className="text-primary" />
+                      </div>
+                      <p className="text-xs font-semibold tracking-widest uppercase text-on-surface-variant">
+                        {zone.tag}
+                      </p>
+                    </div>
+                    <h3 className="text-2xl md:text-3xl font-extrabold text-on-background tracking-tighter mb-4">
+                      {zone.title}
+                    </h3>
+                    <p className="text-sm text-on-surface-variant leading-relaxed mb-8">
+                      {zone.description}
+                    </p>
+
+                    {/* Spec rows */}
+                    <div className="space-y-0">
+                      {zone.specs.map((spec, i) => (
+                        <div
+                          key={spec.label}
+                          className={`flex justify-between items-center py-3 ${i < zone.specs.length - 1 ? 'border-b border-outline-variant/30' : ''}`}
+                        >
+                          <span className="text-xs font-semibold tracking-wider uppercase text-on-surface-variant">
+                            {spec.label}
+                          </span>
+                          <span className="text-sm font-bold text-on-surface">{spec.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ── PHOTO GALLERY GRID ─────────────────────────────────────────── */}
+      <section className="py-24 bg-surface-container-low">
+        <div className="max-w-container mx-auto px-6 lg:px-12">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12 gap-4">
+            <div>
+              <SectionLabel>Field Documentation</SectionLabel>
+              <h2 className="text-3xl font-extrabold text-on-background tracking-tighter mt-3">
+                Inside the Planting Base
+              </h2>
+            </div>
+            <p className="text-sm text-on-surface-variant max-w-sm leading-relaxed">
+              Raw footage from our cultivation teams, captured across different growth stages and seasonal conditions.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {galleryImages.map((img, i) => (
+              <div
+                key={i}
+                className={`overflow-hidden group ${i === 0 ? 'col-span-2 md:col-span-1 md:row-span-2' : ''}`}
+              >
+                <img
+                  src={img.src}
+                  alt={img.alt}
+                  className={`w-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-[1.03] ${i === 0 ? 'h-full min-h-[320px]' : 'h-48'}`}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── TRACEABILITY BLOCK ─────────────────────────────────────────── */}
+      <section className="py-24 bg-on-background">
+        <div className="max-w-container mx-auto px-6 lg:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            <div className="lg:col-span-4">
+              <SectionLabel light>Full Traceability</SectionLabel>
+              <h2 className="text-4xl font-extrabold text-white tracking-tighter leading-tight mt-4">
+                Seed-to-COA
+                <br />Documentation
+              </h2>
+              <p className="mt-5 text-sm text-white/50 leading-relaxed">
+                Every batch we produce carries a unique origin record — from the cultivar registered at germination to the HPLC result on your Certificate of Analysis.
+              </p>
+            </div>
+
+            <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {traceabilityItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div key={item.label} className="bg-white/5 p-6 hover:bg-white/10 transition-colors duration-300">
+                    <div className="flex items-center gap-3 mb-3">
+                      <Icon size={16} className="text-primary-fixed" />
+                      <p className="text-xs font-semibold tracking-widest uppercase text-white/60">{item.label}</p>
+                    </div>
+                    <p className="text-sm text-white/80 leading-relaxed">{item.desc}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA ──────────────────────────────────────────────────────────── */}
+      <section className="py-24 bg-surface-container-low">
+        <div className="max-w-container mx-auto px-6 lg:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <div className="lg:col-span-8">
+              <SectionLabel>Wholesale Inquiry</SectionLabel>
+              <h2 className="text-4xl font-extrabold text-on-background tracking-tighter leading-tight mt-3">
+                Source Directly From
+                <br />the Grower.
+              </h2>
+              <p className="mt-4 text-sm text-on-surface-variant leading-relaxed max-w-lg">
+                Skip the commodity middlemen. Talk to our team about bulk biomass supply, white-label isolate, or custom extraction contracts — all backed by our vertically integrated supply chain.
+              </p>
+            </div>
+            <div className="lg:col-span-4 flex flex-col gap-3">
+              <a
+                href="/inquiry"
+                className="inline-flex items-center justify-center px-8 py-4 bg-primary text-white text-xs font-bold tracking-widest uppercase hover:bg-primary-container transition-all duration-300"
+              >
+                Request a Quote
+              </a>
+              <a
+                href="/products/cbd-isolate"
+                className="inline-flex items-center justify-center px-8 py-4 border border-outline-variant/40 text-on-surface text-xs font-bold tracking-widest uppercase hover:bg-surface-container transition-all duration-300"
+              >
+                View Product Specs
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  );
+}
