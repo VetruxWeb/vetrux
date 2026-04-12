@@ -1,5 +1,7 @@
 // src/content/articles/index.ts
-// Central registry of all insight articles with metadata
+// Parses YAML frontmatter from each markdown file to build the Article[] list.
+// To add a new article: create the .md file with frontmatter, import it below,
+// and add it to the rawFiles array — no other changes needed.
 
 export interface Article {
   slug: string;
@@ -12,76 +14,62 @@ export interface Article {
   size?: 'normal' | 'large';
 }
 
-export const articles: Article[] = [
-  {
-    slug: 'botanical-biotechnology-innovation-whitepaper',
-    category: 'Special Report',
-    title: 'Innovation in Botanical Biotechnology',
-    excerpt:
-      'A comprehensive whitepaper examining the convergence of precision agriculture, supercritical extraction, and pharmaceutical-grade QA systems in modern CBD manufacturing.',
-    date: '2024',
-    readTime: '12 Min Read',
-    image: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=80&auto=format&fit=crop',
-    size: 'large',
-  },
-  {
-    slug: 'global-cbd-extraction-standards-2024',
-    category: 'Regulatory',
-    title: 'Global CBD Extraction Standards: A 2024 Compliance Guide',
-    excerpt:
-      'An analysis of diverging regulatory frameworks across the EU, US, and APAC markets and what they mean for wholesale CBD suppliers.',
-    date: 'Dec 2024',
-    readTime: '8 Min Read',
-    image: 'https://images.unsplash.com/photo-1589994965851-a8f479c573a9?w=800&q=80&auto=format&fit=crop',
-    size: 'normal',
-  },
-  {
-    slug: 'esg-decarbonizing-cannabis-supply-chain',
-    category: 'Sustainability',
-    title: 'ESG Initiatives: Decarbonizing the Cannabis Extract Supply Chain',
-    excerpt:
-      'How Yunnan Vertrux achieved carbon neutrality through biomass recycling, solar integration, and closed-loop CO₂ recapture systems.',
-    date: 'Nov 2024',
-    readTime: '12 Min Read',
-    image: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&q=80&auto=format&fit=crop',
-    size: 'normal',
-  },
-  {
-    slug: 'co2-vs-ethanol-extraction-comparison',
-    category: 'Technology',
-    title: 'Supercritical CO₂ vs. Ethanol Extraction: A Technical Comparison',
-    excerpt:
-      'Purity profiles, scalability, solvent residues, and terpene preservation — a rigorous head-to-head comparison for industrial buyers.',
-    date: 'Oct 2024',
-    readTime: '10 Min Read',
-    image: 'https://images.unsplash.com/photo-1576086213369-97a306d36557?w=800&q=80&auto=format&fit=crop',
-    size: 'normal',
-  },
-  {
-    slug: 'apac-cbd-market-outlook-2025',
-    category: 'Market',
-    title: 'APAC CBD Market Outlook 2025: Opportunities for B2B Importers',
-    excerpt:
-      'Data-driven analysis of growth corridors in Japan, South Korea, Australia, and Southeast Asian markets entering 2025.',
-    date: 'Sep 2024',
-    readTime: '6 Min Read',
-    image: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&q=80&auto=format&fit=crop',
-    size: 'normal',
-  },
+// ── Raw markdown imports (Vite ?raw) ──────────────────────────────────────────
+import whitepaperMd    from './botanical-biotechnology-innovation-whitepaper.md?raw';
+import regulatoryMd   from './global-cbd-extraction-standards-2024.md?raw';
+import esgMd          from './esg-decarbonizing-cannabis-supply-chain.md?raw';
+import techMd         from './co2-vs-ethanol-extraction-comparison.md?raw';
+import marketMd       from './apac-cbd-market-outlook-2025.md?raw';
+import sourcingMd     from './final_article.md?raw';
+
+// ── Frontmatter parser ────────────────────────────────────────────────────────
+// Extracts the YAML block between the opening and closing `---` delimiters.
+// Supports: unquoted values, single-quoted, and double-quoted values.
+function parseFrontmatter(raw: string): Record<string, string> {
+  const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!match) return {};
+  const result: Record<string, string> = {};
+  for (const line of match[1].split(/\r?\n/)) {
+    const colonIdx = line.indexOf(':');
+    if (colonIdx === -1) continue;
+    const key = line.slice(0, colonIdx).trim();
+    const val = line.slice(colonIdx + 1).trim().replace(/^["']|["']$/g, '');
+    if (key) result[key] = val;
+  }
+  return result;
+}
+
+// ── Article order + size overrides ───────────────────────────────────────────
+// Declare files in the order you want them displayed on InsightsPage.
+// The first entry becomes the featured hero article.
+const rawFiles: Array<{ raw: string; size?: 'normal' | 'large' }> = [
+  { raw: whitepaperMd,  size: 'large'  },
+  { raw: regulatoryMd,  size: 'normal' },
+  { raw: esgMd,         size: 'normal' },
+  { raw: techMd,        size: 'normal' },
+  { raw: marketMd,      size: 'normal' },
+  { raw: sourcingMd,    size: 'normal' },
 ];
 
-// Map of slug → raw markdown content (loaded via Vite's ?raw import)
-// These are imported statically so no async fetch is needed at runtime.
-import regulatoryMd from './global-cbd-extraction-standards-2024.md?raw';
-import esgMd from './esg-decarbonizing-cannabis-supply-chain.md?raw';
-import techMd from './co2-vs-ethanol-extraction-comparison.md?raw';
-import marketMd from './apac-cbd-market-outlook-2025.md?raw';
-import whitepaperMd from './botanical-biotechnology-innovation-whitepaper.md?raw';
+// ── Build Article[] from parsed frontmatter ───────────────────────────────────
+export const articles: Article[] = rawFiles.map(({ raw, size }) => {
+  const fm = parseFrontmatter(raw);
+  return {
+    slug:     fm.slug     ?? '',
+    category: fm.category ?? 'Insight',
+    title:    fm.title    ?? '',
+    excerpt:  fm.excerpt  ?? '',
+    date:     fm.date     ?? '',
+    readTime: fm.readTime ? `${fm.readTime} Read` : '',
+    image:    fm.image    ?? '',
+    size,
+  };
+});
 
-export const articleContent: Record<string, string> = {
-  'global-cbd-extraction-standards-2024': regulatoryMd,
-  'esg-decarbonizing-cannabis-supply-chain': esgMd,
-  'co2-vs-ethanol-extraction-comparison': techMd,
-  'apac-cbd-market-outlook-2025': marketMd,
-  'botanical-biotechnology-innovation-whitepaper': whitepaperMd,
-};
+// ── Raw content map (for ArticlePage renderer) ────────────────────────────────
+export const articleContent: Record<string, string> = Object.fromEntries(
+  rawFiles.map(({ raw }) => {
+    const fm = parseFrontmatter(raw);
+    return [fm.slug, raw];
+  })
+);

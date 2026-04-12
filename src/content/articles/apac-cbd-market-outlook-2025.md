@@ -1,3 +1,13 @@
+---
+title: "APAC CBD Market Outlook 2025: Opportunities for B2B Importers"
+category: Market
+date: September 2024
+readTime: 6 min
+excerpt: "Data-driven analysis of growth corridors in Japan, South Korea, Australia, and Southeast Asian markets entering 2025."
+image: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&q=80&auto=format&fit=crop"
+slug: apac-cbd-market-outlook-2025
+---
+
 # APAC CBD Market Outlook 2025: Opportunities for B2B Importers
 
 **Category:** Market | **Published:** September 2024 | **Read Time:** 6 min

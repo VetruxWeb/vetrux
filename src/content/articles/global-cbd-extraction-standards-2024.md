@@ -1,3 +1,13 @@
+---
+title: "Global CBD Extraction Standards: A 2024 Compliance Guide"
+category: Regulatory
+date: December 2024
+readTime: 8 min
+excerpt: "An analysis of diverging regulatory frameworks across the EU, US, and APAC markets and what they mean for wholesale CBD suppliers."
+image: "https://images.unsplash.com/photo-1589994965851-a8f479c573a9?w=800&q=80&auto=format&fit=crop"
+slug: global-cbd-extraction-standards-2024
+---
+
 # Global CBD Extraction Standards: A 2024 Compliance Guide
 
 **Category:** Regulatory | **Published:** December 2024 | **Read Time:** 8 min

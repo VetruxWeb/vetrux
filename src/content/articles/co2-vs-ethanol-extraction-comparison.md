@@ -1,3 +1,13 @@
+---
+title: "Supercritical CO₂ vs. Ethanol Extraction: A Technical Comparison"
+category: Technology
+date: October 2024
+readTime: 10 min
+excerpt: "Purity profiles, scalability, solvent residues, and terpene preservation — a rigorous head-to-head comparison for industrial buyers."
+image: "https://images.unsplash.com/photo-1576086213369-97a306d36557?w=800&q=80&auto=format&fit=crop"
+slug: co2-vs-ethanol-extraction-comparison
+---
+
 # Supercritical CO₂ vs. Ethanol Extraction: A Technical Comparison
 
 **Category:** Technology | **Published:** October 2024 | **Read Time:** 10 min

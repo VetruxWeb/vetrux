@@ -1,3 +1,13 @@
+---
+title: "ESG Initiatives: Decarbonizing the Cannabis Extract Supply Chain"
+category: Sustainability
+date: November 2024
+readTime: 12 min
+excerpt: "How Yunnan Vertrux achieved carbon neutrality through biomass recycling, solar integration, and closed-loop CO₂ recapture systems."
+image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&q=80&auto=format&fit=crop"
+slug: esg-decarbonizing-cannabis-supply-chain
+---
+
 # ESG Initiatives: Decarbonizing the Cannabis Extract Supply Chain
 
 **Category:** Sustainability | **Published:** November 2024 | **Read Time:** 12 min
