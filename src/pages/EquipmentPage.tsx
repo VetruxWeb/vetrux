@@ -114,25 +114,46 @@ export default function EquipmentPage() {
     <div className="bg-surface">
 
       {/* ── HERO ───────────────────────────────────────────────────────── */}
-      <section className="relative min-h-[55vh] flex items-end bg-on-background overflow-hidden">
-        <img
-          src="/images/equipment/chromatography-column-700L.webp"
-          alt="Industrial extraction facility"
-          className="absolute inset-0 w-full h-full object-cover opacity-30 grayscale"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-on-background to-transparent" />
+      <section className="py-24 bg-surface-container-low">
+        <div className="max-w-container mx-auto px-6 lg:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Left: info */}
+            <div>
+              <Badge variant="default" className="mb-6">Production Excellence</Badge>
+              <h1 className="text-5xl md:text-6xl font-extrabold text-on-background tracking-tighter leading-[0.95] mb-6">
+                Industrial-Grade
+                <br />
+                <span className="text-primary">Extraction Facility</span>
+              </h1>
+              <p className="text-sm text-on-surface-variant leading-relaxed mb-8 max-w-md">
+                Every piece of equipment in our facility meets cGMP pharmaceutical manufacturing
+                standards — from extraction to final crystal milling and packaging.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                {['cGMP Certified', 'SUS316L Standard', 'ISO 5 Clean Room', 'FDA 21 CFR Part 211'].map((tag) => (
+                  <span
+                    key={tag}
+                    className="px-3 py-1.5 bg-surface-container text-on-surface-variant text-xs font-semibold tracking-wider uppercase"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
 
-        <div className="relative z-10 max-w-container mx-auto px-6 lg:px-12 pb-20 pt-32">
-          <Badge variant="glass" className="mb-6">Production Excellence</Badge>
-          <h1 className="text-5xl md:text-7xl font-extrabold text-white tracking-tighter leading-[0.95] max-w-3xl mb-6">
-            Industrial-Grade Precision
-            <br />
-            <span className="text-primary-fixed">Extraction Facility</span>
-          </h1>
-          <p className="text-sm text-white/60 leading-relaxed max-w-xl">
-            Every piece of equipment in our facility meets cGMP pharmaceutical manufacturing
-            standards — from extraction to final crystal milling and packaging.
-          </p>
+            {/* Right: equipment image */}
+            <div className="relative">
+              <img
+                src="/images/equipment/chromatography-column-700L.webp"
+                alt="Industrial extraction facility"
+                className="w-full h-[500px] object-cover"
+              />
+              <div className="absolute bottom-6 right-6 bg-on-background/90 backdrop-blur p-4">
+                <p className="text-xs text-white/50 tracking-widest uppercase mb-1">Facility Scale</p>
+                <p className="text-sm font-bold text-white">45,000 m² Campus</p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
