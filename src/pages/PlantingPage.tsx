@@ -158,26 +158,47 @@ export default function PlantingPage() {
     <div className="bg-surface">
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="relative min-h-[60vh] flex items-end bg-on-background overflow-hidden">
-        <img
-          src="/images/planting/plant3.jpg"
-          alt="Vertrux planting base"
-          className="absolute inset-0 w-full h-full object-cover opacity-35"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-on-background via-on-background/40 to-transparent" />
+      <section className="py-24 bg-surface-container-low">
+        <div className="max-w-container mx-auto px-6 lg:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Left: info */}
+            <div>
+              <Badge variant="default" className="mb-6">Cultivation Base · Yunnan Province</Badge>
+              <h1 className="text-5xl md:text-6xl font-extrabold text-on-background tracking-tighter leading-[0.95] mb-6">
+                From the Source.
+                <br />
+                <span className="text-primary">Quality You Can Trace.</span>
+              </h1>
+              <p className="text-sm text-on-surface-variant leading-relaxed mb-8 max-w-md">
+                We don't just process hemp — we grow it. Our 12,000 m² controlled-environment
+                planting base gives us full command over raw material quality before a single
+                gram reaches the extraction floor.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                {['12,000 m² Greenhouse', '100% Organic', '3rd Gen Cultivar', '15+ Years Experience'].map((tag) => (
+                  <span
+                    key={tag}
+                    className="px-3 py-1.5 bg-surface-container text-on-surface-variant text-xs font-semibold tracking-wider uppercase"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
 
-        <div className="relative z-10 max-w-container mx-auto px-6 lg:px-12 pb-20 pt-36">
-          <Badge variant="glass" className="mb-6">Cultivation Base · Yunnan Province</Badge>
-          <h1 className="text-5xl md:text-7xl font-extrabold text-white tracking-tighter leading-[0.95] max-w-3xl mb-6">
-            From the Source.
-            <br />
-            <span className="text-primary-fixed">Quality You Can Trace.</span>
-          </h1>
-          <p className="text-sm text-white/60 leading-relaxed max-w-xl">
-            We don't just process hemp — we grow it. Our 12,000 m² controlled-environment
-            planting base gives us full command over raw material quality before a single
-            gram reaches the extraction floor.
-          </p>
+            {/* Right: planting image */}
+            <div className="relative">
+              <img
+                src="/images/planting/plant3.jpg"
+                alt="Vertrux planting base greenhouse"
+                className="w-full h-[500px] object-cover"
+              />
+              <div className="absolute bottom-6 right-6 bg-on-background/90 backdrop-blur p-4">
+                <p className="text-xs text-white/50 tracking-widest uppercase mb-1">Cultivation Base</p>
+                <p className="text-sm font-bold text-white">Yunnan Province, China</p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
