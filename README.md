@@ -1,6 +1,18 @@
 # Vertrux — B2B CBD Extract Website
 
-Premium B2B frontend for Yunnan Vertrux, a pharmaceutical-grade CBD extract manufacturer. Built with React + TypeScript + Vite + Tailwind CSS, ready for Vercel deployment.
+Premium B2B frontend for Yunnan Vertrux, a pharmaceutical-grade CBD extract manufacturer. Built as a static marketing site with React, TypeScript, Vite, Tailwind CSS, and GSAP animations. Optimized for Vercel deployment.
+
+---
+
+## Overview
+
+This project is a brand and lead-generation website focused on:
+- presenting Yunnan Vertrux's extraction and cultivation capabilities
+- showcasing flagship CBD isolate product information
+- publishing industry insight articles from local Markdown content
+- capturing wholesale / partnership inquiries through a reusable inquiry form UI
+
+Note: the current inquiry form is a frontend-only submission flow and does not yet post to a backend or email service.
 
 ---
 
@@ -8,147 +20,166 @@ Premium B2B frontend for Yunnan Vertrux, a pharmaceutical-grade CBD extract manu
 
 | Layer | Technology |
 |-------|-----------|
-| Framework | React 18 + TypeScript |
-| Build Tool | Vite |
-| Styling | Tailwind CSS v3 (custom design tokens) |
-| Routing | React Router v6 |
+| Framework | React 19 + TypeScript |
+| Build Tool | Vite 8 |
+| Styling | Tailwind CSS v3 |
+| Routing | React Router DOM v7 |
+| Animation | GSAP + ScrollTrigger + `@gsap/react` |
+| Content Rendering | React Markdown + `remark-gfm` |
 | Icons | Lucide React |
-| Font | Manrope (Google Fonts) |
-| Deployment | Vercel (SPA rewrites via `vercel.json`) |
+| Font | Manrope |
+| Deployment | Vercel |
 
 ---
 
 ## Getting Started
 
 ```bash
-# Install dependencies
 npm install
-
-# Start dev server
 npm run dev
-
-# Production build
-npm run build
-
-# Preview production build locally
-npm run preview
 ```
 
----
+Open the local dev server URL shown by Vite.
 
-## Project Structure
+### Available Scripts
 
-```
-vertrux-web/
-├── index.html                    # Entry HTML — SEO meta, Manrope font
-├── vercel.json                   # Vercel SPA rewrite rules
-├── tailwind.config.js            # Custom design token system
-├── vite.config.ts
-├── tsconfig.app.json
-│
-└── src/
-    ├── index.css                 # Tailwind directives + global component classes
-    ├── main.tsx                  # React DOM entry point
-    ├── App.tsx                   # BrowserRouter + all route definitions
-    │
-    ├── components/               # Atomic Design component hierarchy
-    │   ├── atoms/                # Smallest, stateless UI primitives
-    │   │   ├── Badge.tsx         # Chip/tag — variants: default, primary, glass
-    │   │   ├── Button.tsx        # 5 variants: primary, secondary, ghost, glass, outline
-    │   │   └── SectionLabel.tsx  # Uppercase tracking section identifier text
-    │   │
-    │   ├── molecules/            # Composed from atoms; may hold local state
-    │   │   ├── InquiryForm.tsx   # Reusable B2B wholesale inquiry form (with submit state)
-    │   │   ├── SpecRow.tsx       # Technical spec key-value row with divider
-    │   │   └── StatCard.tsx      # Single metric display card
-    │   │
-    │   └── organisms/            # Full-section-level components
-    │       ├── Layout.tsx        # Page shell: Navbar + main content + Footer
-    │       ├── Navbar.tsx        # Fixed top nav — desktop links + mobile hamburger
-    │       └── Footer.tsx        # Dark footer with brand, nav columns, certifications
-    │
-    └── pages/                    # One file per route
-        ├── HomePage.tsx          # Hero, industrial scale, CBD Isolate bento, inquiry CTA
-        ├── GalleryPage.tsx       # 4-sector campus visual documentation
-        ├── InquiryPage.tsx       # Full B2B inquiry form + contact sidebar
-        ├── EquipmentPage.tsx     # cGMP standards, equipment showcase, specs table
-        ├── InsightsPage.tsx      # Featured article, article grid, newsletter, stats strip
-        └── ProductPage.tsx       # CBD Isolate 99.9% — COA metrics, spec sheet, wholesale form
+```bash
+npm run dev      # start development server
+npm run build    # type-check and build production bundle
+npm run lint     # run ESLint
+npm run preview  # preview the production build locally
 ```
 
 ---
 
 ## Routes
 
-| Path | Page | Description |
-|------|------|-------------|
-| `/` | HomePage | Hero + key product sections |
-| `/gallery` | GalleryPage | Campus visual documentation by sector |
-| `/inquiry` | InquiryPage | B2B strategic partnership inquiry form |
-| `/equipment` | EquipmentPage | Factory equipment specs + cGMP standards |
-| `/insights` | InsightsPage | Industry articles + newsletter signup |
-| `/products/cbd-isolate` | ProductPage | CBD Isolate product detail + wholesale form |
+| Path | Page | Purpose |
+|------|------|---------|
+| `/` | HomePage | Brand hero, trust signals, facility overview |
+| `/products/cbd-isolate` | ProductPage | Product detail page for CBD isolate |
+| `/equipment` | EquipmentPage | Extraction equipment and technical showcase |
+| `/planting` | PlantingPage | Cultivation base, growing zones, traceability |
+| `/gallery` | GalleryPage | Campus / facility gallery |
+| `/insights` | InsightsPage | Article listing and featured insight |
+| `/insights/:slug` | ArticlePage | Markdown-rendered article detail page |
+| `/inquiry` | InquiryPage | B2B inquiry / partnership form |
+| `*` | NotFound | 404 fallback |
 
 ---
 
-## Design System
+## Project Structure
 
-### Color Palette
+```text
+vertrux/
+├── public/
+│   ├── images/
+│   │   ├── equipment/
+│   │   ├── gallery/
+│   │   ├── hero/
+│   │   ├── planting/
+│   │   └── products/
+│   └── logo.svg
+├── src/
+│   ├── assets/
+│   ├── components/
+│   │   ├── atoms/
+│   │   ├── molecules/
+│   │   └── organisms/
+│   ├── content/
+│   │   └── articles/
+│   ├── pages/
+│   ├── App.tsx
+│   ├── index.css
+│   └── main.tsx
+├── README.md
+├── package.json
+├── tailwind.config.js
+├── vite.config.ts
+└── vercel.json
+```
 
-| Token | Hex | Usage |
-|-------|-----|-------|
-| `primary` | `#154212` | Brand green — CTAs, accents, highlights |
-| `primary-container` | `#2d5a27` | Hover states on primary elements |
-| `primary-fixed` | `#bcf0ae` | Light green tint — icon backgrounds |
-| `on-background` | `#0b1c30` | Dark navy — hero sections, dark backgrounds |
-| `surface` | `#f8f9ff` | Main page background |
-| `surface-container-lowest` | `#ffffff` | Cards, elevated surfaces |
-| `surface-container-low` | `#eff4ff` | Alternate section backgrounds |
-| `on-surface-variant` | `#42493e` | Secondary text, labels |
-| `outline-variant` | `#c2c9bb` | Subtle dividers (no hard borders) |
-| `inverse-surface` | `#213145` | Footer background |
+### Component Organization
 
-### Typography
-
-- **Font:** Manrope (weights 200–800)
-- **Headlines:** `font-extrabold`, `tracking-tighter` (`-0.02em`), `leading-[0.95]`
-- **Labels:** `text-xs`, `tracking-widest`, `uppercase`, `font-semibold`
-- **Body:** `text-sm`, `leading-relaxed`
-
-### Design Principles
-
-- **No visible borders** — surface hierarchy via background color shifts
-- **Intentional asymmetry** — 12-column bento grids, not centered layouts
-- **Industrial sharp corners** — border-radius max `0.25rem`
-- **Inputs** — bottom-border only, no box borders
-- **Hover states** — translate + color shift (300ms ease)
-- **Images** — `grayscale` default, `grayscale-0` on hover (gallery)
-
----
-
-## B2B Features
-
-- **Wholesale Inquiry Form** — company, contact, volume estimate, requirements; present on `/inquiry` and `/products/cbd-isolate`
-- **Product Specifications** — full COA metrics grid, spec sheet table, compliance checklist
-- **Trust Signals** — ISO 9001:2015, GMP, purity benchmarks, carbon neutral badge throughout
-- **Equipment Documentation** — detailed cGMP specs per machine with alternating showcase layout
-- **Industry Insights** — article grid with newsletter subscription
+- `atoms/`: small reusable UI primitives such as buttons, badges, and labels
+- `molecules/`: composed UI blocks such as `InquiryForm`, `SpecRow`, and `StatCard`
+- `organisms/`: full layout sections such as `Navbar`, `Footer`, and `Layout`
+- `pages/`: route-level page components
 
 ---
 
-## Deployment (Vercel)
+## Content Model
+
+Articles are stored as local Markdown files in `src/content/articles/`.
+
+`src/content/articles/index.ts`:
+- imports Markdown files with Vite's `?raw` loader
+- parses frontmatter metadata
+- builds the article list used by `InsightsPage`
+- maps raw article content by slug for `ArticlePage`
+
+### To add a new article
+
+1. Create a new Markdown file in `src/content/articles/`
+2. Add frontmatter fields such as:
+   - `slug`
+   - `category`
+   - `title`
+   - `excerpt`
+   - `date`
+   - `readTime`
+   - `image`
+3. Import the file in `src/content/articles/index.ts`
+4. Add it to the `rawFiles` array in the desired display order
+
+---
+
+## Design System Notes
+
+The UI uses a custom Tailwind token setup defined in `tailwind.config.js`.
+
+Highlights:
+- deep green primary brand palette
+- layered surface colors for soft hierarchy
+- Manrope typography
+- compact radius values for a sharper industrial feel
+- minimal bottom-border form fields
+- animated section reveals with GSAP
+
+Global styles and shared utility classes live in `src/index.css`.
+
+---
+
+## Deployment
+
+### Vercel
 
 ```bash
-# One-command deploy via Vercel CLI
 vercel deploy
 ```
 
-`vercel.json` rewrites all paths to `index.html` for client-side routing:
+Client-side routing is supported by `vercel.json`:
 
 ```json
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }
 ```
 
-No additional environment variables required.
+No environment variables are currently required for the static frontend.
+
+---
+
+## Current Status
+
+Verified locally:
+- `npm run build` passes
+- `npm run lint` passes
+
+Known follow-up opportunities:
+- connect `InquiryForm` to a real backend, email service, or CRM
+- replace remaining placeholder product imagery if needed
+- introduce route-level code splitting to reduce the main JS bundle size
+- move hard-coded page data into structured content/config if content updates become frequent
