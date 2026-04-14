@@ -93,7 +93,7 @@ export default function InquiryPage() {
                     </div>
                     <div>
                       <p className="text-xs text-on-surface-variant uppercase tracking-wider mb-1">Email</p>
-                      <p className="text-sm font-semibold text-on-surface">114987111a@gmail.com</p>
+                      <p className="text-sm font-semibold text-on-surface">postmaster@vetrux.tech</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">

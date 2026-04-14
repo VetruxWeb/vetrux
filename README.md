@@ -12,7 +12,7 @@ This project is a brand and lead-generation website focused on:
 - publishing industry insight articles from local Markdown content
 - capturing wholesale / partnership inquiries through a reusable inquiry form UI
 
-Note: the current inquiry form is a frontend-only submission flow and does not yet post to a backend or email service.
+The inquiry form now submits to a Vercel serverless endpoint (`/api/inquiry`) that validates input, enforces anti-abuse controls, and delivers leads to the configured mailbox over SMTP.
 
 ---
 
@@ -40,6 +40,56 @@ npm run dev
 ```
 
 Open the local dev server URL shown by Vite.
+
+### Environment Variables
+
+The inquiry API supports provider switching through `INQUIRY_MAIL_PROVIDER`.
+
+Supported values:
+- `gmail` — recommended for local testing
+- `aliyun` — recommended for production with Aliyun enterprise mailbox
+- `custom` — use another SMTP service
+
+Gmail local testing example:
+
+```bash
+INQUIRY_MAIL_PROVIDER=gmail
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=465
+SMTP_SECURE=true
+SMTP_USER=your-gmail-address@gmail.com
+SMTP_PASS=your-gmail-app-password
+INQUIRY_MAIL_FROM=your-gmail-address@gmail.com
+INQUIRY_MAIL_TO=your-gmail-address@gmail.com
+INQUIRY_ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173,https://vetrux.tech,https://www.vetrux.tech
+```
+
+Aliyun production example:
+
+```bash
+INQUIRY_MAIL_PROVIDER=aliyun
+SMTP_HOST=smtp.qiye.aliyun.com
+SMTP_PORT=465
+SMTP_SECURE=true
+SMTP_USER=postmaster@vetrux.tech
+SMTP_PASS=your-aliyun-smtp-password
+INQUIRY_MAIL_FROM=postmaster@vetrux.tech
+INQUIRY_MAIL_TO=postmaster@vetrux.tech
+INQUIRY_ALLOWED_ORIGINS=https://vetrux.tech,https://www.vetrux.tech
+```
+
+Local development origins `http://localhost:5173` and `http://127.0.0.1:5173` are allowed by default.
+Detailed environment templates and switching guidance live in `docs/inquiry-env-template.md`.
+
+### Abuse Protection
+
+The inquiry pipeline currently defends against common form abuse by combining:
+- server-side field validation and payload length limits
+- origin / referer allow-list enforcement
+- honeypot bot detection
+- minimum form-fill time checks
+- suspicious-content filtering for scripts / link spam
+- in-memory rate limiting per IP and per lead fingerprint
 
 ### Available Scripts
 
@@ -177,9 +227,10 @@ No environment variables are currently required for the static frontend.
 Verified locally:
 - `npm run build` passes
 - `npm run lint` passes
+- `npm run test` passes
 
 Known follow-up opportunities:
-- connect `InquiryForm` to a real backend, email service, or CRM
+- add persistent distributed rate limiting (for example Redis / Upstash) if traffic volume grows beyond single-instance memory limits
 - replace remaining placeholder product imagery if needed
 - introduce route-level code splitting to reduce the main JS bundle size
 - move hard-coded page data into structured content/config if content updates become frequent
