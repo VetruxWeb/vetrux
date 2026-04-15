@@ -93,4 +93,4 @@ The regulatory complexity inherent in global CBD trade is, paradoxically, an adv
 
 ---
 
-*Yunnan Vertrux maintains active regulatory affairs relationships in the EU, US, and key APAC markets. Our compliance team can provide jurisdiction-specific documentation packages upon request.*
+*Yunnan Vetrux maintains active regulatory affairs relationships in the EU, US, and key APAC markets. Our compliance team can provide jurisdiction-specific documentation packages upon request.*

@@ -38,7 +38,7 @@ The supercritical CO₂ extraction process contains over a dozen critical proces
 - **Inline near-infrared (NIR) moisture sensing:** Monitoring biomass moisture entering the extraction vessel (excess moisture reduces extraction efficiency; critical process parameter)
 - **Real-time mass balance:** Tracking inlet CO₂ flow, outlet flow, and separation vessel weight changes to calculate extraction yield in real time rather than waiting for post-batch HPLC results
 
-At Yunnan Vertrux, our extraction management system integrates PAT data streams from all 12 extraction vessels into a unified process dashboard. Deviations from target parameter windows trigger automatic alerts; out-of-tolerance batches are quarantined before downstream processing. This closed-loop process control approach has reduced batch-to-batch cannabinoid concentration variability from ±8% (pre-implementation) to ±1.8% (current performance).
+At Yunnan Vetrux, our extraction management system integrates PAT data streams from all 12 extraction vessels into a unified process dashboard. Deviations from target parameter windows trigger automatic alerts; out-of-tolerance batches are quarantined before downstream processing. This closed-loop process control approach has reduced batch-to-batch cannabinoid concentration variability from ±8% (pre-implementation) to ±1.8% (current performance).
 
 ## Molecular Distillation: Engineering at the Nanoscale
 
@@ -76,4 +76,4 @@ The integration of biotechnological process innovation with pharmaceutical quali
 
 ---
 
-*This whitepaper was prepared by the Yunnan Vertrux Research Division. Full technical specifications, validation data, and process documentation are available to pharmaceutical-grade B2B partners under appropriate confidentiality agreements.*
+*This whitepaper was prepared by the Yunnan Vetrux Research Division. Full technical specifications, validation data, and process documentation are available to pharmaceutical-grade B2B partners under appropriate confidentiality agreements.*

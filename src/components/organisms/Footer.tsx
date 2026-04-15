@@ -38,7 +38,7 @@ export default function Footer() {
             <div className="overflow-hidden h-10 mb-4">
               <img
                 src="/logo.svg"
-                alt="Yunnan Vertrux"
+                alt="Yunnan Vetrux"
                 className="h-32 w-auto"
                 style={{ marginTop: '-52px' }}
               />
@@ -85,7 +85,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <p className="text-xs text-inverse-on-surface/40">
-            © {new Date().getFullYear()} Yunnan Vertrux Co., Ltd. All rights reserved.
+            © {new Date().getFullYear()} Yunnan Vetrux Co., Ltd. All rights reserved.
           </p>
           <p className="text-xs text-inverse-on-surface/40">
             Yunnan Province, China · Global B2B Export

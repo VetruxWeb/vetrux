@@ -80,7 +80,7 @@ Terpene preservation is the one dimension where the comparison requires qualific
 
 **For CBD isolate** (≥99% pure CBD), terpene preservation is irrelevant. All terpenes are removed during crystallization. Both extraction methods produce equivalent isolate when terpene content is the metric.
 
-For a supplier like Yunnan Vertrux operating at pharmaceutical-grade isolate specifications, CO₂ extraction's terpene advantage is most relevant to the broad-spectrum product line rather than the primary isolate grade product.
+For a supplier like Yunnan Vetrux operating at pharmaceutical-grade isolate specifications, CO₂ extraction's terpene advantage is most relevant to the broad-spectrum product line rather than the primary isolate grade product.
 
 ## Total Cost of Operation: A Realistic Model
 
@@ -103,7 +103,7 @@ Note: These figures are illustrative and vary significantly with biomass quality
 
 ## Our Position
 
-Yunnan Vertrux operates a dedicated supercritical CO₂ extraction fleet for pharmaceutical-grade CBD isolate production. This is not an arbitrary technology choice—it reflects a deliberate positioning at the quality apex of the B2B CBD extract market.
+Yunnan Vetrux operates a dedicated supercritical CO₂ extraction fleet for pharmaceutical-grade CBD isolate production. This is not an arbitrary technology choice—it reflects a deliberate positioning at the quality apex of the B2B CBD extract market.
 
 Our customer base—pharmaceutical API manufacturers, premium wellness brands, and regulated health products—consistently places solvent residue documentation, regulatory acceptance, and purity at the top of supplier qualification criteria. CO₂ extraction is the technology that delivers these outcomes most reliably.
 
@@ -119,4 +119,4 @@ The answers to these questions reveal far more about final product quality than 
 
 ---
 
-*Yunnan Vertrux operates 12 supercritical CO₂ extraction vessels with a combined annual capacity of 8 metric tons of CBD isolate. Technical specifications and process validation documentation are available to qualified B2B partners.*
+*Yunnan Vetrux operates 12 supercritical CO₂ extraction vessels with a combined annual capacity of 8 metric tons of CBD isolate. Technical specifications and process validation documentation are available to qualified B2B partners.*

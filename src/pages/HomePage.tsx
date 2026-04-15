@@ -93,7 +93,7 @@ export default function HomePage() {
         {/* Background image */}
         <img
           src="/images/hero/facility-hero.webp"
-          alt="Yunnan Vertrux extraction facility"
+          alt="Yunnan Vetrux extraction facility"
           className="absolute inset-0 w-full h-full object-cover opacity-40"
         />
         {/* Gradient overlay */}

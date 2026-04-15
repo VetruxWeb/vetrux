@@ -3,7 +3,7 @@ title: "ESG Initiatives: Decarbonizing the Cannabis Extract Supply Chain"
 category: Sustainability
 date: November 2024
 readTime: 12 min
-excerpt: "How Yunnan Vertrux achieved carbon neutrality through biomass recycling, solar integration, and closed-loop CO₂ recapture systems."
+excerpt: "How Yunnan Vetrux achieved carbon neutrality through biomass recycling, solar integration, and closed-loop CO₂ recapture systems."
 image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&q=80&auto=format&fit=crop"
 slug: esg-decarbonizing-cannabis-supply-chain
 ---
@@ -18,7 +18,7 @@ slug: esg-decarbonizing-cannabis-supply-chain
 
 The cannabis extraction industry has long operated under a paradox: an agricultural product celebrated for its natural origins, processed through energy-intensive industrial systems that leave a substantial environmental footprint. Supercritical CO₂ extraction, ethanol winterization, molecular distillation—each step in the refinement cascade consumes energy, generates waste streams, and produces emissions. As ESG reporting requirements cascade down through pharmaceutical and wellness supply chains, B2B buyers are increasingly requesting verifiable sustainability credentials alongside traditional quality documentation.
 
-At Yunnan Vertrux, the ESG program that achieved our 2024 carbon neutrality certification was not born of external pressure. It emerged from a recognition that operational efficiency and environmental performance are two sides of the same coin.
+At Yunnan Vetrux, the ESG program that achieved our 2024 carbon neutrality certification was not born of external pressure. It emerged from a recognition that operational efficiency and environmental performance are two sides of the same coin.
 
 ## The Carbon Accounting Baseline
 
@@ -91,7 +91,7 @@ Our water program focuses on three areas:
 
 ## Third-Party Verification and Reporting
 
-Carbon neutrality claims require rigorous third-party verification to carry commercial weight. Yunnan Vertrux's 2024 carbon neutrality certification was verified by SGS Group under ISO 14064-3, with residual emissions offset through Gold Standard-certified renewable energy projects in Southeast Asia.
+Carbon neutrality claims require rigorous third-party verification to carry commercial weight. Yunnan Vetrux's 2024 carbon neutrality certification was verified by SGS Group under ISO 14064-3, with residual emissions offset through Gold Standard-certified renewable energy projects in Southeast Asia.
 
 Our sustainability reporting follows:
 - GHG Protocol Corporate Standard (Scope 1, 2, 3)
@@ -117,4 +117,4 @@ The commercial case for this investment is straightforward. As carbon border adj
 
 ---
 
-*Yunnan Vertrux's full sustainability report and carbon intensity certificates are available to qualified B2B partners upon request. Contact our ESG team to discuss supply chain sustainability data integration.*
+*Yunnan Vetrux's full sustainability report and carbon intensity certificates are available to qualified B2B partners upon request. Contact our ESG team to discuss supply chain sustainability data integration.*

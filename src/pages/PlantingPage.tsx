@@ -190,7 +190,7 @@ export default function PlantingPage() {
             <div className="relative">
               <img
                 src="/images/planting/plant3.jpg"
-                alt="Vertrux planting base greenhouse"
+                alt="Vetrux planting base greenhouse"
                 className="w-full h-[500px] object-cover"
               />
               <div className="absolute bottom-6 right-6 bg-on-background/90 backdrop-blur p-4">
@@ -229,7 +229,7 @@ export default function PlantingPage() {
             </div>
             <div className="reveal-card lg:col-span-7 space-y-5 pt-2">
               <p className="text-sm text-on-surface-variant leading-relaxed">
-                Most CBD processors purchase biomass from third-party farms, inheriting variability in phytochemical profiles, pesticide histories, and moisture content. At Vertrux, we eliminated that dependency entirely.
+                Most CBD processors purchase biomass from third-party farms, inheriting variability in phytochemical profiles, pesticide histories, and moisture content. At Vetrux, we eliminated that dependency entirely.
               </p>
               <p className="text-sm text-on-surface-variant leading-relaxed">
                 Our cultivation base sits within 400 metres of our extraction facility in Yunnan Province — a region recognised internationally for its clean-air environment, high-altitude UV exposure, and consistent seasonal patterns ideal for hemp cannabinoid expression.

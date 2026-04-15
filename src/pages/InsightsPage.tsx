@@ -86,7 +86,7 @@ export default function InsightsPage() {
               />
               <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-on-background/60 to-transparent">
                 <span className="text-xs text-white/60 tracking-wider uppercase">
-                  Yunnan Vertrux Research Division
+                  Yunnan Vetrux Research Division
                 </span>
               </div>
             </Link>
