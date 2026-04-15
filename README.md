@@ -1,3 +1,4 @@
+
 # Vertrux — B2B CBD Extract Website
 
 Premium B2B frontend for Yunnan Vertrux, a pharmaceutical-grade CBD extract manufacturer. Built as a static marketing site with React, TypeScript, Vite, Tailwind CSS, and GSAP animations. Optimized for Vercel deployment.
