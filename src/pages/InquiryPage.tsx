@@ -129,10 +129,10 @@ export default function InquiryPage() {
                 </p>
                 <div className="space-y-4">
                   {[
-                    { cert: 'ISO 9001:2015', desc: 'Quality Management System' },
-                    { cert: 'GMP Certified', desc: 'Good Manufacturing Practice' },
-                    { cert: '99.5% Purity', desc: 'HPLC Verified per Batch' },
-                    { cert: 'Zero THC', desc: 'ND on Every Certificate' },
+                    { cert: 'Documentation Requests', desc: 'Handled through direct B2B follow-up' },
+                    { cert: 'Product Discussions', desc: 'Aligned to current website information' },
+                    { cert: 'Facility Overview', desc: 'Shared as part of qualification conversations' },
+                    { cert: 'Inquiry Workflow', desc: 'Built for direct buyer communication' },
                   ].map((item) => (
                     <div key={item.cert} className="flex items-center justify-between py-3 border-b border-white/10 last:border-0">
                       <span className="text-xs font-bold text-white">{item.cert}</span>

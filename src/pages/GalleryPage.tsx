@@ -17,57 +17,57 @@ const sectors = [
     label: 'Sector 01 — Architectural Excellence',
     title: 'Main Campus & Infrastructure',
     description:
-      'Spanning 45,000 m² in Yunnan Province, our integrated campus houses extraction, refinement, QA, and logistics under one roof.',
+      'A visual overview of the current campus and facility presentation used across the website.',
     images: [
       { src: '/images/gallery/campus1.webp', alt: 'Campus aerial view', span: 'col-span-1 row-span-2' },
       { src: '/images/gallery/campus2.webp', alt: 'Main hall', span: 'col-span-1' },
       { src: '/images/gallery/campus3.webp', alt: 'Processing wing', span: 'col-span-1' },
       { src: '/images/gallery/campus4.webp', alt: 'Campus exterior', span: 'col-span-2' },
     ],
-    stat: { label: 'Total Area', value: '45,000 m²' },
-    eco: 'Carbon Neutral 2024',
+    stat: { label: 'Visual Theme', value: 'Campus Overview' },
+    eco: 'Facility Presentation',
   },
   {
     id: 'S02',
     label: 'Sector 02 — Raw Material Purity',
     title: 'Planting Base & Cultivation',
     description:
-      'Organic hemp cultivation in pristine Yunnan highlands. Rigorous traceability from seed selection to harvest, with precision environment controls.',
+      'A cultivation gallery focused on source-control storytelling, field imagery, and traceability themes.',
     images: [
       { src: '/images/planting/plant5.jpg', alt: 'Hemp cultivation fields', span: 'col-span-2 row-span-2' },
       { src: '/images/planting/plant7.jpg', alt: 'Seedling lab', span: 'col-span-1' },
       { src: '/images/planting/plant12.jpg', alt: 'Greenhouse', span: 'col-span-1' },
     ],
-    stat: { label: 'Cultivation Base', value: '12,000 m²' },
-    eco: 'Organic Certified',
+    stat: { label: 'Cultivation Theme', value: 'Source Control' },
+    eco: 'Traceability Focus',
   },
   {
     id: 'S03',
     label: 'Sector 03 — Technical Precision',
     title: 'Extraction & Refinement',
     description:
-      'State-of-the-art supercritical CO₂ extraction vessels paired with multi-stage chromatography columns achieving 99.5% purity benchmarks.',
+      'A process gallery showing extraction and refinement visuals used in the current facility narrative.',
     images: [
       { src: '/images/equipment/extract-concentrator-zone.webp', alt: 'Extraction tanks', span: 'col-span-1' },
       { src: '/images/equipment/refinement-concentrator-600L.webp', alt: 'Chromatography lab', span: 'col-span-1' },
       { src: '/images/equipment/mixing-sedimentation-tank.webp', alt: 'Control room panorama', span: 'col-span-2' },
     ],
-    stat: { label: 'Purity Standard', value: '99.5%' },
-    eco: 'cGMP Compliant',
+    stat: { label: 'Process Theme', value: 'Extraction Flow' },
+    eco: 'Equipment Overview',
   },
   {
     id: 'S04',
     label: 'Sector 04 — R&D Innovation',
     title: 'Product Laboratory',
     description:
-      'Dedicated R&D centre for new formulations, quality assurance testing, and COA generation. Double-blind testing protocols on every batch.',
+      'Laboratory and product imagery used to support quality, documentation, and inquiry-oriented discussions.',
     images: [
       { src: '/images/products/product1.jpg', alt: 'QA laboratory', span: 'col-span-1' },
       { src: '/images/products/product2.jpg', alt: 'HPLC analysis', span: 'col-span-1' },
       { src: '/images/products/product3.jpg', alt: 'Microscopy lab', span: 'col-span-1' },
     ],
-    stat: { label: 'Test Methods', value: '12+ QC' },
-    eco: 'ISO 17025 Lab',
+    stat: { label: 'Lab Theme', value: 'Quality Review' },
+    eco: 'Documentation Path',
   },
 ];
 
@@ -149,8 +149,8 @@ export default function GalleryPage() {
               <span className="text-primary">From Seed to Solution.</span>
             </h1>
             <p className="mt-6 text-sm text-on-surface-variant leading-relaxed max-w-xl">
-              An authoritative visual record of our integrated campus, cultivation base,
-              extraction facility, and R&D laboratory.
+              A visual overview of the current campus, cultivation, equipment, and laboratory
+              presentation used throughout the website.
             </p>
           </div>
         </div>

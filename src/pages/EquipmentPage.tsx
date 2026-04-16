@@ -4,6 +4,7 @@
 
 import { useRef } from 'react';
 import { CheckCircle, Download } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -126,11 +127,11 @@ export default function EquipmentPage() {
                 <span className="text-primary">Extraction Facility</span>
               </h1>
               <p className="text-sm text-on-surface-variant leading-relaxed mb-8 max-w-md">
-                Every piece of equipment in our facility meets cGMP pharmaceutical manufacturing
-                standards — from extraction to final crystal milling and packaging.
+                This page presents the current equipment and facility narrative used to support B2B
+                product, process, and documentation discussions.
               </p>
               <div className="flex flex-wrap gap-3">
-                {['cGMP Certified', 'SUS316L Standard', 'ISO 5 Clean Room', 'FDA 21 CFR Part 211'].map((tag) => (
+                {['Equipment Overview', 'Process Visibility', 'Documentation Path', 'Facility Narrative'].map((tag) => (
                   <span
                     key={tag}
                     className="px-3 py-1.5 bg-surface-container text-on-surface-variant text-xs font-semibold tracking-wider uppercase"
@@ -150,7 +151,7 @@ export default function EquipmentPage() {
               />
               <div className="absolute bottom-6 right-6 bg-on-background/90 backdrop-blur p-4">
                 <p className="text-xs text-white/50 tracking-widest uppercase mb-1">Facility Scale</p>
-                <p className="text-sm font-bold text-white">45,000 m² Campus</p>
+                <p className="text-sm font-bold text-white">Current Facility View</p>
               </div>
             </div>
           </div>
@@ -165,17 +166,17 @@ export default function EquipmentPage() {
             <div className="reveal-card lg:col-span-8 bg-surface-container-lowest p-10">
               <SectionLabel>Manufacturing Standards</SectionLabel>
               <h2 className="text-3xl font-extrabold text-on-background tracking-tighter mb-8">
-                cGMP Compliant at Every Stage
+                Process and Equipment Overview
               </h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[
-                  { label: 'Facility Grade', value: 'Pharmaceutical cGMP' },
-                  { label: 'Material Standard', value: 'SUS316L / SUS304' },
-                  { label: 'Cleaning Validation', value: 'CIP / SIP Integrated' },
-                  { label: 'Environmental Control', value: 'ISO 5 Clean Room Areas' },
-                  { label: 'Batch Records', value: '21 CFR Part 11 Electronic' },
-                  { label: 'Traceability', value: 'Seed-to-Final-Product' },
+                  { label: 'Equipment Scope', value: 'Extraction to Packaging' },
+                  { label: 'Material Notes', value: 'Equipment Details Under Review' },
+                  { label: 'Cleaning Workflow', value: 'Process Discussion Available' },
+                  { label: 'Environment', value: 'Facility Information by Request' },
+                  { label: 'Batch Records', value: 'Documentation Path Available' },
+                  { label: 'Traceability', value: 'Discussed During Qualification' },
                 ].map((item) => (
                   <div key={item.label} className="flex items-start gap-3">
                     <CheckCircle size={16} className="text-primary mt-0.5 flex-shrink-0" />
@@ -195,17 +196,18 @@ export default function EquipmentPage() {
                   Certification
                 </p>
                 <p className="text-3xl font-extrabold text-white tracking-tighter leading-tight mb-4">
-                  ISO 9001:2015
-                  <br />Certified
+                  Quality Documentation
+                  <br />Discussion Path
                 </p>
                 <p className="text-xs text-white/60 leading-relaxed">
-                  Renewed annually. Covers design, manufacturing, quality assurance, and export logistics.
+                  Documentation requests and facility information can be reviewed directly during
+                  qualified B2B conversations.
                 </p>
               </div>
-              <button className="mt-8 inline-flex items-center gap-2 px-5 py-3 bg-white text-primary text-xs font-bold tracking-widest uppercase hover:bg-primary-fixed transition-colors duration-200">
+              <Link to="/inquiry" className="mt-8 inline-flex items-center gap-2 px-5 py-3 bg-white text-primary text-xs font-bold tracking-widest uppercase hover:bg-primary-fixed transition-colors duration-200">
                 <Download size={14} />
-                View Certificate
-              </button>
+                Request Facility Documentation
+              </Link>
             </div>
           </div>
         </div>

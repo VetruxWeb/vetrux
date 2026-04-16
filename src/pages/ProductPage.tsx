@@ -4,6 +4,7 @@
 
 import { useRef } from 'react';
 import { ArrowRight, Download, CheckCircle, Microscope, TestTube, TrendingUp } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -135,10 +136,10 @@ export default function ProductPage() {
                 >
                   Wholesale Inquiry <ArrowRight size={16} />
                 </a>
-                <button className="inline-flex items-center gap-2 px-6 py-4 border border-outline/30 text-on-surface text-xs font-bold tracking-widest uppercase rounded-md hover:bg-surface-container transition-colors duration-200">
+                <Link to="/inquiry" className="inline-flex items-center gap-2 px-6 py-4 border border-outline/30 text-on-surface text-xs font-bold tracking-widest uppercase rounded-md hover:bg-surface-container transition-colors duration-200">
                   <Download size={14} />
-                  Download COA
-                </button>
+                  Request Product Documentation
+                </Link>
               </div>
             </div>
 
@@ -168,8 +169,8 @@ export default function ProductPage() {
               Certificate of Analysis — Batch YN-CBD-0042
             </h2>
             <p className="text-sm text-on-surface-variant mb-12 max-w-xl">
-              All values represent typical batch results. Full COA with accredited third-party
-              laboratory signature available for download.
+              This section presents representative technical information. Product documentation can
+              be discussed directly with our B2B team based on current availability.
             </p>
           </div>
 
@@ -189,10 +190,10 @@ export default function ProductPage() {
           </div>
 
           <div className="reveal-card">
-            <button className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white text-xs font-bold tracking-widest uppercase rounded-md hover:bg-primary-container transition-all duration-300">
+            <a href="/inquiry" className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white text-xs font-bold tracking-widest uppercase rounded-md hover:bg-primary-container transition-all duration-300">
               <Download size={14} />
-              Download Full Technical Specification (PDF)
-            </button>
+              Request Product Specification
+            </a>
           </div>
         </div>
       </section>

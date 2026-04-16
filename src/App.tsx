@@ -3,6 +3,7 @@
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/organisms/Layout';
+import RouteSeo from './components/seo/RouteSeo';
 import HomePage from './pages/HomePage';
 import GalleryPage from './pages/GalleryPage';
 import InquiryPage from './pages/InquiryPage';
@@ -33,6 +34,7 @@ function NotFound() {
 export default function App() {
   return (
     <BrowserRouter>
+      <RouteSeo />
       <Layout>
         <Routes>
           <Route path="/" element={<HomePage />} />

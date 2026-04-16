@@ -7,7 +7,7 @@ const footerLinks = [
   {
     heading: 'Products',
     links: [
-      { label: 'CBD Isolate 99.5%', href: '/products/cbd-isolate' },
+      { label: 'CBD Isolate Overview', href: '/products/cbd-isolate' },
       { label: 'Wholesale Inquiry', href: '/inquiry' },
     ],
   },
@@ -44,18 +44,18 @@ export default function Footer() {
               />
             </div>
             <p className="text-xs text-inverse-on-surface/60 leading-relaxed">
-              Premium botanical CBD extract manufacturer. ISO 9001:2015 certified.
-              Global B2B wholesale supplier.
+              Botanical extract manufacturing website for B2B visitors exploring products,
+              facility information, and documentation requests.
             </p>
             <div className="flex flex-wrap gap-2 mt-6">
               <span className="px-2 py-1 bg-white/10 text-white/70 text-xs rounded-full tracking-wider uppercase">
-                ISO 9001
+                Product Info
               </span>
               <span className="px-2 py-1 bg-white/10 text-white/70 text-xs rounded-full tracking-wider uppercase">
-                GMP
+                Facility View
               </span>
               <span className="px-2 py-1 bg-white/10 text-white/70 text-xs rounded-full tracking-wider uppercase">
-                99.5% Purity
+                Inquiry Path
               </span>
             </div>
           </div>
@@ -88,7 +88,7 @@ export default function Footer() {
             © {new Date().getFullYear()} Yunnan Vetrux Co., Ltd. All rights reserved.
           </p>
           <p className="text-xs text-inverse-on-surface/40">
-            Yunnan Province, China · Global B2B Export
+            Yunnan Province, China · B2B Inquiry Website
           </p>
         </div>
       </div>

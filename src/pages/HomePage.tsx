@@ -131,10 +131,10 @@ export default function HomePage() {
           {/* Hero bottom stats */}
           <div className="hero-animate flex flex-wrap gap-6 mt-16 pt-8 border-t border-white/10">
             {[
-              { value: '99.5%', label: 'CBD Purity' },
-              { value: '5,000L', label: 'Daily Capacity' },
-              { value: 'ISO 9001', label: 'Certified' },
-              { value: '45+', label: 'Countries Served' },
+              { value: 'B2B', label: 'Inquiry Focus' },
+              { value: 'Docs', label: 'Request Path' },
+              { value: 'Facility', label: 'Overview' },
+              { value: 'Current', label: 'Website Information' },
             ].map((stat) => (
               <div key={stat.label}>
                 <p className="text-2xl font-bold text-white tracking-tighter">{stat.value}</p>
@@ -159,7 +159,7 @@ export default function HomePage() {
               {/* Overlay stat badge */}
               <div className="absolute bottom-6 left-6 bg-primary text-white px-5 py-3">
                 <p className="text-xs tracking-widest uppercase font-semibold text-white/70">Capacity</p>
-                <p className="text-2xl font-extrabold tracking-tighter">5,000L Daily Extraction</p>
+                <p className="text-2xl font-extrabold tracking-tighter">Facility Overview</p>
               </div>
             </div>
 
@@ -173,8 +173,8 @@ export default function HomePage() {
                   <span className="text-primary">Precision Controlled</span>
                 </h2>
                 <p className="text-sm text-on-surface-variant leading-relaxed mb-10 max-w-md">
-                  Our vertically integrated facility spans 45,000 m² and houses a complete
-                  chain from raw hemp cultivation to final pharmaceutical-grade isolate.
+                  Explore the current facility presentation, equipment overview, and process
+                  narrative used to support B2B product discussions.
                 </p>
               </div>
 
@@ -188,8 +188,8 @@ export default function HomePage() {
                   },
                   {
                     icon: Award,
-                    title: 'ISO 9001:2015 Certified',
-                    desc: 'International quality management across every production stage.',
+                    title: 'Documentation-First Discussions',
+                    desc: 'Product and facility information can be reviewed directly with the B2B team.',
                   },
                   {
                     icon: Layers,
@@ -232,7 +232,7 @@ export default function HomePage() {
               </div>
               <div className="absolute bottom-0 left-0 right-0 h-48 p-8 bg-gradient-to-t from-on-background/90 via-on-background/40 to-transparent flex items-end">
                 <h2 className="text-4xl font-extrabold text-white tracking-tighter leading-tight">
-                  99.5% Purity<br />Guaranteed
+                  Product Overview<br />CBD Isolate
                 </h2>
               </div>
             </div>
@@ -249,13 +249,13 @@ export default function HomePage() {
                     Certificate of Analysis Available
                   </p>
                   <p className="text-xs text-white/70 leading-relaxed">
-                    Every batch ships with full third-party COA, HPLC analysis, and heavy metal screening.
+                    Batch documentation and product information can be reviewed during qualified B2B discussions.
                   </p>
                 </div>
-                <button className="mt-6 inline-flex items-center gap-2 px-4 py-3 bg-white text-primary text-xs font-bold tracking-widest uppercase hover:bg-primary-fixed transition-colors duration-200">
+                <Link to="/inquiry" className="mt-6 inline-flex items-center gap-2 px-4 py-3 bg-white text-primary text-xs font-bold tracking-widest uppercase hover:bg-primary-fixed transition-colors duration-200">
                   <Download size={14} />
-                  Download COA
-                </button>
+                  Request Documentation
+                </Link>
               </div>
 
               {/* Specs card */}
@@ -282,10 +282,10 @@ export default function HomePage() {
         <div ref={trustRef} className="max-w-container mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center text-center">
             {[
-              { label: 'ISO 9001:2015', sub: 'Quality Management' },
-              { label: 'GMP Certified', sub: 'Manufacturing Standard' },
-              { label: 'Carbon Neutral', sub: 'Since 2024' },
-              { label: '45+ Countries', sub: 'Global Export' },
+              { label: 'Quality Focus', sub: 'Process Review' },
+              { label: 'Documentation Path', sub: 'B2B Inquiry' },
+              { label: 'Facility Overview', sub: 'Current Website' },
+              { label: 'Global Inquiry', sub: 'Export Discussions' },
             ].map((cert) => (
               <div key={cert.label} className="reveal-card py-6 border-t-2 border-primary-fixed">
                 <p className="text-lg font-extrabold text-on-background tracking-tighter">{cert.label}</p>

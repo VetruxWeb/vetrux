@@ -13,10 +13,10 @@ import SectionLabel from '../components/atoms/SectionLabel';
 gsap.registerPlugin(ScrollTrigger);
 
 const stats = [
-  { value: '12,000 m²', label: 'Greenhouse Area' },
-  { value: '100%', label: 'Organic Certified' },
-  { value: '3rd Gen', label: 'Selective Breeding' },
-  { value: '15+', label: 'Years of Cultivation' },
+  { value: 'Source', label: 'Controlled Cultivation' },
+  { value: 'Review', label: 'Process Visibility' },
+  { value: 'Trace', label: 'Origin Tracking' },
+  { value: 'B2B', label: 'Discussion Ready' },
 ];
 
 const zones = [
@@ -43,7 +43,7 @@ const zones = [
     tag: 'Zone 02 — Vegetative Growth',
     title: 'Controlled Environment Agriculture',
     description:
-      'Our steel-frame greenhouse spans over 8,000 m² of climate-regulated growing space. Plants are cultivated in hydroponic and soil-based beds, fed with precision-dosed nutrient programs that maximise cannabinoid expression while eliminating heavy metal risk from the ground up.',
+      'Our cultivation presentation highlights controlled growing conditions, documented handling steps, and source-management practices used to support downstream processing discussions.',
     images: [
       { src: '/images/planting/plant3.jpg', alt: 'Main greenhouse interior rows' },
       { src: '/images/planting/plant4.jpg', alt: 'Hemp canopy in full vegetative stage' },
@@ -61,16 +61,16 @@ const zones = [
     tag: 'Zone 03 — Flowering & Harvest',
     title: 'Peak Cannabinoid Accumulation',
     description:
-      'Harvest timing is determined by in-house HPLC spot-testing, ensuring plants are cut at peak CBD accumulation. Post-harvest biomass is immediately dried and transferred to our extraction facility under sealed cold-chain logistics — never more than 400 metres from plant to processor.',
+      'Harvest and transfer steps are presented as part of the site\'s broader source-to-processing workflow overview for B2B visitors.',
     images: [
       { src: '/images/planting/plant5.jpg', alt: 'Flowering hemp plants' },
       { src: '/images/planting/plant6.jpg', alt: 'Harvest preparation' },
     ],
     specs: [
-      { label: 'CBD Content at Harvest', value: '8–14% (DW)' },
-      { label: 'THC Compliance', value: '< 0.2% (EU Limit)' },
-      { label: 'Harvest-to-Extraction', value: '< 6 Hours' },
-      { label: 'Drying Method', value: 'Low-Temp Airflow Dehydration' },
+      { label: 'Monitoring', value: 'Stage-Based Review' },
+      { label: 'Handling', value: 'Controlled Transfer' },
+      { label: 'Workflow', value: 'Source to Process' },
+      { label: 'Drying Method', value: 'Documented Procedures' },
     ],
     icon: Thermometer,
   },
@@ -86,10 +86,10 @@ const galleryImages = [
 ];
 
 const traceabilityItems = [
-  { icon: Shield, label: 'Seed Certification', desc: 'All cultivars registered under EU approved hemp seed varieties' },
-  { icon: Droplets, label: 'Water Quality Testing', desc: 'Weekly analysis of irrigation water for heavy metals and pathogens' },
-  { icon: Leaf, label: 'Soil & Substrate Audits', desc: 'Monthly substrate composition reports, zero persistent pesticide residues' },
-  { icon: CheckCircle, label: 'Batch-Level COA', desc: 'Every harvest lot receives a unique batch ID traceable through to final product COA' },
+  { icon: Shield, label: 'Origin Records', desc: 'Cultivation and handling records can be reviewed within qualified B2B discussions' },
+  { icon: Droplets, label: 'Water Review', desc: 'Water-management practices are part of the broader source-control narrative on this page' },
+  { icon: Leaf, label: 'Substrate Oversight', desc: 'Growing inputs and cultivation workflow are presented as part of source-management discussions' },
+  { icon: CheckCircle, label: 'Batch Documentation', desc: 'Product and origin documentation requests can be directed through the inquiry workflow' },
 ];
 
 export default function PlantingPage() {
@@ -170,12 +170,11 @@ export default function PlantingPage() {
                 <span className="text-primary">Quality You Can Trace.</span>
               </h1>
               <p className="text-sm text-on-surface-variant leading-relaxed mb-8 max-w-md">
-                We don't just process hemp — we grow it. Our 12,000 m² controlled-environment
-                planting base gives us full command over raw material quality before a single
-                gram reaches the extraction floor.
+                This page presents the current cultivation and source-control narrative used to
+                support broader B2B discussions around raw material handling and process visibility.
               </p>
               <div className="flex flex-wrap gap-3">
-                {['12,000 m² Greenhouse', '100% Organic', '3rd Gen Cultivar', '15+ Years Experience'].map((tag) => (
+                {['Cultivation Overview', 'Origin Tracking', 'Source Control', 'B2B Inquiry Path'].map((tag) => (
                   <span
                     key={tag}
                     className="px-3 py-1.5 bg-surface-container text-on-surface-variant text-xs font-semibold tracking-wider uppercase"
@@ -229,13 +228,16 @@ export default function PlantingPage() {
             </div>
             <div className="reveal-card lg:col-span-7 space-y-5 pt-2">
               <p className="text-sm text-on-surface-variant leading-relaxed">
-                Most CBD processors purchase biomass from third-party farms, inheriting variability in phytochemical profiles, pesticide histories, and moisture content. At Vetrux, we eliminated that dependency entirely.
+                Source control matters for B2B buyers because it shapes how raw material handling,
+                cultivation workflow, and downstream processing are discussed during qualification.
               </p>
               <p className="text-sm text-on-surface-variant leading-relaxed">
-                Our cultivation base sits within 400 metres of our extraction facility in Yunnan Province — a region recognised internationally for its clean-air environment, high-altitude UV exposure, and consistent seasonal patterns ideal for hemp cannabinoid expression.
+                This section is intended as a cultivation and traceability overview rather than a
+                publication of final audited operating metrics.
               </p>
               <p className="text-sm text-on-surface-variant leading-relaxed">
-                Every plant is monitored from germination through harvest, with in-house HPLC testing at key growth milestones. This gives our clients the assurance that the 99.9% purity on their COA starts with biomass that was never compromised.
+                Additional product and documentation questions can be reviewed directly with the
+                team as real operational materials are prepared for qualified discussions.
               </p>
             </div>
           </div>
@@ -357,11 +359,12 @@ export default function PlantingPage() {
             <div className="reveal-card lg:col-span-4">
               <SectionLabel light>Full Traceability</SectionLabel>
               <h2 className="text-4xl font-extrabold text-white tracking-tighter leading-tight mt-4">
-                Seed-to-COA
+                Seed-to-Documentation
                 <br />Documentation
               </h2>
               <p className="mt-5 text-sm text-white/50 leading-relaxed">
-                Every batch we produce carries a unique origin record — from the cultivar registered at germination to the HPLC result on your Certificate of Analysis.
+                Origin and product documentation requests can be organized through the inquiry path
+                as supporting materials are prepared for qualified B2B conversations.
               </p>
             </div>
 
