@@ -64,7 +64,7 @@ export default function InsightsPage() {
               </p>
               <div className="flex flex-wrap gap-4 items-center">
                 <Link
-                  to={`/insights/${featured.slug}`}
+                  to={`/blog/${featured.slug}`}
                   className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white text-xs font-bold tracking-widest uppercase rounded-md hover:bg-primary-container transition-all duration-300"
                 >
                   Read Whitepaper
@@ -78,7 +78,7 @@ export default function InsightsPage() {
             </div>
 
             {/* Right: image */}
-            <Link to={`/insights/${featured.slug}`} className="reveal-card relative overflow-hidden block group">
+            <Link to={`/blog/${featured.slug}`} className="reveal-card relative overflow-hidden block group">
               <img
                 src={featured.image}
                 alt={featured.title}
@@ -98,7 +98,7 @@ export default function InsightsPage() {
       <section className="py-24 bg-surface">
         <div ref={gridRef} className="max-w-container mx-auto px-6 lg:px-12">
           <div className="reveal-card">
-            <SectionLabel>Technical Insights</SectionLabel>
+            <SectionLabel>Latest Posts</SectionLabel>
             <h2 className="text-3xl font-extrabold text-on-background tracking-tighter mb-12">
               Industry Analysis & Research
             </h2>
@@ -109,7 +109,7 @@ export default function InsightsPage() {
             {gridArticles.map((article, i) => (
               <Link
                 key={article.slug}
-                to={`/insights/${article.slug}`}
+                to={`/blog/${article.slug}`}
                 className={`reveal-card group cursor-pointer ${i === 0 ? 'md:col-span-2' : 'md:col-span-1'}`}
               >
                 <article>

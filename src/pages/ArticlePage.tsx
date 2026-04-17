@@ -125,7 +125,7 @@ export default function ArticlePage() {
   const content = slug ? articleContent[slug] : undefined;
 
   if (!meta || !content) {
-    return <Navigate to="/insights" replace />;
+    return <Navigate to="/blog" replace />;
   }
 
   return (
@@ -158,11 +158,11 @@ export default function ArticlePage() {
       <div className="max-w-3xl mx-auto px-6 lg:px-0 py-16">
         {/* Back link */}
         <Link
-          to="/insights"
+          to="/blog"
           className="inline-flex items-center gap-2 text-xs font-bold tracking-wider uppercase text-on-surface-variant hover:text-primary transition-colors duration-200 mb-12"
         >
           <ArrowLeft size={12} />
-          Back to Insights
+          Back to Blog
         </Link>
 
         {/* Markdown content */}
@@ -175,11 +175,11 @@ export default function ArticlePage() {
         {/* Footer nav */}
         <div className="mt-16 pt-8 border-t border-on-background/10">
           <Link
-            to="/insights"
+            to="/blog"
             className="inline-flex items-center gap-2 text-xs font-bold tracking-wider uppercase text-primary hover:translate-x-[-2px] transition-transform duration-200"
           >
             <ArrowLeft size={12} />
-            All Insights
+            All Posts
           </Link>
         </div>
       </div>

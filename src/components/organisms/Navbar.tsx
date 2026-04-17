@@ -11,7 +11,7 @@ const navLinks = [
   { label: 'Products', href: '/products/cbd-isolate' },
   { label: 'Equipment', href: '/equipment' },
   { label: 'Planting', href: '/planting' },
-  { label: 'Insights', href: '/insights' },
+  { label: 'Blog', href: '/blog' },
 ];
 
 export default function Navbar() {

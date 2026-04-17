@@ -41,8 +41,8 @@ export default function App() {
           <Route path="/gallery" element={<GalleryPage />} />
           <Route path="/inquiry" element={<InquiryPage />} />
           <Route path="/equipment" element={<EquipmentPage />} />
-          <Route path="/insights" element={<InsightsPage />} />
-          <Route path="/insights/:slug" element={<ArticlePage />} />
+          <Route path="/blog" element={<InsightsPage />} />
+          <Route path="/blog/:slug" element={<ArticlePage />} />
           <Route path="/products/cbd-isolate" element={<ProductPage />} />
           <Route path="/planting" element={<PlantingPage />} />
           <Route path="*" element={<NotFound />} />

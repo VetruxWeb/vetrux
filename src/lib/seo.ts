@@ -59,11 +59,11 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     image: defaultImage,
     type: 'website',
   },
-  '/insights': {
-    title: 'Industry Insights | Yunnan Vetrux',
+  '/blog': {
+    title: 'Blog | Yunnan Vetrux',
     description:
-      'Read current industry insight articles published on the Yunnan Vetrux website for buyers, sourcing teams, and formulation stakeholders.',
-    canonicalPath: '/insights',
+      'Articles on CBD extraction, compliance, and supply chain — published by the Yunnan Vetrux team.',
+    canonicalPath: '/blog',
     image: defaultImage,
     type: 'website',
   },
@@ -87,14 +87,14 @@ export function getBaseUrl(): string {
 }
 
 export function getSeoMetadata(pathname: string): SeoMetadata {
-  if (pathname.startsWith('/insights/') && pathname !== '/insights') {
-    const slug = pathname.replace('/insights/', '');
+  if (pathname.startsWith('/blog/') && pathname !== '/blog') {
+    const slug = pathname.replace('/blog/', '');
     const article = articles.find((entry) => entry.slug === slug);
     if (article) {
       return {
-        title: `${article.title} | Yunnan Vetrux Insights`,
+        title: `${article.title} | Yunnan Vetrux Blog`,
         description: article.excerpt,
-        canonicalPath: `/insights/${article.slug}`,
+        canonicalPath: `/blog/${article.slug}`,
         image: article.image || defaultImage,
         type: 'article',
       };

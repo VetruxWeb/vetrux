@@ -16,7 +16,7 @@ const footerLinks = [
     links: [
       { label: 'Equipment', href: '/equipment' },
       { label: 'Gallery', href: '/gallery' },
-      { label: 'Industry Insights', href: '/insights' },
+      { label: 'Blog', href: '/blog' },
     ],
   },
   {
