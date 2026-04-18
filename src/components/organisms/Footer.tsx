@@ -17,6 +17,7 @@ const footerLinks = [
   {
     heading: 'Company',
     links: [
+      { label: 'About Vetrux', href: '/about' },
       { label: 'Manufacturer Profile', href: '/cbd-isolate-manufacturer' },
       { label: 'Quality Assurance', href: '/quality-assurance' },
       { label: 'Equipment', href: '/equipment' },
@@ -29,7 +30,8 @@ const footerLinks = [
     links: [
       { label: 'Blog & Insights', href: '/blog' },
       { label: 'Contact & Inquiry', href: '/inquiry' },
-      { label: 'Technical Specs', href: '/products/cbd-isolate' },
+      { label: 'Privacy Policy', href: '/privacy-policy' },
+      { label: 'Terms of Service', href: '/terms-of-service' },
     ],
   },
 ]
@@ -89,13 +91,23 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <p className="text-xs text-inverse-on-surface/40">
-            © {new Date().getFullYear()} Yunnan Vetrux Co., Ltd. All rights reserved.
-          </p>
-          <p className="text-xs text-inverse-on-surface/40">
-            Yunnan Province, China · B2B Inquiry Website
-          </p>
+        <div className="mt-12 pt-8 border-t border-white/10">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div className="text-xs text-inverse-on-surface/60 leading-relaxed">
+              <p className="font-semibold text-inverse-on-surface/80 mb-1">Yunnan Vetrux Co., Ltd.</p>
+              <p>Yunnan Province, China</p>
+              <p>
+                Email:{' '}
+                <a href="mailto:postmaster@vetrux.tech" className="text-inverse-on-surface/80 hover:text-white transition-colors">
+                  postmaster@vetrux.tech
+                </a>
+              </p>
+              <p>Phone: +86-871-8800-0000</p>
+            </div>
+            <p className="text-xs text-inverse-on-surface/40">
+              © {new Date().getFullYear()} Yunnan Vetrux Co., Ltd. All rights reserved.
+            </p>
+          </div>
         </div>
       </div>
     </footer>

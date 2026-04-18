@@ -147,6 +147,21 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     type: 'website',
     keywords:
       'supercritical CO2 extraction equipment, CBD extraction facility, cGMP CBD manufacturing, chromatography CBD purification, pharmaceutical grade extraction, CBD manufacturing equipment',
+    jsonLd: [
+      organizationJsonLd,
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Place',
+        name: 'Yunnan Vetrux Extraction Facility',
+        description:
+          'cGMP-certified supercritical CO₂ extraction facility for pharmaceutical-grade CBD isolate manufacturing. Equipped with 6m³ extraction vessels, chromatography columns, and multi-stage crystallization systems.',
+        address: {
+          '@type': 'PostalAddress',
+          addressRegion: 'Yunnan Province',
+          addressCountry: 'CN',
+        },
+      },
+    ],
   },
   '/planting': {
     title: 'Vertically Integrated Hemp Cultivation | Seed-to-Isolate Traceability — Yunnan Vetrux',
@@ -157,6 +172,21 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     type: 'website',
     keywords:
       'hemp cultivation Yunnan, CBD hemp farming, vertical integration CBD, seed to isolate traceability, controlled environment agriculture hemp, organic hemp cultivation China',
+    jsonLd: [
+      organizationJsonLd,
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Place',
+        name: 'Yunnan Vetrux Hemp Cultivation Base',
+        description:
+          'Vertically integrated hemp cultivation base in Yunnan Province with controlled-environment agriculture, zero synthetic pesticides, full seed-to-isolate traceability, and ≥97% germination rate.',
+        address: {
+          '@type': 'PostalAddress',
+          addressRegion: 'Yunnan Province',
+          addressCountry: 'CN',
+        },
+      },
+    ],
   },
   '/gallery': {
     title: 'CBD Manufacturing Facility Gallery | Production & Laboratory — Yunnan Vetrux',
@@ -166,6 +196,18 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     image: '/images/hero/facility-hero.webp',
     type: 'website',
     keywords: 'CBD manufacturing facility, CBD extraction facility photos, CBD laboratory, hemp cultivation base',
+    jsonLd: {
+      '@context': 'https://schema.org',
+      '@type': 'ImageGallery',
+      name: 'Yunnan Vetrux Manufacturing Facility Gallery',
+      description:
+        'Visual tour of Yunnan Vetrux\'s CBD isolate manufacturing campus — extraction facility, planting base, refinement laboratory, and quality control operations.',
+      publisher: {
+        '@type': 'Organization',
+        name: 'Yunnan Vetrux',
+        url: 'https://www.vetrux.tech',
+      },
+    },
   },
   '/inquiry': {
     title: 'Request Wholesale CBD Isolate Quote | B2B Inquiry — Yunnan Vetrux',
@@ -176,6 +218,14 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     type: 'website',
     keywords:
       'wholesale CBD isolate inquiry, bulk CBD isolate quote, CBD isolate wholesale pricing, CBD isolate Europe delivery, B2B CBD supplier contact',
+    jsonLd: {
+      '@context': 'https://schema.org',
+      '@type': 'ContactPage',
+      name: 'Wholesale CBD Isolate Inquiry',
+      description:
+        'Contact Yunnan Vetrux for bulk CBD isolate wholesale pricing, COA documentation, and custom logistics to Europe.',
+      publisher: organizationJsonLd,
+    },
   },
   '/blog': {
     title: 'CBD Industry Insights | Extraction Technology & Compliance — Yunnan Vetrux Blog',
@@ -186,6 +236,15 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     type: 'website',
     keywords:
       'CBD extraction technology, CBD compliance standards, CBD industry analysis, CBD supply chain, CBD isolate sourcing guide',
+    jsonLd: {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: 'Yunnan Vetrux Blog — CBD Industry Insights',
+      description:
+        'Expert articles on CBD extraction technology, global compliance standards, supply chain optimization, and market analysis for B2B CBD isolate buyers.',
+      publisher: organizationJsonLd,
+      url: 'https://www.vetrux.tech/blog',
+    },
   },
   '/wholesale-cbd-isolate': {
     title: 'Wholesale CBD Isolate | Bulk Pricing & Volume Discounts — Yunnan Vetrux',
@@ -239,6 +298,10 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     type: 'website',
     keywords:
       'CBD isolate quality assurance, CBD COA testing, GMP CBD manufacturer, ISO 9001 CBD, HACCP CBD, pharmaceutical grade CBD testing, CBD heavy metals testing, CBD residual solvents',
+    jsonLd: [
+      organizationJsonLd,
+      productJsonLd,
+    ],
   },
   '/cbd-isolate-manufacturer': {
     title: 'CBD Isolate Manufacturer | Seed-to-Isolate Vertical Integration — Yunnan Vetrux',
@@ -253,6 +316,33 @@ const staticPageSeo: Record<string, SeoMetadata> = {
       organizationJsonLd,
       productJsonLd,
     ],
+  },
+  '/about': {
+    title: 'About Yunnan Vetrux | Vertically Integrated CBD Isolate Manufacturer',
+    description:
+      'Learn about Yunnan Vetrux — a vertically integrated CBD isolate manufacturer in Yunnan, China. ISO 9001, GMP, HACCP certified. Supplying pharmaceutical-grade CBD isolate (≥99.5% purity) to European B2B buyers.',
+    canonicalPath: '/about',
+    image: '/images/hero/facility-hero.webp',
+    type: 'website',
+    keywords:
+      'about Yunnan Vetrux, CBD isolate manufacturer China, vertically integrated CBD, Yunnan hemp manufacturer',
+    jsonLd: organizationJsonLd,
+  },
+  '/privacy-policy': {
+    title: 'Privacy Policy — Yunnan Vetrux',
+    description:
+      'Privacy Policy for Yunnan Vetrux website. Learn how we collect, use, and protect your personal data when you visit our site or submit a B2B inquiry.',
+    canonicalPath: '/privacy-policy',
+    image: '/images/hero/facility-hero.webp',
+    type: 'website',
+  },
+  '/terms-of-service': {
+    title: 'Terms of Service — Yunnan Vetrux',
+    description:
+      'Terms of Service for the Yunnan Vetrux website. Read our terms governing the use of our B2B wholesale CBD isolate platform.',
+    canonicalPath: '/terms-of-service',
+    image: '/images/hero/facility-hero.webp',
+    type: 'website',
   },
 };
 

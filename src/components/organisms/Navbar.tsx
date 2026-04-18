@@ -13,6 +13,7 @@ const navLinks = [
   { label: 'Products', href: '/products/cbd-isolate' },
   { label: 'Equipment', href: '/equipment' },
   { label: 'Planting', href: '/planting' },
+  { label: 'About', href: '/about' },
   { label: 'Blog', href: '/blog' },
 ]
 

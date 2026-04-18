@@ -9,7 +9,7 @@ import type { Article } from '@/content/articles';
 
 const mdComponents: Components = {
   h1: ({ children }) => (
-    <h1 className="text-4xl md:text-5xl font-extrabold text-on-background tracking-tighter leading-tight mt-0 mb-6">{children}</h1>
+    <h2 className="text-4xl md:text-5xl font-extrabold text-on-background tracking-tighter leading-tight mt-0 mb-6">{children}</h2>
   ),
   h2: ({ children }) => (
     <h2 className="text-2xl font-extrabold text-on-background tracking-tighter leading-snug mt-14 mb-4 border-b border-on-background/10 pb-3">{children}</h2>
