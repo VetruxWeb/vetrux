@@ -127,6 +127,24 @@ export default function ArticlePageClient({ meta, content }: ArticlePageClientPr
           </ReactMarkdown>
         </article>
 
+        {/* Author card */}
+        <div className="mt-12 p-6 bg-surface-container-low flex gap-4 items-start">
+          <div className="flex-shrink-0 w-12 h-12 bg-primary-fixed flex items-center justify-center rounded-full">
+            <span className="text-primary font-bold text-sm">YV</span>
+          </div>
+          <div>
+            <p className="text-sm font-bold text-on-background">Yunnan Vetrux Technical Team</p>
+            <p className="text-xs text-on-surface-variant leading-relaxed mt-1">
+              Vertically integrated CBD isolate manufacturer in Yunnan, China. ISO 9001, GMP, HACCP certified.
+              Our technical team combines expertise in supercritical CO₂ extraction, analytical chemistry,
+              and pharmaceutical-grade quality control.
+            </p>
+            <a href="/about" className="text-xs text-primary underline underline-offset-2 mt-2 inline-block">
+              Learn more about Vetrux
+            </a>
+          </div>
+        </div>
+
         <div className="mt-16 pt-8 border-t border-on-background/10">
           <Link
             href="/blog"

@@ -122,7 +122,7 @@ export default function HomePageClient() {
             <div>
               <p className="text-xs font-semibold tracking-widest uppercase text-primary mb-2">Market Context</p>
               <p className="text-sm text-on-surface-variant leading-relaxed">
-                The European CBD market is projected to reach <span className="text-on-surface font-semibold">€3.2 billion by 2027</span>, driven by pharmaceutical, nutraceutical, and cosmetic applications. <span className="text-on-surface-variant/60 text-xs">(Prohibition Partners, European CBD Report)</span>
+                The European CBD market is projected to reach <span className="text-on-surface font-semibold">€3.2 billion by 2027</span>, driven by pharmaceutical, nutraceutical, and cosmetic applications. <a href="https://prohibitionpartners.com" target="_blank" rel="noopener noreferrer" className="text-on-surface-variant/60 text-xs underline underline-offset-2">(Prohibition Partners, European CBD Report)</a>
               </p>
             </div>
             <div>
@@ -262,6 +262,57 @@ export default function HomePageClient() {
                 <p className="text-xs text-on-surface-variant tracking-wider uppercase mt-1">{cert.sub}</p>
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FAQ SECTION ────────────────────────────────────────────────── */}
+      <section className="py-24 bg-surface-container-low">
+        <div className="max-w-container mx-auto px-6 lg:px-12">
+          <SectionLabel>Frequently Asked Questions</SectionLabel>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-on-background tracking-tighter leading-tight mb-12">
+            What Buyers Ask Us
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[
+              {
+                q: 'What is CBD isolate and how is it different from full-spectrum CBD?',
+                a: 'CBD isolate is the purest form of cannabidiol — a white crystalline powder containing ≥99.5% CBD with all other cannabinoids, terpenes, and plant compounds removed. Unlike full-spectrum CBD which retains THC and other cannabinoids, CBD isolate is THC non-detect (ND), making it ideal for pharmaceutical and nutraceutical formulations requiring precise dosing and regulatory compliance.',
+              },
+              {
+                q: 'What certifications does Yunnan Vetrux hold?',
+                a: 'Vetrux operates under ISO 9001:2015, GMP, and HACCP certifications. Our facility follows FDA 21 CFR Part 211 and EU GMP Annex 1 standards. All testing is performed by ISO/IEC 17025-accredited laboratories, and every batch ships with a full Certificate of Analysis (COA).',
+              },
+              {
+                q: 'What is the minimum order quantity for wholesale CBD isolate?',
+                a: 'Vetrux offers CBD isolate starting from 1 kg for sample and trial orders. Volume pricing begins at 5 kg, with significant discounts at 100 kg+ and ton-scale annual contracts. Available in 1 kg, 5 kg, and 25 kg packaging.',
+              },
+              {
+                q: 'How does Vetrux ensure THC-free compliance for European buyers?',
+                a: 'Every batch undergoes GC-MS testing at accredited laboratories to confirm THC non-detect (ND) status. Our supercritical CO₂ extraction and multi-stage chromatographic purification process ensures compliance with EU Novel Food THC limits. Full documentation including COA, Certificate of Origin, and SDS is provided with each shipment.',
+              },
+              {
+                q: 'What shipping terms are available for European buyers?',
+                a: 'Vetrux offers FOB Kunming, CIF Rotterdam, and DDP delivery to European destinations. Standard lead time is 10–14 business days from order confirmation. All shipments include batch-specific COA, Certificate of Origin, and Safety Data Sheet.',
+              },
+            ].map((faq) => (
+              <div key={faq.q} className="bg-surface p-6">
+                <h3 className="text-sm font-bold text-on-background mb-3">{faq.q}</h3>
+                <p className="text-xs text-on-surface-variant leading-relaxed">{faq.a}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* References */}
+          <div className="mt-12 pt-8 border-t border-outline-variant/20">
+            <p className="text-xs font-semibold tracking-widest uppercase text-on-surface-variant/40 mb-3">References &amp; Standards</p>
+            <ul className="flex flex-col gap-1.5 text-xs text-on-surface-variant/60">
+              <li><a href="https://www.who.int/docs/default-source/controlled-substances/whocbdreportmay2018-2.pdf" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-on-surface-variant">WHO Expert Committee on Drug Dependence — Cannabidiol (CBD) Critical Review Report (2018)</a></li>
+              <li><a href="https://food.ec.europa.eu/safety/novel-food/legislation_en" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-on-surface-variant">EU Novel Food Regulation (EU) 2015/2283 — European Commission</a></li>
+              <li><a href="https://www.iso.org/standard/62085.html" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-on-surface-variant">ISO 9001:2015 — Quality Management Systems</a></li>
+              <li><a href="https://www.iso.org/standard/39883.html" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-on-surface-variant">ISO/IEC 17025 — General Requirements for Testing and Calibration Laboratories</a></li>
+              <li><a href="https://www.ich.org/page/quality-guidelines" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-on-surface-variant">ICH Q3C — Impurities: Guideline for Residual Solvents</a></li>
+            </ul>
           </div>
         </div>
       </section>
