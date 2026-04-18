@@ -10,20 +10,24 @@ const footerLinks = [
     heading: 'Products',
     links: [
       { label: 'CBD Isolate Overview', href: '/products/cbd-isolate' },
+      { label: 'Wholesale CBD Isolate', href: '/wholesale-cbd-isolate' },
       { label: 'Wholesale Inquiry', href: '/inquiry' },
     ],
   },
   {
     heading: 'Company',
     links: [
+      { label: 'Manufacturer Profile', href: '/cbd-isolate-manufacturer' },
+      { label: 'Quality Assurance', href: '/quality-assurance' },
       { label: 'Equipment', href: '/equipment' },
+      { label: 'Planting Base', href: '/planting' },
       { label: 'Gallery', href: '/gallery' },
-      { label: 'Blog', href: '/blog' },
     ],
   },
   {
-    heading: 'B2B',
+    heading: 'Resources',
     links: [
+      { label: 'Blog & Insights', href: '/blog' },
       { label: 'Contact & Inquiry', href: '/inquiry' },
       { label: 'Technical Specs', href: '/products/cbd-isolate' },
     ],

@@ -186,6 +186,73 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     keywords:
       'CBD extraction technology, CBD compliance standards, CBD industry analysis, CBD supply chain, CBD isolate sourcing guide',
   },
+  '/wholesale-cbd-isolate': {
+    title: 'Wholesale CBD Isolate | Bulk Pricing & Volume Discounts — Yunnan Vetrux',
+    description:
+      'Buy wholesale CBD isolate at volume-tiered pricing. Pharmaceutical-grade ≥99.5% purity, THC-free. FOB, CIF, and DDP shipping to Europe. 1 kg to ton-scale supply from a cGMP-certified manufacturer.',
+    canonicalPath: '/wholesale-cbd-isolate',
+    image: '/images/products/product2.jpg',
+    type: 'website',
+    keywords:
+      'wholesale CBD isolate, bulk CBD isolate pricing, CBD isolate wholesale price, buy CBD isolate bulk, CBD isolate volume discount, CBD isolate DDP Europe',
+    jsonLd: [
+      productJsonLd,
+      {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: [
+          {
+            '@type': 'Question',
+            name: 'What is the minimum order quantity for wholesale CBD isolate?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Vetrux offers CBD isolate starting from 1 kg for sample/trial orders. Volume discounts begin at 5 kg, with significant pricing advantages at 100 kg+ and ton-scale annual contracts.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'What shipping terms are available for wholesale CBD isolate?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Vetrux offers FOB Kunming, CIF Rotterdam, and DDP delivery to European destinations. Standard lead time is 10–14 business days from order confirmation.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'What documentation is included with wholesale CBD isolate orders?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Every shipment includes a batch-specific Certificate of Analysis from an ISO/IEC 17025-accredited laboratory, Certificate of Origin, and Safety Data Sheet. GMP certificates and facility audit documentation available on request.',
+            },
+          },
+        ],
+      },
+    ],
+  },
+  '/quality-assurance': {
+    title: 'CBD Isolate Quality Assurance | cGMP Testing & Certifications — Yunnan Vetrux',
+    description:
+      'Vetrux quality assurance program for CBD isolate: ISO 9001, GMP, HACCP certifications. Full analytical testing panel (HPLC, GC-MS, ICP-MS) on every batch. Third-party COA from ISO/IEC 17025 labs.',
+    canonicalPath: '/quality-assurance',
+    image: '/images/equipment/chromatography-column-700L.webp',
+    type: 'website',
+    keywords:
+      'CBD isolate quality assurance, CBD COA testing, GMP CBD manufacturer, ISO 9001 CBD, HACCP CBD, pharmaceutical grade CBD testing, CBD heavy metals testing, CBD residual solvents',
+  },
+  '/cbd-isolate-manufacturer': {
+    title: 'CBD Isolate Manufacturer | Seed-to-Isolate Vertical Integration — Yunnan Vetrux',
+    description:
+      'Yunnan Vetrux is a vertically integrated CBD isolate manufacturer with in-house hemp cultivation, supercritical CO₂ extraction, chromatographic purification, and pharmaceutical-grade QC. Supplying ≥99.5% purity, THC-free CBD isolate to B2B buyers globally.',
+    canonicalPath: '/cbd-isolate-manufacturer',
+    image: '/images/hero/facility-hero.webp',
+    type: 'website',
+    keywords:
+      'CBD isolate manufacturer, CBD manufacturer China, CBD isolate factory, vertical integration CBD, supercritical CO2 CBD manufacturer, pharmaceutical grade CBD manufacturer, bulk CBD isolate producer',
+    jsonLd: [
+      organizationJsonLd,
+      productJsonLd,
+    ],
+  },
 };
 
 function normalizeBaseUrl(origin: string): string {

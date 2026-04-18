@@ -4,6 +4,7 @@ import Script from 'next/script'
 import './globals.css'
 import Navbar from '@/components/organisms/Navbar'
 import Footer from '@/components/organisms/Footer'
+import Breadcrumb from '@/components/molecules/Breadcrumb'
 
 const manrope = Manrope({
   subsets: ['latin'],
@@ -34,6 +35,14 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     images: ['/images/hero/facility-hero.webp'],
   },
+  alternates: {
+    languages: {
+      'en': 'https://www.vetrux.tech',
+      'de': 'https://www.vetrux.tech/de',
+      'fr': 'https://www.vetrux.tech/fr',
+      'x-default': 'https://www.vetrux.tech',
+    },
+  },
   other: {
     'geo.region': 'CN-YN',
     'geo.placename': 'Yunnan, China',
@@ -48,6 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="min-h-screen flex flex-col bg-surface font-sans">
         <Navbar />
+        <Breadcrumb />
         <main className="flex-1 pt-12">{children}</main>
         <Footer />
         <Script

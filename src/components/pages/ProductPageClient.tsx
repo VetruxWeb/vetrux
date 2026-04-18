@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import { ArrowRight, Download, CheckCircle, Microscope, TestTube, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -104,9 +105,7 @@ export default function ProductPageClient() {
                 <span className="text-primary">99.5% Purity</span>
               </h1>
               <p className="text-sm text-on-surface-variant leading-relaxed mb-8 max-w-md">
-                Our benchmark-grade CBD isolate, produced via multi-stage supercritical CO₂ extraction
-                and preparative chromatography. Pharmaceutical-compliant, THC-free, and globally
-                exportable under DDP, CIF, or FOB terms.
+                Our benchmark-grade CBD isolate (CAS 13956-29-1, C₂₁H₃₀O₂, MW 314.46 g/mol), produced via multi-stage supercritical CO₂ extraction at 31.1°C / 73.8 bar and preparative chromatography. Pharmaceutical-compliant, THC non-detect by GC-MS, and globally exportable under Incoterms 2020 DDP, CIF, or FOB terms.
               </p>
 
               <div className="flex flex-wrap gap-3 mb-10">
@@ -134,7 +133,7 @@ export default function ProductPageClient() {
             </div>
 
             <div className="reveal-card relative">
-              <img src="/images/products/product2.jpg" alt="CBD Isolate 99.5% purity crystals" className="w-full h-[500px] object-cover" />
+              <Image src="/images/products/product2.jpg" alt="CBD Isolate 99.5% purity crystals" width={800} height={500} priority sizes="(max-width: 1024px) 100vw, 50vw" className="w-full h-[500px] object-cover" />
               <div className="absolute bottom-6 right-6 bg-on-background/90 backdrop-blur p-4">
                 <p className="text-xs text-white/50 tracking-widest uppercase mb-1">Laboratory Authentic</p>
                 <p className="text-sm font-bold text-white">Batch ID: YN-CBD-0042</p>
@@ -152,9 +151,12 @@ export default function ProductPageClient() {
             <h2 className="text-3xl font-extrabold text-on-background tracking-tighter mb-4">
               Certificate of Analysis — Batch YN-CBD-0042
             </h2>
-            <p className="text-sm text-on-surface-variant mb-12 max-w-xl">
+            <p className="text-sm text-on-surface-variant mb-4 max-w-xl">
               This section presents representative technical information. Product documentation can
               be discussed directly with our B2B team based on current availability.
+            </p>
+            <p className="text-xs text-on-surface-variant/70 mb-12 max-w-xl">
+              Testing methodology follows <span className="font-semibold text-on-surface-variant">USP &lt;621&gt;</span> chromatographic procedures and <span className="font-semibold text-on-surface-variant">ICH Q2(R1)</span> analytical method validation guidelines. Heavy metals quantified per <span className="font-semibold text-on-surface-variant">USP &lt;232&gt;/&lt;233&gt;</span>; residual solvents assessed against <span className="font-semibold text-on-surface-variant">ICH Q3C</span> Class I/II/III limits.
             </p>
           </div>
 
@@ -202,7 +204,14 @@ export default function ProductPageClient() {
 
             <div className="reveal-card">
               <SectionLabel>Compliance & Testing</SectionLabel>
-              <h2 className="text-3xl font-extrabold text-on-background tracking-tighter mb-8">Quality Assurance Standards</h2>
+              <h2 className="text-3xl font-extrabold text-on-background tracking-tighter mb-6">Quality Assurance Standards</h2>
+              <div className="mb-6 p-4 bg-surface-container border-l-2 border-primary">
+                <p className="text-xs font-semibold tracking-widest uppercase text-primary mb-1">Regulatory Context</p>
+                <p className="text-xs text-on-surface-variant leading-relaxed">
+                  CBD isolate intended for food, supplement, or cosmetic use in the EU is subject to{' '}
+                  <span className="font-semibold text-on-surface">EU Novel Food Regulation (EU) 2015/2283</span>, which requires pre-market authorisation via an EFSA safety dossier. Vetrux provides documentation packages to support Novel Food applications, including full traceability records, production process descriptions, and compositional data aligned with EFSA guidance.
+                </p>
+              </div>
               <div className="space-y-4">
                 {[
                   { standard: 'HPLC Purity Analysis', detail: 'USP-verified reference standards' },
@@ -262,6 +271,22 @@ export default function ProductPageClient() {
                 </p>
               </div>
             ))}
+          </div>
+
+          {/* Internal links to related pages */}
+          <div className="reveal-card mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <Link href="/quality-assurance" className="p-4 bg-surface-container-low hover:bg-surface-container transition-colors text-center">
+              <p className="text-xs font-bold text-primary tracking-wider uppercase">Quality Assurance →</p>
+              <p className="text-xs text-on-surface-variant mt-1">Full QA program details</p>
+            </Link>
+            <Link href="/wholesale-cbd-isolate" className="p-4 bg-surface-container-low hover:bg-surface-container transition-colors text-center">
+              <p className="text-xs font-bold text-primary tracking-wider uppercase">Wholesale Pricing →</p>
+              <p className="text-xs text-on-surface-variant mt-1">Volume-tiered pricing</p>
+            </Link>
+            <Link href="/blog/how-to-read-cbd-certificate-of-analysis" className="p-4 bg-surface-container-low hover:bg-surface-container transition-colors text-center">
+              <p className="text-xs font-bold text-primary tracking-wider uppercase">COA Guide →</p>
+              <p className="text-xs text-on-surface-variant mt-1">How to read a CBD COA</p>
+            </Link>
           </div>
         </div>
       </section>

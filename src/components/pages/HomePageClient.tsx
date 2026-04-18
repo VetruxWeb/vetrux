@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import { ArrowRight, Download, FlaskConical, Award, Layers } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -59,9 +60,12 @@ export default function HomePageClient() {
 
       {/* ── HERO SECTION ────────────────────────────────────────────────── */}
       <section className="relative min-h-[90vh] flex items-end overflow-hidden bg-on-background">
-        <img
+        <Image
           src="/images/hero/facility-hero.webp"
           alt="Yunnan Vetrux extraction facility"
+          fill
+          priority
+          sizes="100vw"
           className="absolute inset-0 w-full h-full object-cover opacity-40"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-on-background via-on-background/60 to-transparent" />
@@ -111,14 +115,43 @@ export default function HomePageClient() {
         </div>
       </section>
 
+      {/* ── INDUSTRY CONTEXT ────────────────────────────────────────────── */}
+      <section className="py-12 bg-surface-container-low border-b border-outline-variant/20">
+        <div className="max-w-container mx-auto px-6 lg:px-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+            <div>
+              <p className="text-xs font-semibold tracking-widest uppercase text-primary mb-2">Market Context</p>
+              <p className="text-sm text-on-surface-variant leading-relaxed">
+                The European CBD market is projected to reach <span className="text-on-surface font-semibold">€3.2 billion by 2027</span>, driven by pharmaceutical, nutraceutical, and cosmetic applications. <span className="text-on-surface-variant/60 text-xs">(Prohibition Partners, European CBD Report)</span>
+              </p>
+            </div>
+            <div>
+              <p className="text-xs font-semibold tracking-widest uppercase text-primary mb-2">Extraction Science</p>
+              <p className="text-sm text-on-surface-variant leading-relaxed">
+                Vetrux employs supercritical CO₂ extraction at <span className="text-on-surface font-semibold">31.1°C / 73.8 bar</span> — the critical point at which CO₂ acts as a selective, solvent-free extractant, preserving full cannabinoid molecular integrity without thermal degradation.
+              </p>
+            </div>
+            <div>
+              <p className="text-xs font-semibold tracking-widest uppercase text-primary mb-2">Manufacturer Position</p>
+              <p className="text-sm text-on-surface-variant leading-relaxed">
+                As a vertically integrated seed-to-isolate manufacturer operating from Yunnan Province, Vetrux controls every stage of the phytocannabinoid production chain — from cultivar selection and biomass quality to final API-grade crystallisation and batch release.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── INDUSTRIAL SCALE SECTION ────────────────────────────────────── */}
       <section className="py-24 bg-surface">
         <div className="max-w-container mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="relative reveal-card">
-              <img
+              <Image
                 src="/images/equipment/extraction-vessel-6m3.webp"
                 alt="Industrial extraction infrastructure"
+                width={800}
+                height={520}
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="w-full h-[520px] object-cover"
               />
               <div className="absolute bottom-6 left-6 bg-primary text-white px-5 py-3">
@@ -168,9 +201,12 @@ export default function HomePageClient() {
         <div ref={bentoRef} className="max-w-container mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
             <div className="reveal-card lg:col-span-8 relative overflow-hidden">
-              <img
+              <Image
                 src="/images/products/product1.jpg"
                 alt="CBD Isolate 99.5% Purity"
+                width={1200}
+                height={580}
+                sizes="(max-width: 1024px) 100vw, 66vw"
                 className="w-full h-[580px] object-cover object-[center_40%]"
               />
               <div className="absolute top-6 left-6">
@@ -216,15 +252,15 @@ export default function HomePageClient() {
         <div ref={trustRef} className="max-w-container mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center text-center">
             {[
-              { label: 'Quality Focus', sub: 'Process Review' },
-              { label: 'Documentation Path', sub: 'B2B Inquiry' },
-              { label: 'Facility Overview', sub: 'Current Website' },
-              { label: 'Global Inquiry', sub: 'Export Discussions' },
+              { label: 'Quality Focus', sub: 'Process Review', href: '/quality-assurance' },
+              { label: 'Wholesale Supply', sub: 'Volume Pricing', href: '/wholesale-cbd-isolate' },
+              { label: 'Manufacturer Profile', sub: 'Seed-to-Isolate', href: '/cbd-isolate-manufacturer' },
+              { label: 'Global Inquiry', sub: 'Export Discussions', href: '/inquiry' },
             ].map((cert) => (
-              <div key={cert.label} className="reveal-card py-6 border-t-2 border-primary-fixed">
+              <Link key={cert.label} href={cert.href} className="reveal-card py-6 border-t-2 border-primary-fixed hover:border-primary transition-colors duration-200 block">
                 <p className="text-lg font-extrabold text-on-background tracking-tighter">{cert.label}</p>
                 <p className="text-xs text-on-surface-variant tracking-wider uppercase mt-1">{cert.sub}</p>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
