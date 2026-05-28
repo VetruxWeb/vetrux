@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+export const dynamic = 'force-dynamic'
 import { notFound } from 'next/navigation'
 import { getProductBySlug, getAllProductSlugs } from '@/lib/products'
 import { buildMetadata } from '@/lib/seo'

@@ -4,6 +4,8 @@ import { articles as staticArticles } from '@/content/articles';
 import { getAllArticlesFromDb } from '@/lib/articlesDb';
 import InsightsPageClient from '@/components/pages/InsightsPageClient';
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata(): Promise<Metadata> {
   return buildMetadata('/blog');
 }

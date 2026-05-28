@@ -1,4 +1,4 @@
-import { supabaseAdmin } from './supabase'
+import { supabaseAdmin, isSupabaseConfigured } from './supabase'
 import type { Locale } from '@/i18n/locales'
 
 export async function getArticleBySlugFromDb(slug: string, locale: Locale = 'en') {
@@ -56,6 +56,8 @@ export async function getAllArticlesFromDb(locale: Locale = 'en') {
 }
 
 export async function getAllArticleSlugs() {
+  if (!isSupabaseConfigured()) return []
+
   const { data } = await supabaseAdmin
     .from('Article')
     .select('slug')

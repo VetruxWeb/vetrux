@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { getAllProducts } from '@/lib/products'
 import { buildMetadata } from '@/lib/seo'
 
+export const dynamic = 'force-dynamic'
+
 export async function generateMetadata(): Promise<Metadata> {
   return buildMetadata('/products')
 }

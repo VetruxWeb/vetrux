@@ -1,4 +1,4 @@
-import { supabaseAdmin } from './supabase'
+import { supabaseAdmin, isSupabaseConfigured } from './supabase'
 import type { Locale } from '@/i18n/locales'
 
 export interface ProductRecord {
@@ -156,6 +156,8 @@ export async function getAllProducts(locale: Locale) {
 }
 
 export async function getAllProductSlugs() {
+  if (!isSupabaseConfigured()) return []
+
   const { data } = await supabaseAdmin
     .from('Product')
     .select('slug')

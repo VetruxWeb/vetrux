@@ -4,6 +4,8 @@ import { getProductBySlug, getAllProductSlugs } from '@/lib/products'
 import { buildMetadata } from '@/lib/seo'
 import ProductPageClient from '@/components/pages/ProductPageClient'
 
+export const dynamic = 'force-dynamic'
+
 export async function generateStaticParams() {
   const products = await getAllProductSlugs()
   return products.map((p) => ({ slug: p.slug }))

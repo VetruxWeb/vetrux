@@ -5,6 +5,8 @@ import { articles, getArticleBySlug } from '@/content/articles';
 import { getArticleBySlugFromDb, getAllArticleSlugs } from '@/lib/articlesDb';
 import ArticlePageClient from '@/components/pages/ArticlePageClient';
 
+export const dynamic = 'force-dynamic';
+
 export async function generateStaticParams() {
   // Combine static and DB slugs
   const dbSlugs = await getAllArticleSlugs().catch(() => []);
