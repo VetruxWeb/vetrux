@@ -12,14 +12,24 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null
-        const { data: user } = await supabaseAdmin
+        const { data: user, error } = await supabaseAdmin
           .from('User')
           .select('*')
           .eq('email', credentials.email as string)
           .single()
-        if (!user) return null
+        if (error) {
+          console.error('[auth] User query error:', error.message)
+          return null
+        }
+        if (!user) {
+          console.error('[auth] No user found for:', credentials.email)
+          return null
+        }
         const valid = await compare(credentials.password as string, user.passwordHash)
-        if (!valid) return null
+        if (!valid) {
+          console.error('[auth] Invalid password for:', credentials.email)
+          return null
+        }
         return { id: user.id, name: user.name, email: user.email, role: user.role }
       },
     }),
