@@ -14,6 +14,8 @@ import ProcessSteps from '@/components/molecules/ProcessSteps';
 import { useReveal } from '@/hooks/useReveal';
 import type { DocumentRequestDocumentType } from '@/lib/documentRequest';
 import { productPageStrings } from '@/content/pages/product.content';
+import type { ProductPageStrings } from '@/content/pages/product.content';
+import type { ProductWithDetails } from '@/lib/products';
 
 const qualityCards = [
   {
@@ -62,8 +64,11 @@ const productImages = [
   },
 ];
 
-export default function ProductPageClient({ locale = 'en' }: { locale?: Locale }) {
-  const t = productPageStrings[locale];
+export default function ProductPageClient({ locale = 'en', product }: { locale?: Locale; product?: ProductWithDetails }) {
+  // If product data from DB is provided, map it to the same shape as static content
+  const t = product ? mapProductToStrings(product) : productPageStrings[locale];
+  const productSlug = product?.slug || 'cbd-isolate';
+  const productName = product?.translations[0]?.name || 'CBD Isolate';
   const langPrefix = locale === 'en' ? '' : `/${locale}`;
   const heroRef = useRef<HTMLDivElement>(null);
   const metricsRef = useRef<HTMLDivElement>(null);
@@ -387,17 +392,17 @@ export default function ProductPageClient({ locale = 'en' }: { locale?: Locale }
               <div key={card.title} className={`reveal-card ${card.bg} p-8 ${card.bg === 'bg-primary' ? '' : 'border-l-2 border-transparent hover:border-accent transition-colors duration-200'}`}>
                 {card.image && (
                   <div className="relative w-full h-40 mb-6">
-                    <Image src={card.image} alt={t.cards[idx].title} fill sizes="(max-width:768px) 100vw, 33vw" className="object-cover" />
+                    <Image src={card.image} alt={t.cards[idx]?.title || card.title} fill sizes="(max-width:768px) 100vw, 33vw" className="object-cover" />
                   </div>
                 )}
                 <div className={`w-10 h-10 flex items-center justify-center mb-4 ${card.bg === 'bg-primary' ? 'bg-white/10' : 'bg-primary-fixed'}`}>
                   <card.icon size={20} className={card.bg === 'bg-primary' ? 'text-white' : 'text-primary'} />
                 </div>
                 <p className={`font-serif text-lg leading-snug mb-3 ${card.bg === 'bg-primary' ? 'text-white' : 'text-on-surface'}`}>
-                  {t.cards[idx].title}
+                  {t.cards[idx]?.title || card.title}
                 </p>
                 <p className={`text-[13px] leading-relaxed ${card.bg === 'bg-primary' ? 'text-white/70' : 'text-on-surface-variant'}`}>
-                  {t.cards[idx].desc}
+                  {t.cards[idx]?.desc || card.desc}
                 </p>
               </div>
             ))}
@@ -425,11 +430,58 @@ export default function ProductPageClient({ locale = 'en' }: { locale?: Locale }
         isOpen={isDocumentModalOpen}
         onClose={() => setIsDocumentModalOpen(false)}
         defaultDocumentType={documentModalType}
-        sourcePage="/products/cbd-isolate"
-        productInterest="CBD Isolate"
+        sourcePage={`/products/${productSlug}`}
+        productInterest={productName}
         locale={locale}
       />
 
     </div>
   );
+}
+
+function mapProductToStrings(product: ProductWithDetails): ProductPageStrings {
+  const t = product.translations[0]!
+  return {
+    badge: t.badge || '',
+    heroTitle1: t.heroTitle1 || '',
+    heroTitle2: t.heroTitle2 || '',
+    heroBody: t.heroBody || '',
+    requestSpecSheet: t.requestSpecSheet || 'Request Spec Sheet',
+    requestCoa: t.requestCoa || 'Request COA',
+    techSection: t.techSection || '',
+    techTitle: t.techTitle || '',
+    techBody: t.techBody || '',
+    buyerSection: t.buyerSection || '',
+    buyerTitle: t.buyerTitle || '',
+    processSection: t.processSection || '',
+    processTitle: t.processTitle || '',
+    specSection: t.specSection || '',
+    specTitle: t.specTitle || '',
+    complianceSection: t.complianceSection || '',
+    complianceTitle: t.complianceTitle || '',
+    exportNotice: t.exportNotice || '',
+    exportBody: t.exportBody || '',
+    buyerResponsibility: t.buyerResponsibility || '',
+    qualitySection: t.qualitySection || '',
+    qualityTitle: t.qualityTitle || '',
+    qualityAssuranceLink: t.qualityAssuranceLink || 'Quality Assurance →',
+    qualityAssuranceSub: t.qualityAssuranceSub || '',
+    wholesaleLink: t.wholesaleLink || 'Wholesale Inquiry →',
+    wholesaleSub: t.wholesaleSub || '',
+    contactSalesLink: t.contactSalesLink || 'Contact Sales →',
+    metrics: product.metrics.map((m) => ({ label: m.label, value: m.value, status: m.status || '' })),
+    steps: product.steps.map((s) => ({ title: s.title, desc: s.desc })),
+    qa: product.faqs.map((f) => ({ question: f.question, answer: f.answer })),
+    specs: product.specs.map((s) => ({ label: s.label, value: s.value })),
+    packaging: product.packaging.map((p) => ({ label: p.label, value: p.value })),
+    documents: product.documents.map((d) => ({ title: d.title, desc: d.desc, image: d.image, alt: d.alt })),
+    compliance: product.compliance.map((c) => ({ standard: c.standard, detail: c.detail })),
+    cards: product.compliance.length > 0
+      ? [
+          { title: 'Quality Management', desc: 'In-house HPLC analytical capability.' },
+          { title: 'Documentation Support', desc: 'COA, SDS, test reports available.' },
+          { title: 'Export-Ready Packaging', desc: 'Food-grade packaging for secure transit.' },
+        ]
+      : [],
+  }
 }
