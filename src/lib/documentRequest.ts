@@ -257,16 +257,18 @@ function buildMail(
 ): MailRequest {
   const submittedAt = new Date().toISOString();
   const documentLabel = getDocumentLabel(payload.documentType);
-  const downloadLinks = getDownloadLinks(payload.documentType);
-  const subject = `[Document Download] ${documentLabel} requested - ${payload.email}`;
+  const subject = `[Document Request] ${documentLabel} requested - ${payload.email}`;
   const fallback = 'Not provided';
+
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vetrux.tech';
+  const adminUrl = `${siteUrl}/admin/document-requests`;
+
   const text = [
-    'A visitor requested quality document download access.',
+    'A visitor requested quality documents.',
     '',
     `Reference ID: ${referenceId}`,
     `Submitted At: ${submittedAt}`,
     `Document Requested: ${documentLabel}`,
-    `Download Access Shown: ${downloadLinks.map((link) => link.title).join(', ')}`,
     '',
     `Name: ${payload.name}`,
     `Email: ${payload.email}`,
@@ -274,21 +276,31 @@ function buildMail(
     '',
     `Source Page: ${payload.sourcePage || fallback}`,
     `Source IP: ${ip}`,
+    '',
+    `Manage requests: ${adminUrl}`,
   ].join('\n');
 
   const html = `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #111827;">
-      <h2 style="margin-bottom: 16px;">Quality Document Download Request</h2>
-      <p>A visitor requested quality document download access.</p>
+      <h2 style="margin-bottom: 16px;">Quality Document Request</h2>
+      <p>A visitor requested quality documents. Documents will be sent after your approval.</p>
       <p><strong>Reference ID:</strong> ${escapeHtml(referenceId)}</p>
       <p><strong>Document Requested:</strong> ${escapeHtml(documentLabel)}</p>
-      <p><strong>Download Access Shown:</strong> ${escapeHtml(downloadLinks.map((link) => link.title).join(', '))}</p>
       <hr style="border: 0; border-top: 1px solid #e5e7eb; margin: 18px 0;" />
       <p><strong>Name:</strong> ${escapeHtml(payload.name)}</p>
       <p><strong>Email:</strong> ${escapeHtml(payload.email)}</p>
       <p><strong>Product Interest:</strong> ${escapeHtml(payload.productInterest || fallback)}</p>
       <p><strong>Source Page:</strong> ${escapeHtml(payload.sourcePage || fallback)}</p>
       <p><strong>Source IP:</strong> ${escapeHtml(ip)}</p>
+      <hr style="border: 0; border-top: 1px solid #e5e7eb; margin: 18px 0;" />
+      <p>
+        <a href="${adminUrl}" style="display: inline-block; padding: 12px 24px; background-color: #111827; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: 600;">
+          Send Documents to Customer
+        </a>
+      </p>
+      <p style="font-size: 12px; color: #6b7280; margin-top: 12px;">
+        Or manage all document requests in the admin panel.
+      </p>
     </div>
   `;
 
@@ -427,9 +439,8 @@ export async function handleDocumentRequestSubmission(
     status: 200,
     body: {
       ok: true,
-      message: 'Document access is ready.',
+      message: 'Your request has been received. We will send the documents to your email shortly.',
       referenceId,
-      downloadLinks: getDownloadLinks(validated.value.documentType),
     },
   };
 }

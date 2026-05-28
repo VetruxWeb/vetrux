@@ -5,6 +5,7 @@ import {
   handleInquirySubmission,
 } from '@/lib/inquiry';
 import type { HumanVerificationResult, InquiryPayload } from '@/lib/inquiry';
+import { supabaseAdmin } from '@/lib/supabase';
 
 export const runtime = 'nodejs';
 
@@ -222,6 +223,19 @@ export async function POST(req: NextRequest) {
     });
 
     if (response.status === 200) {
+      // Store inquiry in database
+      await supabaseAdmin.from('Inquiry').insert({
+        type: 'general',
+        name: payload.contactPerson ?? '',
+        email: payload.email ?? '',
+        company: payload.companyName ?? null,
+        message: payload.requirements ?? null,
+        productInterest: payload.monthlyVolume ?? null,
+        ip: getClientIp(req),
+      }).then(({ error }) => {
+        if (error) console.error('[inquiry.db.error]', error.message);
+      });
+
       console.info('[inquiry.accepted]', {
         provider, host: mailProviderConfig.host, authUser: process.env.SMTP_USER ?? '',
         mailFrom: effectiveMailFrom, mailTo: effectiveMailTo,

@@ -1,10 +1,9 @@
-import type { DocumentDownloadLink, DocumentRequestPayload } from './documentRequest';
+import type { DocumentRequestPayload } from './documentRequest';
 
 export interface DocumentRequestApiResponse {
   ok: boolean;
   message: string;
   referenceId?: string;
-  downloadLinks?: DocumentDownloadLink[];
   error?: {
     code: string;
     message: string;

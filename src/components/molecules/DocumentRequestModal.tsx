@@ -2,11 +2,10 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
-import { ArrowRight, CheckCircle2, Download, FileText, ShieldCheck, X } from 'lucide-react';
+import { ArrowRight, CheckCircle2, FileText, ShieldCheck, X } from 'lucide-react';
 import Button from '@/components/atoms/Button';
 import { submitDocumentRequest } from '@/lib/documentRequestClient';
 import type {
-  DocumentDownloadLink,
   DocumentRequestDocumentType,
   DocumentRequestPayload,
 } from '@/lib/documentRequest';
@@ -71,9 +70,9 @@ const modalStrings: Record<Locale, ModalStrings> = {
     eyebrow: 'Quality documents',
     getLabel: 'Get',
     coaAndSds: 'COA and SDS',
-    introText: 'Leave your name and email. The requested document access will appear after submission.',
-    successTitle: 'Document access is ready',
-    successBody: 'Your request was sent to the Vetrux team. Use the links below for the reference documents.',
+    introText: 'Leave your name and email. We will send the requested documents to your email address.',
+    successTitle: 'Request received',
+    successBody: 'Thank you! We will review your request and send the documents to your email shortly.',
     refLabel: 'Ref',
     closeBtn: 'Close',
     nameLabel: 'Name',
@@ -97,9 +96,9 @@ const modalStrings: Record<Locale, ModalStrings> = {
     eyebrow: 'Qualitätsdokumente',
     getLabel: 'Anfordern',
     coaAndSds: 'COA und SDS',
-    introText: 'Geben Sie Ihren Namen und Ihre E-Mail-Adresse an. Der Dokumentenzugang wird nach dem Absenden angezeigt.',
-    successTitle: 'Dokumentenzugang bereit',
-    successBody: 'Ihre Anfrage wurde an das Vetrux-Team übermittelt. Verwenden Sie die nachstehenden Links für die Referenzdokumente.',
+    introText: 'Geben Sie Ihren Namen und Ihre E-Mail-Adresse an. Wir senden Ihnen die angeforderten Dokumente per E-Mail zu.',
+    successTitle: 'Anfrage erhalten',
+    successBody: 'Vielen Dank! Wir werden Ihre Anfrage prüfen und Ihnen die Dokumente in Kürze per E-Mail zusenden.',
     refLabel: 'Ref',
     closeBtn: 'Schließen',
     nameLabel: 'Name',
@@ -123,9 +122,9 @@ const modalStrings: Record<Locale, ModalStrings> = {
     eyebrow: 'Documents qualité',
     getLabel: 'Obtenir',
     coaAndSds: 'COA et SDS',
-    introText: "Indiquez votre nom et votre adresse e-mail. L'accès au document demandé apparaîtra après soumission.",
-    successTitle: 'Accès aux documents prêt',
-    successBody: "Votre demande a été transmise à l'équipe Vetrux. Utilisez les liens ci-dessous pour accéder aux documents de référence.",
+    introText: "Indiquez votre nom et votre adresse e-mail. Nous vous enverrons les documents demandés par e-mail.",
+    successTitle: 'Demande reçue',
+    successBody: "Merci ! Nous examinerons votre demande et vous enverrons les documents par e-mail dans les plus brefs délais.",
     refLabel: 'Réf',
     closeBtn: 'Fermer',
     nameLabel: 'Nom',
@@ -149,9 +148,9 @@ const modalStrings: Record<Locale, ModalStrings> = {
     eyebrow: 'Documentos de calidad',
     getLabel: 'Obtener',
     coaAndSds: 'COA y SDS',
-    introText: 'Indique su nombre y correo electrónico. El acceso al documento solicitado aparecerá tras el envío.',
-    successTitle: 'Acceso a documentos listo',
-    successBody: 'Su solicitud fue enviada al equipo de Vetrux. Utilice los enlaces a continuación para acceder a los documentos de referencia.',
+    introText: 'Indique su nombre y correo electrónico. Le enviaremos los documentos solicitados a su correo electrónico.',
+    successTitle: 'Solicitud recibida',
+    successBody: '¡Gracias! Revisaremos su solicitud y le enviaremos los documentos a su correo electrónico en breve.',
     refLabel: 'Ref',
     closeBtn: 'Cerrar',
     nameLabel: 'Nombre',
@@ -175,9 +174,9 @@ const modalStrings: Record<Locale, ModalStrings> = {
     eyebrow: 'Documenti di qualità',
     getLabel: 'Richiedi',
     coaAndSds: 'COA e SDS',
-    introText: "Inserisca il suo nome e indirizzo e-mail. L'accesso al documento richiesto sarà disponibile dopo l'invio.",
-    successTitle: 'Accesso ai documenti pronto',
-    successBody: 'La sua richiesta è stata inviata al team Vetrux. Utilizzi i link sottostanti per accedere ai documenti di riferimento.',
+    introText: "Inserisca il suo nome e indirizzo e-mail. Le invieremo i documenti richiesti via e-mail.",
+    successTitle: 'Richiesta ricevuta',
+    successBody: 'Grazie! Esamineremo la sua richiesta e le invieremo i documenti via e-mail a breve.',
     refLabel: 'Rif',
     closeBtn: 'Chiudi',
     nameLabel: 'Nome',
@@ -201,9 +200,9 @@ const modalStrings: Record<Locale, ModalStrings> = {
     eyebrow: 'Documentos de qualidade',
     getLabel: 'Obter',
     coaAndSds: 'COA e SDS',
-    introText: 'Indique o seu nome e endereço de e-mail. O acesso ao documento solicitado será apresentado após o envio.',
-    successTitle: 'Acesso aos documentos pronto',
-    successBody: 'O seu pedido foi enviado para a equipa Vetrux. Utilize os links abaixo para aceder aos documentos de referência.',
+    introText: 'Indique o seu nome e endereço de e-mail. Enviaremos os documentos solicitados para o seu e-mail.',
+    successTitle: 'Pedido recebido',
+    successBody: 'Obrigado! Analisaremos o seu pedido e enviaremos os documentos para o seu e-mail em breve.',
     refLabel: 'Ref',
     closeBtn: 'Fechar',
     nameLabel: 'Nome',
@@ -227,9 +226,9 @@ const modalStrings: Record<Locale, ModalStrings> = {
     eyebrow: '品質書類',
     getLabel: '取得する',
     coaAndSds: 'COA および SDS',
-    introText: 'お名前とメールアドレスをご入力ください。送信後、ご要望の書類へのアクセスが表示されます。',
-    successTitle: '書類へのアクセスが準備できました',
-    successBody: 'ご依頼はVetruxチームに送信されました。以下のリンクから参照書類をご利用ください。',
+    introText: 'お名前とメールアドレスをご入力ください。ご要望の書類をメールにてお送りいたします。',
+    successTitle: 'リクエストを受け付けました',
+    successBody: 'ありがとうございます。ご依頼を確認の上、書類をメールにてお送りいたします。',
     refLabel: '参照番号',
     closeBtn: '閉じる',
     nameLabel: 'お名前',
@@ -253,9 +252,9 @@ const modalStrings: Record<Locale, ModalStrings> = {
     eyebrow: 'Laatuasiakirjat',
     getLabel: 'Pyydä',
     coaAndSds: 'COA ja SDS',
-    introText: 'Syötä nimesi ja sähköpostiosoitteesi. Pyydettyjen asiakirjojen käyttöoikeus näkyy lähetyksen jälkeen.',
-    successTitle: 'Asiakirjojen käyttöoikeus on valmis',
-    successBody: 'Pyyntönne on lähetetty Vetrux-tiimille. Käyttäkää alla olevia linkkejä viiteasiakirjoihin.',
+    introText: 'Syötä nimesi ja sähköpostiosoitteesi. Lähetämme pyydetyt asiakirjat sähköpostiisi.',
+    successTitle: 'Pyyntö vastaanotettu',
+    successBody: 'Kiitos! Tarkistamme pyyntönne ja lähetämme asiakirjat sähköpostiinne pian.',
     refLabel: 'Viite',
     closeBtn: 'Sulje',
     nameLabel: 'Nimi',
@@ -319,9 +318,8 @@ export default function DocumentRequestModal({
   const [fieldError, setFieldError] = useState('');
   const [isTurnstileReady, setIsTurnstileReady] = useState(false);
   const [referenceId, setReferenceId] = useState('');
-  const [downloadLinks, setDownloadLinks] = useState<DocumentDownloadLink[]>([]);
 
-  const hasAccess = downloadLinks.length > 0;
+  const hasAccess = referenceId !== '';
   const documentLabel = useMemo(
     () => documentTypeLabels[form.documentType] ?? documentTypeLabels.both,
     [form.documentType],
@@ -347,7 +345,6 @@ export default function DocumentRequestModal({
     setErrorMessage('');
     setFieldError('');
     setReferenceId('');
-    setDownloadLinks([]);
     setIsTurnstileReady(false);
     turnstileWidgetIdRef.current = null;
   }, [defaultDocumentType, isOpen, productInterest, sourcePage]);
@@ -462,8 +459,7 @@ export default function DocumentRequestModal({
     setIsSubmitting(true);
     try {
       const response = await submitDocumentRequest(form);
-      setReferenceId(response.referenceId ?? '');
-      setDownloadLinks(response.downloadLinks ?? []);
+      setReferenceId(response.referenceId ?? 'submitted');
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : t.genericError);
       resetTurnstile();
@@ -543,26 +539,11 @@ export default function DocumentRequestModal({
                 </div>
               ) : null}
 
-              <div className="space-y-3 mb-6">
-                {downloadLinks.map((link) => (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-between gap-4 rounded-md border border-outline-variant/40 bg-surface-container-lowest p-4 hover:border-accent hover:bg-surface-container transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
-                  >
-                    <span className="text-sm font-semibold text-on-surface">{link.title}</span>
-                    <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-accent text-white">
-                      <Download size={15} />
-                    </span>
-                  </a>
-                ))}
+              <div className="mt-6">
+                <Button type="button" variant="outline" size="md" onClick={onClose}>
+                  {t.closeBtn}
+                </Button>
               </div>
-
-              <Button type="button" variant="outline" size="md" onClick={onClose}>
-                {t.closeBtn}
-              </Button>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5" noValidate>
