@@ -1,0 +1,257 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DIRECT_DATABASE_URL")
+}
+
+// ─── AUTH ────────────────────────────────────────────────────────────────────
+
+model User {
+  id           String   @id @default(cuid())
+  name         String?
+  email        String   @unique
+  passwordHash String
+  role         String   @default("admin")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// ─── PRODUCTS ────────────────────────────────────────────────────────────────
+
+model Product {
+  id           String               @id @default(cuid())
+  slug         String               @unique
+  status       String               @default("published")
+  heroImage    String?
+  images       Json?
+  order        Int                  @default(0)
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+  translations ProductTranslation[]
+  specs        ProductSpec[]
+  faqs         ProductFaq[]
+  steps        ProductStep[]
+  metrics      ProductMetric[]
+  packaging    ProductPackaging[]
+  compliance   ProductCompliance[]
+  documents    ProductDocument[]
+}
+
+model ProductTranslation {
+  id                String  @id @default(cuid())
+  productId         String
+  locale            String
+  name              String
+  badge             String?
+  heroTitle1        String?
+  heroTitle2        String?
+  heroBody          String? @db.Text
+  techSection       String?
+  techTitle         String?
+  techBody          String? @db.Text
+  buyerSection      String?
+  buyerTitle        String?
+  processSection    String?
+  processTitle      String?
+  specSection       String?
+  specTitle         String?
+  complianceSection String?
+  complianceTitle   String?
+  exportNotice      String?
+  exportBody        String? @db.Text
+  buyerResponsibility String?
+  qualitySection    String?
+  qualityTitle      String?
+  qualityAssuranceLink String?
+  qualityAssuranceSub  String?
+  wholesaleLink     String?
+  wholesaleSub      String?
+  contactSalesLink  String?
+  requestSpecSheet  String?
+  requestCoa        String?
+  seoTitle          String?
+  seoDescription    String? @db.Text
+  seoKeywords       String?
+  product           Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, locale])
+  @@index([locale])
+}
+
+model ProductSpec {
+  id        String  @id @default(cuid())
+  productId String
+  locale    String
+  label     String
+  value     String
+  order     Int     @default(0)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId, locale])
+}
+
+model ProductFaq {
+  id        String  @id @default(cuid())
+  productId String
+  locale    String
+  question  String  @db.Text
+  answer    String  @db.Text
+  order     Int     @default(0)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId, locale])
+}
+
+model ProductStep {
+  id        String  @id @default(cuid())
+  productId String
+  locale    String
+  title     String
+  desc      String  @db.Text
+  order     Int     @default(0)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId, locale])
+}
+
+model ProductMetric {
+  id        String  @id @default(cuid())
+  productId String
+  locale    String
+  label     String
+  value     String
+  status    String?
+  order     Int     @default(0)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId, locale])
+}
+
+model ProductPackaging {
+  id        String  @id @default(cuid())
+  productId String
+  locale    String
+  label     String
+  value     String
+  order     Int     @default(0)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId, locale])
+}
+
+model ProductCompliance {
+  id        String  @id @default(cuid())
+  productId String
+  locale    String
+  standard  String
+  detail    String
+  order     Int     @default(0)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId, locale])
+}
+
+model ProductDocument {
+  id        String  @id @default(cuid())
+  productId String
+  locale    String
+  title     String
+  desc      String  @db.Text
+  image     String
+  alt       String
+  order     Int     @default(0)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId, locale])
+}
+
+// ─── ARTICLES ────────────────────────────────────────────────────────────────
+
+model Article {
+  id           String               @id @default(cuid())
+  slug         String               @unique
+  status       String               @default("draft")
+  category     String?
+  image        String?
+  size         String?
+  publishedAt  DateTime?
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+  translations ArticleTranslation[]
+}
+
+model ArticleTranslation {
+  id             String  @id @default(cuid())
+  articleId      String
+  locale         String
+  title          String
+  excerpt        String? @db.Text
+  content        String  @db.Text
+  readTime       String?
+  seoTitle       String?
+  seoDescription String? @db.Text
+  article        Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@unique([articleId, locale])
+  @@index([locale])
+}
+
+// ─── INQUIRIES ───────────────────────────────────────────────────────────────
+
+model Inquiry {
+  id              String   @id @default(cuid())
+  type            String
+  name            String
+  email           String
+  company         String?
+  phone           String?
+  message         String?  @db.Text
+  productInterest String?
+  sourcePage      String?
+  documentType    String?
+  ip              String?
+  status          String   @default("new")
+  createdAt       DateTime @default(now())
+}
+
+// ─── DOCUMENT REQUESTS ──────────────────────────────────────────────────────
+
+model DocumentRequest {
+  id              String    @id @default(cuid())
+  name            String
+  email           String
+  documentType    String    @default("both")
+  productInterest String?
+  sourcePage      String?
+  ip              String?
+  status          String    @default("pending")
+  createdAt       DateTime  @default(now())
+  sentAt          DateTime?
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+// ─── MEDIA ───────────────────────────────────────────────────────────────────
+
+model Media {
+  id        String   @id @default(cuid())
+  filename  String
+  url       String
+  mimeType  String?
+  size      Int?
+  alt       String?
+  folder    String?
+  createdAt DateTime @default(now())
+}
+
+// ─── SITE SETTINGS ───────────────────────────────────────────────────────────
+
+model SiteSetting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String @db.Text
+}

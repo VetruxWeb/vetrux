@@ -2,9 +2,7 @@ import type { Metadata } from 'next'
 import { Manrope, Newsreader } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
-import Navbar from '@/components/organisms/Navbar'
-import Footer from '@/components/organisms/Footer'
-import Breadcrumb from '@/components/molecules/Breadcrumb'
+import PublicShell from '@/components/organisms/PublicShell'
 
 const manrope = Manrope({
   subsets: ['latin'],
@@ -105,12 +103,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
         <a href="#main" className="skip-link">Skip to main content</a>
-        <Navbar />
-        <main id="main" className="flex-1 pt-16">
-          <Breadcrumb />
-          {children}
-        </main>
-        <Footer />
+        <PublicShell>{children}</PublicShell>
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-WSY6VLTBFL"
           strategy="afterInteractive"
