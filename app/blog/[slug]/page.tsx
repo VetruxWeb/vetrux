@@ -1,16 +1,18 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { buildMetadata, getSeoMetadata } from '@/lib/seo';
-import { articles, getArticleBySlug } from '@/content/articles';
 import { getArticleBySlugFromDb, getAllArticleSlugs } from '@/lib/articlesDb';
 import ArticlePageClient from '@/components/pages/ArticlePageClient';
 
 export const dynamic = 'force-dynamic';
 
 export async function generateStaticParams() {
-  // Combine static and DB slugs
   const dbSlugs = await getAllArticleSlugs().catch(() => []);
-  const staticSlugs = articles.map((a) => ({ slug: a.slug }));
+  let staticSlugs: { slug: string }[] = [];
+  try {
+    const { articles } = await import('@/content/articles');
+    staticSlugs = articles.map((a) => ({ slug: a.slug }));
+  } catch { /* ignore */ }
   const dbSlugSet = new Set(dbSlugs.map((s) => s.slug));
   const combined = [...dbSlugs.map((s) => ({ slug: s.slug }))];
   for (const s of staticSlugs) {
@@ -69,7 +71,11 @@ export default async function ArticlePage({
   }
 
   // Fall back to static files
-  const article = getArticleBySlug(slug);
+  let article = null;
+  try {
+    const { getArticleBySlug } = await import('@/content/articles');
+    article = getArticleBySlug(slug);
+  } catch { /* ignore */ }
   if (!article) notFound();
 
   const seo = getSeoMetadata(`/blog/${slug}`);

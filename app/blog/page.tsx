@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { buildMetadata, getSeoMetadata } from '@/lib/seo';
-import { articles as staticArticles } from '@/content/articles';
 import { getAllArticlesFromDb } from '@/lib/articlesDb';
+import type { Article } from '@/content/articles';
 import InsightsPageClient from '@/components/pages/InsightsPageClient';
 
 export const dynamic = 'force-dynamic';
@@ -15,8 +15,15 @@ export default async function BlogPage() {
   const jsonLd = seo.jsonLd;
 
   // Try database first, fall back to static files
-  const dbArticles = await getAllArticlesFromDb('en').catch(() => []);
-  const articles = dbArticles.length > 0 ? dbArticles : staticArticles;
+  let articles: Article[] = await getAllArticlesFromDb('en').catch(() => []);
+  if (articles.length === 0) {
+    try {
+      const { articles: staticArticles } = await import('@/content/articles');
+      articles = staticArticles;
+    } catch {
+      articles = [];
+    }
+  }
 
   return (
     <>

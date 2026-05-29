@@ -25,7 +25,7 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const product = await getProductBySlug(slug, 'fr')
+  const product = await getProductBySlug(slug, 'fr').catch(() => null)
   if (!product) notFound()
 
   return <ProductPageClient product={product} locale="fr" />
