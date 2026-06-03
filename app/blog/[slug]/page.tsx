@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { buildMetadata, getSeoMetadata } from '@/lib/seo';
+import { buildMetadata, getSeoMetadata, buildFaqJsonLd } from '@/lib/seo';
 import { getArticleBySlugFromDb, getAllArticleSlugs } from '@/lib/articlesDb';
+import { parseArticle } from '@/lib/articleParser';
 import ArticlePageClient from '@/components/pages/ArticlePageClient';
 
 export const dynamic = 'force-dynamic';
@@ -30,6 +31,22 @@ export async function generateMetadata({
   return buildMetadata(`/blog/${slug}`);
 }
 
+function buildJsonLdArray(articleContent: string, baseJsonLd: unknown) {
+  const { faqItems } = parseArticle(articleContent);
+  const schemas: Record<string, unknown>[] = [];
+
+  if (baseJsonLd) {
+    if (Array.isArray(baseJsonLd)) schemas.push(...baseJsonLd);
+    else schemas.push(baseJsonLd as Record<string, unknown>);
+  }
+
+  if (faqItems.length > 0) {
+    schemas.push(buildFaqJsonLd(faqItems));
+  }
+
+  return schemas;
+}
+
 export default async function ArticlePage({
   params,
 }: {
@@ -53,19 +70,17 @@ export default async function ArticlePage({
     };
 
     const seo = getSeoMetadata(`/blog/${slug}`);
-    const jsonLd = seo.jsonLd;
+    const schemas = buildJsonLdArray(dbArticle.translation.content, seo.jsonLd);
 
     return (
       <>
-        {jsonLd && (
+        {schemas.length > 0 && (
           <script
             type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify(Array.isArray(jsonLd) ? jsonLd : [jsonLd]),
-            }}
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
           />
         )}
-        <ArticlePageClient meta={meta} content={dbArticle.translation.content} />
+        <ArticlePageClient meta={meta} content={dbArticle.translation.content} locale="en" />
       </>
     );
   }
@@ -79,19 +94,17 @@ export default async function ArticlePage({
   if (!article) notFound();
 
   const seo = getSeoMetadata(`/blog/${slug}`);
-  const jsonLd = seo.jsonLd;
+  const schemas = buildJsonLdArray(article.content, seo.jsonLd);
 
   return (
     <>
-      {jsonLd && (
+      {schemas.length > 0 && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(Array.isArray(jsonLd) ? jsonLd : [jsonLd]),
-          }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
         />
       )}
-      <ArticlePageClient meta={article.meta} content={article.content} />
+      <ArticlePageClient meta={article.meta} content={article.content} locale="en" />
     </>
   );
 }

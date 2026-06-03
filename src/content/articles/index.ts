@@ -71,6 +71,11 @@ const fileOrder: Array<{ filename: string; size?: 'normal' | 'large' }> = [
   { filename: 'co2-vs-ethanol-extraction-comparison.md',          size: 'normal' },
   { filename: 'esg-decarbonizing-cannabis-supply-chain.md',       size: 'normal' },
   { filename: 'global-cbd-extraction-standards-2024.md',          size: 'normal' },
+  { filename: 'cbd-extraction-methods-compared-co2-ethanol-hydrocarbon.md', size: 'large' },
+  { filename: 'cbd-isolate-bulk-purchasing-guide-2026.md', size: 'large' },
+  { filename: 'how-to-read-cbd-certificate-of-analysis-guide.md', size: 'large' },
+  { filename: 'cbd-isolate-applications-formulation-guide.md', size: 'large' },
+  { filename: 'cbd-import-regulations-europe-novel-food-2026.md', size: 'large' },
 ]
 
 // ── Frontmatter parser ────────────────────────────────────────────────────────
