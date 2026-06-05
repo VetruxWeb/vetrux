@@ -57,7 +57,7 @@ async function seedProducts() {
     id: genId(),
     slug: 'cbd-isolate',
     status: 'published',
-    heroImage: '/images/vetrux_images/cbd-isolate-crystals-white-powder.jpg',
+    heroImage: '/images/vetrux_images/isolate-crystals.png',
     images: [
       '/images/vetrux_images/cbd-isolate-crystals-white-powder.jpg',
       '/images/vetrux_images/bulk-cbd-isolate-crystal-powder-closeup.jpg',
@@ -171,6 +171,7 @@ async function seedProducts() {
     id: genId(),
     slug: 'cbd-oil',
     status: 'published',
+    heroImage: '/images/vetrux_images/cbd-oil-60.png',
     order: 1,
     updatedAt: new Date().toISOString(),
   }).select().single()
