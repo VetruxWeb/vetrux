@@ -1,33 +1,30 @@
-import type { Metadata } from 'next'
-import { notFound } from 'next/navigation'
-import { getProductBySlug, getAllProductSlugs } from '@/lib/products'
-import { buildMetadata } from '@/lib/seo'
-import ProductPageClient from '@/components/pages/ProductPageClient'
+import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
+import { getProductBySlug, getPublishedSlugs } from '@/lib/productData';
+import ProductDetailClient from '@/components/pages/ProductDetailClient';
 
-export const dynamic = 'force-dynamic'
+interface Props {
+  params: Promise<{ slug: string }>;
+}
 
 export async function generateStaticParams() {
-  const products = await getAllProductSlugs()
-  return products.map((p) => ({ slug: p.slug }))
+  const slugs = await getPublishedSlugs();
+  return slugs.map((s) => ({ slug: s.slug }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}): Promise<Metadata> {
-  const { slug } = await params
-  return buildMetadata(`/products/${slug}`)
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await getProductBySlug(slug, 'en');
+  if (!product) return {};
+  return {
+    title: `${product.name} | VETRUX`,
+    description: product.description?.slice(0, 160) ?? `${product.name} from Vetrux Biotechnology`,
+  };
 }
 
-export default async function ProductPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}) {
-  const { slug } = await params
-  const product = await getProductBySlug(slug, 'en').catch(() => null)
-  if (!product) notFound()
-
-  return <ProductPageClient product={product} locale="en" />
+export default async function ProductDetailPage({ params }: Props) {
+  const { slug } = await params;
+  const product = await getProductBySlug(slug, 'en');
+  if (!product) notFound();
+  return <ProductDetailClient product={product} locale="en" />;
 }
