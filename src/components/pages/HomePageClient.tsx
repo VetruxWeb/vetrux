@@ -2,7 +2,7 @@
 
 import type { Locale } from '@/i18n/locales';
 import { homePageStrings } from '@/content/pages/home.content';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import {
   ArrowRight,
   FlaskConical,
@@ -23,6 +23,13 @@ import TrustBar from '@/components/molecules/TrustBar';
 import KpiRow from '@/components/molecules/KpiRow';
 import { useReveal, useRevealTimeline } from '@/hooks/useReveal';
 
+const HERO_IMAGES = [
+  { src: '/images/hero/facility-hero.webp', alt: 'VETRUX CBD production facility' },
+  { src: '/images/vetrux_images/cbd-ethanol-extraction-tank-6m3.jpg', alt: 'VETRUX CBD extraction facility in Chuxiong, Yunnan' },
+  { src: '/images/planting/vegetative-canopy.jpg', alt: 'Hemp cultivation vegetative canopy' },
+  { src: '/images/equipment/hplc-system.jpg', alt: 'HPLC quality control system' },
+];
+
 export default function HomePageClient({ locale = 'en' }: { locale?: Locale }) {
   const t = homePageStrings[locale];
   const langPrefix = locale === 'en' ? '' : `/${locale}`;
@@ -30,6 +37,16 @@ export default function HomePageClient({ locale = 'en' }: { locale?: Locale }) {
   const scopeRef = useRef<HTMLDivElement>(null);
   const contactRef = useRef<HTMLDivElement>(null);
   const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
+  const [heroSlide, setHeroSlide] = useState(0);
+
+  const nextSlide = useCallback(() => {
+    setHeroSlide((prev) => (prev + 1) % HERO_IMAGES.length);
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(nextSlide, 5000);
+    return () => clearInterval(timer);
+  }, [nextSlide]);
 
   // Hero choreographed timeline (respects reduced-motion)
   useRevealTimeline(heroRef, ({ reduced, gsap }) => {
@@ -65,14 +82,19 @@ export default function HomePageClient({ locale = 'en' }: { locale?: Locale }) {
         ref={heroRef}
         className="relative min-h-[90vh] flex items-center overflow-hidden bg-surface-ink"
       >
-        <Image
-          src="/images/vetrux_images/cbd-ethanol-extraction-tank-6m3.jpg"
-          alt="VETRUX CBD extraction facility in Chuxiong, Yunnan"
-          fill
-          priority
-          sizes="100vw"
-          className="absolute inset-0 w-full h-full object-cover opacity-60"
-        />
+        {HERO_IMAGES.map((img, i) => (
+          <Image
+            key={img.src}
+            src={img.src}
+            alt={img.alt}
+            fill
+            priority={i === 0}
+            sizes="100vw"
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+              i === heroSlide ? 'opacity-60' : 'opacity-0'
+            }`}
+          />
+        ))}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-surface-ink/30 to-surface-ink/80" />
 
         <div className="relative z-10 max-w-container mx-auto px-6 lg:px-12 w-full">
@@ -122,6 +144,21 @@ export default function HomePageClient({ locale = 'en' }: { locale?: Locale }) {
               variant="hero"
             />
           </div>
+        </div>
+
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+          {HERO_IMAGES.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setHeroSlide(i)}
+              aria-label={`Slide ${i + 1}`}
+              className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                i === heroSlide
+                  ? 'bg-white scale-110'
+                  : 'bg-white/40 hover:bg-white/70'
+              }`}
+            />
+          ))}
         </div>
       </section>
 
