@@ -30,6 +30,8 @@ export async function GET(
     { data: packaging },
     { data: compliance },
     { data: documents },
+    { data: variants },
+    { data: quantityTiers },
   ] = await Promise.all([
     supabaseAdmin.from('ProductTranslation').select('*').eq('productId', id),
     supabaseAdmin.from('ProductSpec').select('*').eq('productId', id).order('order'),
@@ -39,6 +41,8 @@ export async function GET(
     supabaseAdmin.from('ProductPackaging').select('*').eq('productId', id).order('order'),
     supabaseAdmin.from('ProductCompliance').select('*').eq('productId', id).order('order'),
     supabaseAdmin.from('ProductDocument').select('*').eq('productId', id).order('order'),
+    supabaseAdmin.from('ProductVariant').select('*').eq('productId', id).order('order'),
+    supabaseAdmin.from('ProductQuantityTier').select('*').eq('productId', id).order('order'),
   ])
 
   return NextResponse.json({
@@ -51,6 +55,8 @@ export async function GET(
     packaging: packaging || [],
     compliance: compliance || [],
     documents: documents || [],
+    variants: variants || [],
+    quantityTiers: quantityTiers || [],
   })
 }
 
@@ -72,13 +78,15 @@ export async function PUT(
     )
   }
 
-  const { status, heroImage, images, order, translations } = parsed.data
+  const { status, heroImage, images, order, category, moq, translations, variants, quantityTiers, specs } = parsed.data
 
   const updateData: Record<string, unknown> = { updatedAt: new Date().toISOString() }
   if (status !== undefined) updateData.status = status
   if (heroImage !== undefined) updateData.heroImage = heroImage
   if (images !== undefined) updateData.images = images
   if (order !== undefined) updateData.order = order
+  if (category !== undefined) updateData.category = category
+  if (moq !== undefined) updateData.moq = moq
 
   await supabaseAdmin.from('Product').update(updateData).eq('id', id)
 
@@ -96,6 +104,33 @@ export async function PUT(
       } else {
         await supabaseAdmin.from('ProductTranslation').insert({ ...t, productId: id })
       }
+    }
+  }
+
+  if (variants !== undefined) {
+    await supabaseAdmin.from('ProductVariant').delete().eq('productId', id)
+    if (variants.length > 0) {
+      await supabaseAdmin.from('ProductVariant').insert(
+        variants.map((v) => ({ ...v, productId: id }))
+      )
+    }
+  }
+
+  if (quantityTiers !== undefined) {
+    await supabaseAdmin.from('ProductQuantityTier').delete().eq('productId', id)
+    if (quantityTiers.length > 0) {
+      await supabaseAdmin.from('ProductQuantityTier').insert(
+        quantityTiers.map((t) => ({ ...t, productId: id }))
+      )
+    }
+  }
+
+  if (specs !== undefined) {
+    await supabaseAdmin.from('ProductSpec').delete().eq('productId', id)
+    if (specs.length > 0) {
+      await supabaseAdmin.from('ProductSpec').insert(
+        specs.map((s) => ({ ...s, productId: id }))
+      )
     }
   }
 

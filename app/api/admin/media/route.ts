@@ -28,26 +28,32 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'No file provided' }, { status: 400 })
   }
 
-  const blob = await put(`${folder}/${file.name}`, file, {
-    access: 'public',
-  })
-
-  const { data: media, error } = await supabaseAdmin
-    .from('Media')
-    .insert({
-      filename: file.name,
-      url: blob.url,
-      mimeType: file.type,
-      size: file.size,
-      alt,
-      folder,
+  try {
+    const blob = await put(`${folder}/${file.name}`, file, {
+      access: 'public',
     })
-    .select()
-    .single()
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    const { data: media, error } = await supabaseAdmin
+      .from('Media')
+      .insert({
+        filename: file.name,
+        url: blob.url,
+        mimeType: file.type,
+        size: file.size,
+        alt,
+        folder,
+      })
+      .select()
+      .single()
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
+
+    return NextResponse.json(media, { status: 201 })
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unknown upload error'
+    console.error('[media upload]', message)
+    return NextResponse.json({ error: message }, { status: 500 })
   }
-
-  return NextResponse.json(media, { status: 201 })
 }

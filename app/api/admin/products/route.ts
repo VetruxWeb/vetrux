@@ -42,7 +42,7 @@ export async function POST(request: Request) {
     )
   }
 
-  const { slug, status, heroImage, images, order, translations } = parsed.data
+  const { slug, status, heroImage, images, order, category, moq, translations, variants, quantityTiers, specs } = parsed.data
 
   const { data: existing } = await supabaseAdmin
     .from('Product')
@@ -62,6 +62,8 @@ export async function POST(request: Request) {
       heroImage,
       images: images || [],
       order,
+      category,
+      moq,
       updatedAt: new Date().toISOString(),
     })
     .select()
@@ -74,6 +76,24 @@ export async function POST(request: Request) {
   if (translations && translations.length > 0) {
     await supabaseAdmin.from('ProductTranslation').insert(
       translations.map((t) => ({ ...t, productId: product.id }))
+    )
+  }
+
+  if (variants && variants.length > 0) {
+    await supabaseAdmin.from('ProductVariant').insert(
+      variants.map((v) => ({ ...v, productId: product.id }))
+    )
+  }
+
+  if (quantityTiers && quantityTiers.length > 0) {
+    await supabaseAdmin.from('ProductQuantityTier').insert(
+      quantityTiers.map((t) => ({ ...t, productId: product.id }))
+    )
+  }
+
+  if (specs && specs.length > 0) {
+    await supabaseAdmin.from('ProductSpec').insert(
+      specs.map((s) => ({ ...s, productId: product.id }))
     )
   }
 

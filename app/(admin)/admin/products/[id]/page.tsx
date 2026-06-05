@@ -25,6 +25,8 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
     { data: packaging },
     { data: compliance },
     { data: documents },
+    { data: variants },
+    { data: quantityTiers },
   ] = await Promise.all([
     supabaseAdmin.from('ProductTranslation').select('*').eq('productId', id),
     supabaseAdmin.from('ProductSpec').select('*').eq('productId', id).order('order'),
@@ -34,6 +36,8 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
     supabaseAdmin.from('ProductPackaging').select('*').eq('productId', id).order('order'),
     supabaseAdmin.from('ProductCompliance').select('*').eq('productId', id).order('order'),
     supabaseAdmin.from('ProductDocument').select('*').eq('productId', id).order('order'),
+    supabaseAdmin.from('ProductVariant').select('*').eq('productId', id).order('order'),
+    supabaseAdmin.from('ProductQuantityTier').select('*').eq('productId', id).order('order'),
   ])
 
   const fullProduct = {
@@ -46,6 +50,8 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
     packaging: packaging || [],
     compliance: compliance || [],
     documents: documents || [],
+    variants: variants || [],
+    quantityTiers: quantityTiers || [],
   }
 
   return (

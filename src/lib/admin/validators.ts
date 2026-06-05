@@ -7,6 +7,7 @@ export const productTranslationSchema = z.object({
   locale: localeEnum,
   name: z.string().min(1),
   badge: z.string().optional(),
+  description: z.string().optional(),
   heroTitle1: z.string().optional(),
   heroTitle2: z.string().optional(),
   heroBody: z.string().optional(),
@@ -38,13 +39,35 @@ export const productTranslationSchema = z.object({
   seoKeywords: z.string().optional(),
 })
 
+const variantSchema = z.object({
+  label: z.string().min(1),
+  order: z.number().int().default(0),
+})
+
+const quantityTierSchema = z.object({
+  label: z.string().min(1),
+  order: z.number().int().default(0),
+})
+
+const specSchema = z.object({
+  locale: localeEnum,
+  label: z.string().min(1),
+  value: z.string().min(1),
+  order: z.number().int().default(0),
+})
+
 export const createProductSchema = z.object({
   slug: z.string().min(1).regex(/^[a-z0-9-]+$/),
   status: z.enum(['draft', 'published']).default('draft'),
   heroImage: z.string().optional(),
   images: z.array(z.string()).optional(),
   order: z.number().int().default(0),
+  category: z.string().optional(),
+  moq: z.string().optional(),
   translations: z.array(productTranslationSchema).min(1),
+  variants: z.array(variantSchema).optional(),
+  quantityTiers: z.array(quantityTierSchema).optional(),
+  specs: z.array(specSchema).optional(),
 })
 
 export const updateProductSchema = createProductSchema.partial().omit({ slug: true })
