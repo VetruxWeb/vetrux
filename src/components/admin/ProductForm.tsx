@@ -2,10 +2,12 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { Plus, X, GripVertical } from 'lucide-react'
 import FormField from '@/components/admin/FormField'
 import LocaleTabs, { useLocaleTab } from '@/components/admin/LocaleTabs'
 import AiTranslateButton from '@/components/admin/AiTranslateButton'
 import ImageUpload from '@/components/admin/ImageUpload'
+import MultiImageUpload from '@/components/admin/MultiImageUpload'
 import { adminConfig } from '@/lib/admin/config'
 
 interface ProductFormProps {
@@ -23,7 +25,20 @@ export default function ProductForm({ product }: ProductFormProps) {
   const [slug, setSlug] = useState((product?.slug as string) || '')
   const [status, setStatus] = useState((product?.status as string) || 'draft')
   const [heroImage, setHeroImage] = useState((product?.heroImage as string) || '')
+  const [images, setImages] = useState<string[]>((product?.images as string[]) || [])
   const [order, setOrder] = useState((product?.order as number) || 0)
+  const [category, setCategory] = useState((product?.category as string) || '')
+  const [moq, setMoq] = useState((product?.moq as string) || '')
+
+  const existingVariants = (product?.variants as Array<{ label: string; order: number }>) || []
+  const [variants, setVariants] = useState<{ label: string; order: number }[]>(
+    existingVariants.length > 0 ? existingVariants : []
+  )
+
+  const existingTiers = (product?.quantityTiers as Array<{ label: string; order: number }>) || []
+  const [quantityTiers, setQuantityTiers] = useState<{ label: string; order: number }[]>(
+    existingTiers.length > 0 ? existingTiers : []
+  )
 
   const existingTranslations = (product?.translations as Array<Record<string, string>>) || []
 
@@ -43,6 +58,26 @@ export default function ProductForm({ product }: ProductFormProps) {
     }))
   }
 
+  function addVariant() {
+    setVariants((prev) => [...prev, { label: '', order: prev.length }])
+  }
+  function removeVariant(index: number) {
+    setVariants((prev) => prev.filter((_, i) => i !== index))
+  }
+  function updateVariant(index: number, label: string) {
+    setVariants((prev) => prev.map((v, i) => i === index ? { ...v, label } : v))
+  }
+
+  function addTier() {
+    setQuantityTiers((prev) => [...prev, { label: '', order: prev.length }])
+  }
+  function removeTier(index: number) {
+    setQuantityTiers((prev) => prev.filter((_, i) => i !== index))
+  }
+  function updateTier(index: number, label: string) {
+    setQuantityTiers((prev) => prev.map((t, i) => i === index ? { ...t, label } : t))
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
@@ -52,12 +87,17 @@ export default function ProductForm({ product }: ProductFormProps) {
       .filter(([, t]) => t.name)
       .map(([locale, t]) => ({ ...t, locale }))
 
-    const payload = {
+    const payload: Record<string, unknown> = {
       slug,
       status,
       heroImage: heroImage || undefined,
+      images,
       order,
+      category: category || undefined,
+      moq: moq || undefined,
       translations: translationsArray,
+      variants: variants.filter((v) => v.label),
+      quantityTiers: quantityTiers.filter((t) => t.label),
     }
 
     const url = isEdit ? `/api/admin/products/${(product as Record<string, unknown>).id}` : '/api/admin/products'
@@ -117,14 +157,83 @@ export default function ProductForm({ product }: ProductFormProps) {
             />
           </FormField>
         </div>
-        <ImageUpload
-          value={heroImage}
-          onChange={setHeroImage}
-          folder="products"
-          label="Hero Image"
-        />
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <FormField label="Category">
+            <input
+              type="text"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              placeholder="e.g. Isolate, Oil"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+            />
+          </FormField>
+          <FormField label="MOQ">
+            <input
+              type="text"
+              value={moq}
+              onChange={(e) => setMoq(e.target.value)}
+              placeholder="e.g. 100 kg"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+            />
+          </FormField>
+        </div>
+        <ImageUpload value={heroImage} onChange={setHeroImage} folder="products" label="Hero Image" />
+        <MultiImageUpload values={images} onChange={setImages} folder="products" label="Product Images" />
       </div>
 
+{/* VARIANTS_PLACEHOLDER */}
+      {/* VARIANTS */}
+      <div className="rounded-lg border border-gray-200 bg-white p-6 space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold">Variants (Purity Grades)</h2>
+          <button type="button" onClick={addVariant} className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800">
+            <Plus size={14} /> Add
+          </button>
+        </div>
+        {variants.map((v, i) => (
+          <div key={i} className="flex items-center gap-2">
+            <GripVertical size={16} className="text-gray-400" />
+            <input
+              type="text"
+              value={v.label}
+              onChange={(e) => updateVariant(i, e.target.value)}
+              placeholder="e.g. 99.96%"
+              className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm"
+            />
+            <button type="button" onClick={() => removeVariant(i)} className="text-red-500 hover:text-red-700">
+              <X size={16} />
+            </button>
+          </div>
+        ))}
+      </div>
+
+      {/* QUANTITY TIERS */}
+      <div className="rounded-lg border border-gray-200 bg-white p-6 space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold">Quantity Tiers</h2>
+          <button type="button" onClick={addTier} className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800">
+            <Plus size={14} /> Add
+          </button>
+        </div>
+        {quantityTiers.map((tier, i) => (
+          <div key={i} className="flex items-center gap-2">
+            <GripVertical size={16} className="text-gray-400" />
+            <input
+              type="text"
+              value={tier.label}
+              onChange={(e) => updateTier(i, e.target.value)}
+              placeholder="e.g. ≥ 100 Kg"
+              className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm"
+            />
+            <button type="button" onClick={() => removeTier(i)} className="text-red-500 hover:text-red-700">
+              <X size={16} />
+            </button>
+          </div>
+        ))}
+      </div>
+
+{/* TRANSLATIONS_PLACEHOLDER */}
+      {/* TRANSLATIONS */}
       <div className="rounded-lg border border-gray-200 bg-white p-6 space-y-4">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <h2 className="text-lg font-semibold">Translations</h2>
@@ -132,7 +241,7 @@ export default function ProductForm({ product }: ProductFormProps) {
             <AiTranslateButton
               sourceTexts={translations['en'] || {}}
               targetLocale={activeLocale}
-              context="CBD isolate product page"
+              context="CBD product page"
               onTranslated={(result) => {
                 setTranslations((prev) => ({
                   ...prev,
@@ -161,55 +270,13 @@ export default function ProductForm({ product }: ProductFormProps) {
               className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
             />
           </FormField>
-          <FormField label="Hero Title Line 1">
-            <input
-              type="text"
-              value={t.heroTitle1 || ''}
-              onChange={(e) => updateTranslation('heroTitle1', e.target.value)}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-            />
-          </FormField>
-          <FormField label="Hero Title Line 2">
-            <input
-              type="text"
-              value={t.heroTitle2 || ''}
-              onChange={(e) => updateTranslation('heroTitle2', e.target.value)}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-            />
-          </FormField>
         </div>
-        <FormField label="Hero Body">
+        <FormField label="Description">
           <textarea
-            value={t.heroBody || ''}
-            onChange={(e) => updateTranslation('heroBody', e.target.value)}
-            rows={3}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-          />
-        </FormField>
-
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <FormField label="Tech Section Label">
-            <input
-              type="text"
-              value={t.techSection || ''}
-              onChange={(e) => updateTranslation('techSection', e.target.value)}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-            />
-          </FormField>
-          <FormField label="Tech Title">
-            <input
-              type="text"
-              value={t.techTitle || ''}
-              onChange={(e) => updateTranslation('techTitle', e.target.value)}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
-            />
-          </FormField>
-        </div>
-        <FormField label="Tech Body">
-          <textarea
-            value={t.techBody || ''}
-            onChange={(e) => updateTranslation('techBody', e.target.value)}
-            rows={2}
+            value={t.description || ''}
+            onChange={(e) => updateTranslation('description', e.target.value)}
+            rows={4}
+            placeholder="Product description (supports multiple paragraphs separated by newlines)"
             className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
           />
         </FormField>
@@ -242,9 +309,7 @@ export default function ProductForm({ product }: ProductFormProps) {
         </FormField>
       </div>
 
-      {error && (
-        <p className="text-sm text-red-600">{error}</p>
-      )}
+      {error && <p className="text-sm text-red-600">{error}</p>}
 
       <div className="flex justify-end gap-3">
         <button
