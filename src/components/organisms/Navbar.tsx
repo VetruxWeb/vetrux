@@ -17,7 +17,14 @@ type NavItem = {
 function buildNavLinks(t: typeof navbarStrings.en): NavItem[] {
   return [
     { label: t.home, href: '/' },
-    { label: t.products, href: '/products/cbd-isolate' },
+    {
+      label: t.products,
+      children: [
+        { label: t.productsChildren.allProducts, href: '/products' },
+        { label: t.productsChildren.cbdIsolate, href: '/products/cbd-isolate' },
+        { label: t.productsChildren.cbdCrudeOil, href: '/products/cbd-crude-oil' },
+      ],
+    },
     {
       label: t.process,
       children: [
