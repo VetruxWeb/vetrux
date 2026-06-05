@@ -42,7 +42,7 @@ interface CategoryDef {
 const categories: CategoryDef[] = [
   {
     label: 'Products',
-    href: '/products/cbd-isolate',
+    href: '/products',
     children: {
       '/wholesale-cbd-isolate': 'Wholesale CBD Isolate',
     },
@@ -91,7 +91,7 @@ const orphanRoutes = new Set<string>(['/privacy-policy', '/terms-of-service'])
 
 /** Top-level nav pages — shown as "Home > Self" */
 const topLevelPages: Record<string, string> = {
-  '/products/cbd-isolate': 'CBD Isolate',
+  '/products': 'Products',
   '/process': 'Process',
   '/gallery': 'Gallery',
   '/blog': 'Blog',
@@ -103,6 +103,7 @@ const topLevelPages: Record<string, string> = {
 function findCategoryForPath(normalizedPath: string): {
   category: CategoryDef
   selfLabel: string
+  parent?: { label: string; href: string }
 } | null {
   // /blog/[slug] → Blog category, self = slug-derived label
   if (normalizedPath.startsWith('/blog/') && normalizedPath !== '/blog') {
@@ -112,6 +113,16 @@ function findCategoryForPath(normalizedPath: string): {
       .replace(/-/g, ' ')
       .replace(/\b\w/g, (ch) => ch.toUpperCase())
     return { category: blogCat, selfLabel }
+  }
+
+  // /products/[slug] → Products > Product Name (derived from slug)
+  if (normalizedPath.startsWith('/products/') && normalizedPath !== '/products') {
+    const productsCat = categories.find((c) => c.label === 'Products')!
+    const slug = normalizedPath.replace('/products/', '')
+    const selfLabel = slug
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, (ch) => ch.toUpperCase())
+    return { category: productsCat, selfLabel }
   }
 
   for (const cat of categories) {
@@ -153,14 +164,26 @@ export default function Breadcrumb() {
       itemHref: `${siteUrl}${pathname}`,
     })
   } else if (found) {
-    // Sub-page: Category > Self
-    const { category, selfLabel } = found
+    // Sub-page: Home > Category > [Parent] > Self
+    const { category, selfLabel, parent } = found
     const categoryPath = category.href ?? category.structuredPath
+    crumbs.push({
+      label: 'Home',
+      href: langPrefix || '/',
+      itemHref: `${siteUrl}${langPrefix || '/'}`,
+    })
     crumbs.push({
       label: category.label,
       href: category.href ? langPrefix + category.href : undefined,
       itemHref: `${siteUrl}${langPrefix}${categoryPath ?? normalized}`,
     })
+    if (parent) {
+      crumbs.push({
+        label: parent.label,
+        href: langPrefix + parent.href,
+        itemHref: `${siteUrl}${langPrefix}${parent.href}`,
+      })
+    }
     crumbs.push({
       label: selfLabel,
       itemHref: `${siteUrl}${pathname}`,
@@ -172,7 +195,7 @@ export default function Breadcrumb() {
   return (
     <nav
       aria-label="Breadcrumb"
-      className="relative z-10 max-w-container mx-auto px-6 lg:px-12 pt-2 pb-0 -mb-6"
+      className="relative z-10 max-w-container mx-auto px-6 lg:px-12 pt-2 pb-4"
     >
       <ol
         className="flex items-center gap-1 text-[11px] text-on-surface-variant"

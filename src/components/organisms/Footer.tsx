@@ -121,6 +121,10 @@ export default function Footer() {
                 <a href="mailto:inquiry@vetrux.tech" className="text-inverse-on-surface/80 hover:text-white transition-colors">
                   inquiry@vetrux.tech
                 </a>
+                {' / '}
+                <a href="mailto:sales@vetrux.tech" className="text-inverse-on-surface/80 hover:text-white transition-colors">
+                  sales@vetrux.tech
+                </a>
               </p>
               <div className="flex items-center gap-3 mt-4">
                 <a
