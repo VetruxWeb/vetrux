@@ -5,6 +5,31 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  // 301-redirect legacy /insights URLs (renamed to /blog) so indexed links don't 404.
+  async redirects() {
+    return [
+      {
+        source: '/insights',
+        destination: '/blog',
+        permanent: true,
+      },
+      {
+        source: '/insights/:slug*',
+        destination: '/blog/:slug*',
+        permanent: true,
+      },
+      {
+        source: '/:locale(de|fr|es|it|pt|ja|fi)/insights',
+        destination: '/:locale/blog',
+        permanent: true,
+      },
+      {
+        source: '/:locale(de|fr|es|it|pt|ja|fi)/insights/:slug*',
+        destination: '/:locale/blog/:slug*',
+        permanent: true,
+      },
+    ]
+  },
   outputFileTracingIncludes: {
     '/blog': ['./src/content/articles/*.md'],
     '/blog/[slug]': ['./src/content/articles/*.md'],

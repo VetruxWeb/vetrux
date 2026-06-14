@@ -26,7 +26,7 @@ export interface InsightsPageStrings {
 
 export const insightsContent: Record<Locale, InsightsPageStrings> = {
   en: {
-    heroEyebrow: 'Insights Library',
+    heroEyebrow: 'Blog',
     heroTitle: 'CBD industry analysis, sourcing guides, and quality research',
     heroBody:
       'Browse practical references for B2B buyers evaluating CBD isolate suppliers, extraction standards, compliance requirements, and market trends.',
@@ -51,7 +51,7 @@ export const insightsContent: Record<Locale, InsightsPageStrings> = {
   },
 
   de: {
-    heroEyebrow: 'Insights-Bibliothek',
+    heroEyebrow: 'Blog',
     heroTitle: 'CBD-Branchenanalysen, Beschaffungsleitfäden und Qualitätsforschung',
     heroBody:
       'Praktische Referenzen für B2B-Einkäufer, die CBD-Isolat-Lieferanten, Extraktionsstandards, Compliance-Anforderungen und Markttrends evaluieren.',
@@ -76,7 +76,7 @@ export const insightsContent: Record<Locale, InsightsPageStrings> = {
   },
 
   fr: {
-    heroEyebrow: 'Bibliothèque d\'analyses',
+    heroEyebrow: 'Blog',
     heroTitle: 'Analyses du secteur CBD, guides d\'approvisionnement et recherches qualité',
     heroBody:
       'Consultez des références pratiques pour les acheteurs B2B qui évaluent les fournisseurs d\'isolat de CBD, les normes d\'extraction, les exigences de conformité et les tendances du marché.',
@@ -101,7 +101,7 @@ export const insightsContent: Record<Locale, InsightsPageStrings> = {
   },
 
   es: {
-    heroEyebrow: 'Biblioteca de análisis',
+    heroEyebrow: 'Blog',
     heroTitle: 'Análisis del sector CBD, guías de aprovisionamiento e investigación de calidad',
     heroBody:
       'Consulte referencias prácticas para compradores B2B que evalúan proveedores de aislado de CBD, estándares de extracción, requisitos de cumplimiento y tendencias del mercado.',
@@ -126,7 +126,7 @@ export const insightsContent: Record<Locale, InsightsPageStrings> = {
   },
 
   it: {
-    heroEyebrow: 'Biblioteca di analisi',
+    heroEyebrow: 'Blog',
     heroTitle: 'Analisi del settore CBD, guide all\'approvvigionamento e ricerca sulla qualità',
     heroBody:
       'Sfoglia riferimenti pratici per gli acquirenti B2B che valutano fornitori di isolato di CBD, standard di estrazione, requisiti di conformità e tendenze di mercato.',
@@ -151,7 +151,7 @@ export const insightsContent: Record<Locale, InsightsPageStrings> = {
   },
 
   pt: {
-    heroEyebrow: 'Biblioteca de análises',
+    heroEyebrow: 'Blog',
     heroTitle: 'Análises do setor CBD, guias de fornecimento e pesquisa de qualidade',
     heroBody:
       'Consulte referências práticas para compradores B2B que avaliam fornecedores de isolado de CBD, padrões de extração, requisitos de conformidade e tendências de mercado.',
@@ -176,7 +176,7 @@ export const insightsContent: Record<Locale, InsightsPageStrings> = {
   },
 
   ja: {
-    heroEyebrow: 'インサイトライブラリ',
+    heroEyebrow: 'ブログ',
     heroTitle: 'CBD業界の分析、調達ガイド、品質研究',
     heroBody:
       'CBDアイソレートのサプライヤー評価、抽出基準、コンプライアンス要件、市場動向を検討するB2Bバイヤー向けの実用的な参考資料をご覧いただけます。',
@@ -201,7 +201,7 @@ export const insightsContent: Record<Locale, InsightsPageStrings> = {
   },
 
   fi: {
-    heroEyebrow: 'Analyysikirjasto',
+    heroEyebrow: 'Blogi',
     heroTitle: 'CBD-alan analyysit, hankintaoppaat ja laatututkimus',
     heroBody:
       'Selaa käytännöllisiä viiteaineistoja B2B-ostajille, jotka arvioivat CBD-isolaatin toimittajia, uuttamisstandardeja, vaatimustenmukaisuusvaatimuksia ja markkinatrendejä.',

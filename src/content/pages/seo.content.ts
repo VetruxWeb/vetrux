@@ -359,42 +359,42 @@ export const pageSeoContent: SeoContentMap = {
 
   '/blog': {
     en: {
-      title: 'Blog & Insights | CBD Industry Knowledge — Vetrux CBD',
+      title: 'Blog | CBD Industry Knowledge — Vetrux CBD',
       description: 'Articles on CBD industry topics, extraction technology, compliance considerations, and supply chain knowledge.',
       keywords: 'CBD industry insights, CBD extraction technology, CBD compliance, CBD supply chain',
     },
     de: {
-      title: 'Blog & Einblicke | CBD-Branchenwissen — Vetrux CBD',
+      title: 'Blog | CBD-Branchenwissen — Vetrux CBD',
       description: 'Artikel zu CBD-Branchenthemen, Extraktionstechnologie, Compliance-Überlegungen und Lieferkettenwissen.',
       keywords: 'CBD Brancheneinblicke, CBD Extraktionstechnologie, CBD Compliance, CBD Lieferkette',
     },
     fr: {
-      title: 'Blog & Perspectives | Connaissances Industrie CBD — Vetrux CBD',
+      title: 'Blog | Connaissances Industrie CBD — Vetrux CBD',
       description: "Articles sur les sujets de l'industrie CBD, la technologie d'extraction, les considérations de conformité et les connaissances de la chaîne d'approvisionnement.",
       keywords: "perspectives industrie CBD, technologie extraction CBD, conformité CBD, chaîne approvisionnement CBD",
     },
     es: {
-      title: 'Blog y Perspectivas | Conocimiento de la Industria CBD — Vetrux CBD',
+      title: 'Blog | Conocimiento de la Industria CBD — Vetrux CBD',
       description: 'Artículos sobre temas de la industria CBD, tecnología de extracción, consideraciones de cumplimiento y conocimiento de la cadena de suministro.',
       keywords: 'perspectivas industria CBD, tecnología extracción CBD, cumplimiento CBD, cadena suministro CBD',
     },
     it: {
-      title: "Blog e Approfondimenti | Conoscenze sull'Industria CBD — Vetrux CBD",
+      title: "Blog | Conoscenze sull'Industria CBD — Vetrux CBD",
       description: "Articoli su temi dell'industria CBD, tecnologia di estrazione, considerazioni sulla conformità e conoscenze sulla catena di fornitura.",
       keywords: 'approfondimenti industria CBD, tecnologia estrazione CBD, conformità CBD, catena fornitura CBD',
     },
     pt: {
-      title: 'Blog e Insights | Conhecimento da Indústria CBD — Vetrux CBD',
+      title: 'Blog | Conhecimento da Indústria CBD — Vetrux CBD',
       description: 'Artigos sobre temas da indústria CBD, tecnologia de extração, considerações de conformidade e conhecimento da cadeia de suprimentos.',
       keywords: 'insights indústria CBD, tecnologia extração CBD, conformidade CBD, cadeia suprimentos CBD',
     },
     ja: {
-      title: 'ブログ・インサイト | CBD業界ナレッジ — Vetrux CBD',
+      title: 'ブログ | CBD業界ナレッジ — Vetrux CBD',
       description: 'CBD業界のトピック、抽出技術、コンプライアンスに関する考察、サプライチェーンの知見に関する記事をご紹介いたします。',
       keywords: 'CBD 業界インサイト, CBD 抽出技術, CBD コンプライアンス, CBD サプライチェーン',
     },
     fi: {
-      title: 'Blogi ja näkemykset | CBD-alan tietämys — Vetrux CBD',
+      title: 'Blogi | CBD-alan tietämys — Vetrux CBD',
       description: 'Artikkeleita CBD-alan aiheista, uuttoteknologiasta, vaatimustenmukaisuudesta ja toimitusketjun tietämyksestä.',
       keywords: 'CBD-alan näkemykset, CBD-uuttoteknologia, CBD-vaatimustenmukaisuus, CBD-toimitusketju',
     },

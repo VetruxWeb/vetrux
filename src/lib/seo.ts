@@ -405,7 +405,7 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     },
   },
   '/blog': {
-    title: 'Blog & Insights | CBD Industry Knowledge — Vetrux CBD',
+    title: 'Blog | CBD Industry Knowledge — Vetrux CBD',
     description:
       'Articles on CBD industry topics, extraction technology, compliance considerations, and supply chain knowledge.',
     canonicalPath: '/blog',
