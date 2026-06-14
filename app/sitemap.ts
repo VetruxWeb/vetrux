@@ -1,6 +1,8 @@
 import type { MetadataRoute } from 'next'
 import { articles } from '@/content/articles'
 import { gallerySlugs } from '@/lib/gallery'
+import { getPublishedSlugs } from '@/lib/productData'
+import { getAllArticleSlugs } from '@/lib/articlesDb'
 import { locales, localeMeta, localizePath, localizedRoutes } from '@/i18n/locales'
 
 const BASE_URL = 'https://www.vetrux.tech'
@@ -29,7 +31,7 @@ function getRouteChangeFrequency(path: string): 'weekly' | 'monthly' | 'yearly' 
   return 'monthly'
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const today = new Date().toISOString().split('T')[0]
 
   const localizedStaticRoutes: MetadataRoute.Sitemap = localizedRoutes.flatMap((path) => {
@@ -66,9 +68,40 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }))
 
+  // Merge DB-backed article slugs (published) not present in static files.
+  const staticArticleSlugs = new Set(articles.map((a) => a.slug))
+  const dbArticleSlugs = await getAllArticleSlugs().catch(() => [])
+  const dbArticleRoutes: MetadataRoute.Sitemap = dbArticleSlugs
+    .filter((row) => row.slug && !staticArticleSlugs.has(row.slug))
+    .map((row) => ({
+      url: `${BASE_URL}/blog/${row.slug}`,
+      lastModified: today,
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    }))
+
+  // Products: the /products listing + every published product detail page.
+  const productSlugs = await getPublishedSlugs().catch(() => [])
+  const productRoutes: MetadataRoute.Sitemap = [
+    {
+      url: `${BASE_URL}/products`,
+      lastModified: today,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    },
+    ...productSlugs.map((row) => ({
+      url: `${BASE_URL}/products/${row.slug}`,
+      lastModified: today,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
+  ]
+
   return [
     ...localizedStaticRoutes,
     ...gallerySectorRoutes,
     ...articleRoutes,
+    ...dbArticleRoutes,
+    ...productRoutes,
   ]
 }

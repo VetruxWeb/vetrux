@@ -3,6 +3,7 @@ import { Manrope, Newsreader } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
 import PublicShell from '@/components/organisms/PublicShell'
+import { websiteJsonLd } from '@/lib/seo'
 
 const manrope = Manrope({
   subsets: ['latin'],
@@ -40,7 +41,14 @@ export const metadata: Metadata = {
     siteName: 'Vetrux CBD',
     locale: 'en_US',
     type: 'website',
-    images: [{ url: '/images/vetrux_images/cbd-ethanol-extraction-tank-6m3.jpg' }],
+    images: [
+      {
+        url: '/images/vetrux_images/cbd-ethanol-extraction-tank-6m3.jpg',
+        width: 4096,
+        height: 1904,
+        alt: 'Vetrux CBD ethanol extraction facility',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
@@ -65,42 +73,15 @@ export const metadata: Metadata = {
   },
 }
 
-const organizationJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: 'Vetrux CBD',
-  legalName: 'Vetrux Biotechnology (Chuxiong) Co., Ltd.',
-  url: 'https://www.vetrux.tech',
-  logo: 'https://www.vetrux.tech/logo.png',
-  description: 'Vertically integrated CBD isolate manufacturer. From seed selection to finished product delivery.',
-  address: {
-    '@type': 'PostalAddress',
-    addressLocality: 'Chuxiong',
-    addressRegion: 'Yunnan',
-    addressCountry: 'CN',
-  },
-  contactPoint: {
-    '@type': 'ContactPoint',
-    email: 'inquiry@vetrux.tech',
-    contactType: 'sales',
-  },
-  sameAs: [
-    'https://www.linkedin.com/in/%E8%90%83-%E8%94%9A-994421408/',
-    'https://x.com/VetruxCBD',
-    'https://www.facebook.com/profile.php?id=61589338740056',
-    'https://www.youtube.com/channel/UCTppL8lRF6EieMGZWwTq4aw',
-  ],
-}
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${manrope.variable} ${newsreader.variable}`}>
       <body className="min-h-screen flex flex-col bg-surface font-sans">
-        <Script
-          id="organization-jsonld"
+        <script
           type="application/ld+json"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteJsonLd),
+          }}
         />
         <a href="#main" className="skip-link">Skip to main content</a>
         <PublicShell>{children}</PublicShell>

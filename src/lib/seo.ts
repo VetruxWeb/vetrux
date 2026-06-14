@@ -52,9 +52,14 @@ const organizationJsonLd = {
     availableLanguage: ['English', 'German', 'French', 'Spanish', 'Italian', 'Portuguese', 'Japanese', 'Finnish', 'Chinese'],
   },
   sameAs: [
-    'https://www.vetrux.tech/about',
+    'https://www.linkedin.com/in/%E8%90%83-%E8%94%9A-994421408/',
+    'https://x.com/VetruxCBD',
+    'https://www.facebook.com/profile.php?id=61589338740056',
+    'https://www.youtube.com/channel/UCTppL8lRF6EieMGZWwTq4aw',
   ],
 };
+
+export { organizationJsonLd };
 
 const websiteJsonLd = {
   '@context': 'https://schema.org',
@@ -64,6 +69,8 @@ const websiteJsonLd = {
   url: siteUrl,
   publisher: organizationJsonLd,
 };
+
+export { websiteJsonLd };
 
 const productJsonLd = {
   '@context': 'https://schema.org',
@@ -134,6 +141,120 @@ function buildWebPageJsonLd(path: string, name: string, description: string): Re
     publisher: organizationJsonLd,
   };
 }
+
+interface ArticleSchemaInput {
+  slug: string;
+  title: string;
+  excerpt: string;
+  image?: string;
+  datePublished?: string;
+  dateModified?: string;
+}
+
+/**
+ * Build Article + BreadcrumbList JSON-LD for a blog post.
+ * Shared by static (markdown) and database-backed articles so both emit
+ * identical structured data.
+ */
+export function buildArticleJsonLd(input: ArticleSchemaInput): Record<string, unknown>[] {
+  const image = input.image || defaultImage;
+  const published = input.datePublished || '';
+  return [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: input.title,
+      description: input.excerpt,
+      image: image.startsWith('http') ? image : `${siteUrl}${image}`,
+      datePublished: published,
+      dateModified: input.dateModified || published,
+      author: {
+        '@type': 'Organization',
+        name: siteName,
+        url: siteUrl,
+        description:
+          'Editorial team at VETRUX — technical and regulatory analysis from Vetrux Biotechnology (Chuxiong) Co., Ltd., a vertically integrated CBD raw material manufacturer.',
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: siteName,
+        url: siteUrl,
+        logo: siteLogo,
+      },
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': `${siteUrl}/blog/${input.slug}`,
+      },
+    },
+    buildBreadcrumbJsonLd([
+      { name: 'Home', path: '/' },
+      { name: 'Blog', path: '/blog' },
+      { name: input.title, path: `/blog/${input.slug}` },
+    ]),
+  ];
+}
+
+interface ProductSchemaInput {
+  slug: string;
+  name: string;
+  description?: string | null;
+  image?: string | null;
+  category?: string | null;
+  specs?: { label: string; value: string }[];
+}
+
+/**
+ * Build Product + BreadcrumbList JSON-LD for a database-backed product page.
+ */
+export function buildProductJsonLd(input: ProductSchemaInput): Record<string, unknown>[] {
+  const image = input.image
+    ? input.image.startsWith('http')
+      ? input.image
+      : `${siteUrl}${input.image}`
+    : `${siteUrl}${defaultImage}`;
+
+  const product: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: input.name,
+    image,
+    description:
+      input.description ||
+      `${input.name} supplied by Vetrux Biotechnology (Chuxiong) Co., Ltd. for qualified B2B discussions.`,
+    brand: { '@type': 'Brand', name: 'VETRUX' },
+    manufacturer: {
+      '@type': 'Organization',
+      name: 'Vetrux Biotechnology (Chuxiong) Co., Ltd.',
+      url: siteUrl,
+    },
+    category: input.category || 'CBD Raw Materials',
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      seller: { '@type': 'Organization', name: 'Vetrux Biotechnology (Chuxiong) Co., Ltd.' },
+      url: `${siteUrl}/inquiry`,
+    },
+  };
+
+  if (input.specs && input.specs.length > 0) {
+    product.additionalProperty = input.specs.map((s) => ({
+      '@type': 'PropertyValue',
+      name: s.label,
+      value: s.value,
+    }));
+  }
+
+  return [
+    product,
+    buildBreadcrumbJsonLd([
+      { name: 'Home', path: '/' },
+      { name: 'Products', path: '/products' },
+      { name: input.name, path: `/products/${input.slug}` },
+    ]),
+  ];
+}
+
 
 const homepageFaqJsonLd = buildFaqJsonLd([
   {
@@ -261,7 +382,6 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     keywords:
       'CBD isolate manufacturer China, bulk CBD isolate supplier, B2B CBD isolate, CBD isolate OEM ODM, Vetrux CBD, Yunnan',
     jsonLd: [
-      websiteJsonLd,
       organizationJsonLd,
       buildWebPageJsonLd(
         '/',
@@ -555,38 +675,13 @@ export function getSeoMetadata(pathname: string): SeoMetadata {
         canonicalPath: `/blog/${article.slug}`,
         image: article.image || defaultImage,
         type: 'article',
-        jsonLd: [
-          {
-            '@context': 'https://schema.org',
-            '@type': 'Article',
-            headline: article.title,
-            description: article.excerpt,
-            image: article.image || defaultImage,
-            datePublished: article.date,
-            dateModified: article.date,
-            author: {
-              '@type': 'Organization',
-              name: siteName,
-              url: siteUrl,
-              description: 'Editorial team at VETRUX — technical and regulatory analysis from Vetrux Biotechnology (Chuxiong) Co., Ltd., a vertically integrated CBD raw material manufacturer.',
-            },
-            publisher: {
-              '@type': 'Organization',
-              name: siteName,
-              url: siteUrl,
-              logo: siteLogo,
-            },
-            mainEntityOfPage: {
-              '@type': 'WebPage',
-              '@id': `${siteUrl}/blog/${article.slug}`,
-            },
-          },
-          buildBreadcrumbJsonLd([
-            { name: 'Home', path: '/' },
-            { name: 'Blog', path: '/blog' },
-            { name: article.title, path: `/blog/${article.slug}` },
-          ]),
-        ],
+        jsonLd: buildArticleJsonLd({
+          slug: article.slug,
+          title: article.title,
+          excerpt: article.excerpt,
+          image: article.image || defaultImage,
+          datePublished: article.date,
+        }),
       };
     }
   }
@@ -672,6 +767,50 @@ export function buildMetadata(pathname: string, locale: Locale = 'en'): Metadata
       title,
       description,
       images: imageUrl ? [imageUrl] : undefined,
+    },
+  };
+}
+
+interface DynamicMetadataInput {
+  title: string;
+  description: string;
+  canonicalPath: string;
+  image?: string;
+  type?: 'website' | 'article';
+}
+
+/**
+ * Build Metadata for database-backed pages (articles, products) that aren't in
+ * the static SEO table. Resolves canonical/OG/Twitter consistently and accepts
+ * both relative and absolute (e.g. Vercel Blob) image URLs.
+ */
+export function buildDynamicMetadata(input: DynamicMetadataInput): Metadata {
+  const baseUrl = getBaseUrl();
+  const canonical = `${baseUrl}${input.canonicalPath}`;
+  const imageUrl = input.image
+    ? input.image.startsWith('http')
+      ? input.image
+      : `${baseUrl}${input.image}`
+    : `${baseUrl}${defaultImage}`;
+
+  return {
+    title: input.title,
+    description: input.description,
+    alternates: { canonical },
+    openGraph: {
+      siteName,
+      title: input.title,
+      description: input.description,
+      url: canonical,
+      locale: 'en_US',
+      images: [{ url: imageUrl }],
+      type: input.type === 'article' ? 'article' : 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: input.title,
+      description: input.description,
+      images: [imageUrl],
     },
   };
 }
