@@ -103,22 +103,32 @@ export default function ProductForm({ product }: ProductFormProps) {
     const url = isEdit ? `/api/admin/products/${(product as Record<string, unknown>).id}` : '/api/admin/products'
     const method = isEdit ? 'PUT' : 'POST'
 
-    const res = await fetch(url, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    })
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
 
-    setLoading(false)
+      if (!res.ok) {
+        let message = res.statusText
+        try {
+          const data = await res.json()
+          if (data.error) message = data.error
+        } catch {
+          // response body was not JSON, fall back to statusText
+        }
+        setError(message || 'Something went wrong')
+        return
+      }
 
-    if (!res.ok) {
-      const data = await res.json()
-      setError(data.error || 'Something went wrong')
-      return
+      router.push('/admin/products')
+      router.refresh()
+    } catch {
+      setError('Network error, please try again')
+    } finally {
+      setLoading(false)
     }
-
-    router.push('/admin/products')
-    router.refresh()
   }
 
   const t = translations[activeLocale] || {}

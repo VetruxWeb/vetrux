@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getProductBySlug, getPublishedSlugs } from '@/lib/productData';
+import { buildDynamicMetadata } from '@/lib/seo';
 import ProductDetailClient from '@/components/pages/ProductDetailClient';
 
 const LOCALE = 'pt' as const;
@@ -18,10 +19,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProductBySlug(slug, LOCALE);
   if (!product) return {};
-  return {
-    title: `${product.name} | VETRUX`,
+  return buildDynamicMetadata({
+    title: product.name,
     description: product.description?.slice(0, 160) ?? `${product.name} from Vetrux Biotechnology`,
-  };
+    canonicalPath: `/pt/products/${slug}`,
+    image: product.heroImage ?? product.images?.[0] ?? undefined,
+    type: 'website',
+    localizedPath: `/products/${slug}`,
+  });
 }
 
 export default async function ProductDetailPage({ params }: Props) {

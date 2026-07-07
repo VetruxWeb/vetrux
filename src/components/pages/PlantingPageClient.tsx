@@ -323,7 +323,7 @@ export default function PlantingPageClient({ locale = 'en' }: { locale?: Locale 
                   {t.requestQuote}
                 </Button>
               </Link>
-              <Link href="/products/cbd-isolate">
+              <Link href={`${langPrefix}/products/cbd-isolate`}>
                 <Button variant="secondary" size="lg" icon={ArrowRight}>
                   {t.viewSpecs}
                 </Button>

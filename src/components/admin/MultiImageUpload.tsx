@@ -14,24 +14,44 @@ interface MultiImageUploadProps {
 export default function MultiImageUpload({ values, onChange, folder = 'general', label = 'Images' }: MultiImageUploadProps) {
   const { t } = useAdminLocale()
   const [uploading, setUploading] = useState(false)
+  const [error, setError] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleUpload = async (files: FileList) => {
     setUploading(true)
+    setError('')
     const newUrls: string[] = []
-    for (const file of Array.from(files)) {
-      if (!file.type.startsWith('image/')) continue
-      const formData = new FormData()
-      formData.append('file', file)
-      formData.append('folder', folder)
-      const res = await fetch('/api/admin/media', { method: 'POST', body: formData })
-      if (res.ok) {
-        const media = await res.json()
-        newUrls.push(media.url)
+    const failures: string[] = []
+    try {
+      for (const file of Array.from(files)) {
+        if (!file.type.startsWith('image/')) continue
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('folder', folder)
+        try {
+          const res = await fetch('/api/admin/media', { method: 'POST', body: formData })
+          if (res.ok) {
+            const media = await res.json()
+            newUrls.push(media.url)
+          } else {
+            let reason = res.statusText
+            try {
+              const data = await res.json()
+              if (data.error) reason = data.error
+            } catch {
+              // response body was not JSON, fall back to statusText
+            }
+            failures.push(`${file.name}: ${reason}`)
+          }
+        } catch {
+          failures.push(`${file.name}: network error`)
+        }
       }
+      if (newUrls.length > 0) onChange([...values, ...newUrls])
+      if (failures.length > 0) setError(`Failed to upload: ${failures.join('; ')}`)
+    } finally {
+      setUploading(false)
     }
-    onChange([...values, ...newUrls])
-    setUploading(false)
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,6 +92,8 @@ export default function MultiImageUpload({ values, onChange, folder = 'general',
       >
         {uploading ? t('image.uploading') : <><Plus size={14} /> Add Images</>}
       </button>
+
+      {error && <p className="text-sm text-red-600">{error}</p>}
 
       <input
         ref={inputRef}

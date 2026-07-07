@@ -57,6 +57,7 @@ export async function POST(request: Request) {
   const { data: product, error } = await supabaseAdmin
     .from('Product')
     .insert({
+      id: crypto.randomUUID(),
       slug,
       status,
       heroImage,
@@ -75,25 +76,25 @@ export async function POST(request: Request) {
 
   if (translations && translations.length > 0) {
     await supabaseAdmin.from('ProductTranslation').insert(
-      translations.map((t) => ({ ...t, productId: product.id }))
+      translations.map((t) => ({ ...t, id: crypto.randomUUID(), productId: product.id }))
     )
   }
 
   if (variants && variants.length > 0) {
     await supabaseAdmin.from('ProductVariant').insert(
-      variants.map((v) => ({ ...v, productId: product.id }))
+      variants.map((v) => ({ ...v, id: crypto.randomUUID(), productId: product.id }))
     )
   }
 
   if (quantityTiers && quantityTiers.length > 0) {
     await supabaseAdmin.from('ProductQuantityTier').insert(
-      quantityTiers.map((t) => ({ ...t, productId: product.id }))
+      quantityTiers.map((t) => ({ ...t, id: crypto.randomUUID(), productId: product.id }))
     )
   }
 
   if (specs && specs.length > 0) {
     await supabaseAdmin.from('ProductSpec').insert(
-      specs.map((s) => ({ ...s, productId: product.id }))
+      specs.map((s) => ({ ...s, id: crypto.randomUUID(), productId: product.id }))
     )
   }
 

@@ -225,6 +225,7 @@ export async function POST(req: NextRequest) {
     if (response.status === 200) {
       // Store inquiry in database
       await supabaseAdmin.from('Inquiry').insert({
+        id: crypto.randomUUID(),
         type: 'general',
         name: payload.contactPerson ?? '',
         email: payload.email ?? '',
@@ -233,7 +234,7 @@ export async function POST(req: NextRequest) {
         productInterest: payload.monthlyVolume ?? null,
         ip: getClientIp(req),
       }).then(({ error }) => {
-        if (error) console.error('[inquiry.db.error]', error.message);
+        if (error) console.error('[inquiry.db.error]', { message: error.message, type: 'general', email: payload.email ?? '' });
       });
 
       console.info('[inquiry.accepted]', {

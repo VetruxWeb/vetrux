@@ -120,7 +120,7 @@ describe('handleDocumentRequestSubmission', () => {
     expect(response.status).toBe(200);
     expect(response.body.ok).toBe(true);
     expect(response.body.referenceId).toContain('VTX-DOC-');
-    expect(response.body.downloadLinks).toHaveLength(2);
+    // Documents are delivered by the team via email, not returned in the response body.
     expect(verifyTurnstile).toHaveBeenCalledWith({
       token: 'turnstile-test-token',
       ip: '203.0.113.10',
@@ -131,7 +131,7 @@ describe('handleDocumentRequestSubmission', () => {
       to: 'inquiry@vetrux.tech',
       replyTo: 'qa.buyer@example.com',
     });
-    expect(sendMail.mock.calls[0]?.[0].subject).toContain('[Document Download]');
+    expect(sendMail.mock.calls[0]?.[0].subject).toContain('[Document Request]');
     expect(sendMail.mock.calls[0]?.[0].text).toContain('Document Requested: COA and SDS');
     expect(sendMail.mock.calls[0]?.[0].text).toContain('Name: Anna Meyer');
     expect(sendMail.mock.calls[0]?.[0].text).toContain('Email: qa.buyer@example.com');

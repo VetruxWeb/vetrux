@@ -221,7 +221,7 @@ const content: Record<string, Record<string, string>> = {
   },
   ja: {
     eyebrow: '会社概要',
-    title: '',
+    title: '概要',
     titleAccent: 'VETRUX',
     intro: 'VETRUXは、Vetrux Biotechnology (Chuxiong) Co., Ltd.（以下「当社」）が運営する国際ブランドです。当社は中国Yunnan省Chuxiong市に拠点を置く垂直統合型CBDアイソレートメーカーであり、CBD原料販売、OEM/ODMサービス、技術コンサルティングを専門としています。',
     missionTitle: '当社のミッション',

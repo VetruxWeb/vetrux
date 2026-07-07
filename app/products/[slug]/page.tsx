@@ -18,12 +18,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = await getProductBySlug(slug, 'en');
   if (!product) return {};
   return buildDynamicMetadata({
-    title: `${product.name} | VETRUX`,
+    title: product.name,
     description:
       product.description?.slice(0, 160) ?? `${product.name} from Vetrux Biotechnology`,
     canonicalPath: `/products/${slug}`,
     image: product.heroImage ?? product.images?.[0] ?? undefined,
     type: 'website',
+    localizedPath: `/products/${slug}`,
   });
 }
 

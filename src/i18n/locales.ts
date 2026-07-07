@@ -26,7 +26,6 @@ export const localeMeta: Record<Locale, LocaleMeta> = {
 /** Core pages that exist in all TARGET_LOCALES. */
 export const localizedRoutes = [
   '/',
-  '/products/cbd-isolate',
   '/inquiry',
   '/equipment',
   '/planting',

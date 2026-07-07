@@ -5,7 +5,7 @@ date: May 2026
 readTime: 14 min
 excerpt: "Learn how to interpret every section of a CBD Certificate of Analysis — from cannabinoid profiles and residual solvents to heavy metals and microbial testing — so you can make informed purchasing decisions and ensure regulatory compliance."
 image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=80&auto=format&fit=crop"
-slug: how-to-read-cbd-certificate-of-analysis
+slug: how-to-read-cbd-certificate-of-analysis-guide
 ---
 
 <!-- toc -->

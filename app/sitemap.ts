@@ -14,12 +14,13 @@ function buildAlternates(path: string): Record<string, string> {
   for (const locale of locales) {
     languages[localeMeta[locale].hreflang] = `${BASE_URL}${localizePath(path, locale)}`
   }
+  languages['x-default'] = `${BASE_URL}${path}`
   return languages
 }
 
 function getRoutePriority(path: string): number {
   if (path === '/') return 1.0
-  if (path === '/products/cbd-isolate' || path === '/wholesale-cbd-isolate') return 0.9
+  if (path === '/wholesale-cbd-isolate') return 0.9
   if (path === '/quality-assurance' || path === '/cbd-isolate-manufacturer') return 0.8
   if (legalPages.has(path)) return 0.3
   return 0.7
@@ -80,21 +81,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.6,
     }))
 
-  // Products: the /products listing + every published product detail page.
+  // Products: the /products listing + every published product detail page, in all 8 locales.
   const productSlugs = await getPublishedSlugs().catch(() => [])
+  const productListAlternates = { languages: buildAlternates('/products') }
   const productRoutes: MetadataRoute.Sitemap = [
-    {
-      url: `${BASE_URL}/products`,
+    ...locales.map((locale) => ({
+      url: `${BASE_URL}${localizePath('/products', locale)}`,
       lastModified: today,
       changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    },
-    ...productSlugs.map((row) => ({
-      url: `${BASE_URL}/products/${row.slug}`,
-      lastModified: today,
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
+      priority: locale === 'en' ? 0.7 : 0.6,
+      alternates: productListAlternates,
     })),
+    ...productSlugs.flatMap((row) => {
+      const path = `/products/${row.slug}`
+      const alternates = { languages: buildAlternates(path) }
+      return locales.map((locale) => ({
+        url: `${BASE_URL}${localizePath(path, locale)}`,
+        lastModified: today,
+        changeFrequency: 'monthly' as const,
+        priority: locale === 'en' ? 0.7 : 0.6,
+        alternates,
+      }))
+    }),
   ]
 
   return [

@@ -392,32 +392,31 @@ const staticPageSeo: Record<string, SeoMetadata> = {
       buildBreadcrumbJsonLd([{ name: 'Home', path: '/' }]),
     ],
   },
-  '/products/cbd-isolate': {
-    title: 'CBD Isolate Specifications | Bulk CBD Isolate | Vetrux',
+  '/products': {
+    title: 'CBD Raw Material Products | Bulk Isolate & Oil',
     description:
-      'CBD isolate product information, packaging formats, documentation support, and B2B inquiry options for qualified bulk buyers.',
-    canonicalPath: '/products/cbd-isolate',
+      'Browse Vetrux CBD raw material products, including bulk CBD isolate, for qualified B2B buyers. Product information, packaging details, and documentation support by order requirements.',
+    canonicalPath: '/products',
     image: '/images/vetrux_images/cbd-isolate-crystals-white-powder.jpg',
     type: 'website',
     keywords:
-      'CBD isolate specifications, bulk CBD isolate, CBD isolate packaging, CBD isolate COA, CBD isolate SDS',
+      'CBD raw material products, bulk CBD isolate, CBD product catalog, B2B CBD products',
     jsonLd: [
       organizationJsonLd,
-      productJsonLd,
       buildWebPageJsonLd(
-        '/products/cbd-isolate',
-        'CBD Isolate Specifications | Bulk CBD Isolate | Vetrux',
-        'CBD isolate product information, packaging formats, documentation support, and B2B inquiry options for qualified bulk buyers.',
+        '/products',
+        'CBD Raw Material Products | Bulk Isolate & Oil',
+        'Browse Vetrux CBD raw material products, including bulk CBD isolate, for qualified B2B buyers. Product information, packaging details, and documentation support by order requirements.',
       ),
       productFaqJsonLd,
       buildBreadcrumbJsonLd([
         { name: 'Home', path: '/' },
-        { name: 'CBD Isolate', path: '/products/cbd-isolate' },
+        { name: 'Products', path: '/products' },
       ]),
     ],
   },
   '/equipment': {
-    title: 'Equipment Configuration | Extraction & Processing Facility — Vetrux CBD',
+    title: 'Equipment Configuration | Extraction & Processing Facility',
     description:
       'Vetrux CBD equipment configuration: 20 extraction tanks, 26 chromatography columns, 10 concentrators, HPLC analytical system (Thermo UltiMate 3000), and Siemens automation. Chuxiong, Yunnan.',
     canonicalPath: '/equipment',
@@ -428,7 +427,7 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     jsonLd: [organizationJsonLd],
   },
   '/planting': {
-    title: 'Cultivation & Breeding Center | Standardized Planting System — Vetrux CBD',
+    title: 'Cultivation & Breeding Center | Standardized Planting System',
     description:
       'Vetrux operates a cultivation and breeding center in Chuxiong, Yunnan Province. Standardized, traceable cultivation system focused on quality consistency.',
     canonicalPath: '/planting',
@@ -439,7 +438,7 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     jsonLd: [organizationJsonLd],
   },
   '/gallery': {
-    title: 'Facility Gallery | Production Site & Cultivation Base — Vetrux CBD',
+    title: 'Facility Gallery | Production Site & Cultivation Base',
     description:
       'Visual overview of Vetrux CBD production site and cultivation base in Chuxiong, Yunnan — equipment, planting, and product visuals.',
     canonicalPath: '/gallery',
@@ -460,7 +459,7 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     },
   },
   '/gallery/campus': {
-    title: 'Main Campus & Infrastructure | Gallery — Vetrux CBD',
+    title: 'Main Campus & Infrastructure | Gallery',
     description:
       'VETRUX industrial campus in Chuxiong, Yunnan — production, processing, and quality-control infrastructure under one roof.',
     canonicalPath: '/gallery/campus',
@@ -469,7 +468,7 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     keywords: 'CBD facility campus, Vetrux Yunnan production site, CBD manufacturing infrastructure',
   },
   '/gallery/cultivation': {
-    title: 'Planting Base & Cultivation | Gallery — Vetrux CBD',
+    title: 'Planting Base & Cultivation | Gallery',
     description:
       'VETRUX cultivation base in Yunnan province — standardized hemp growing, breeding center, and full seed-to-harvest traceability.',
     canonicalPath: '/gallery/cultivation',
@@ -478,7 +477,7 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     keywords: 'hemp cultivation base, Yunnan hemp farm, CBD raw material cultivation, traceable hemp growing',
   },
   '/gallery/extraction': {
-    title: 'Extraction & Refinement | Gallery — Vetrux CBD',
+    title: 'Extraction & Refinement | Gallery',
     description:
       'VETRUX extraction facility — 20 extraction tanks, 26 chromatography columns, 10 concentrators, and HPLC analytical systems.',
     canonicalPath: '/gallery/extraction',
@@ -487,7 +486,7 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     keywords: 'CBD extraction facility, chromatography columns, extraction tanks, HPLC system, CBD refinement',
   },
   '/gallery/products': {
-    title: 'Product & Laboratory | Gallery — Vetrux CBD',
+    title: 'Product & Laboratory | Gallery',
     description:
       'VETRUX CBD isolate visuals — laboratory review, packaging, and export-ready presentation.',
     canonicalPath: '/gallery/products',
@@ -496,7 +495,7 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     keywords: 'CBD isolate product, CBD packaging, CBD laboratory, CBD isolate visuals',
   },
   '/process': {
-    title: 'From Seed to Isolate | Our Process — Vetrux CBD',
+    title: 'From Seed to Isolate | Our Process',
     description:
       'Controlled phases from Yunma-13 cultivation to CBD isolate workflows, with cultivation, extraction, purification, quality-control, and packaging support in Chuxiong, Yunnan.',
     canonicalPath: '/process',
@@ -507,7 +506,7 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     jsonLd: [organizationJsonLd],
   },
   '/inquiry': {
-    title: 'B2B Inquiry | CBD Raw Materials & OEM/ODM — Vetrux CBD',
+    title: 'B2B Inquiry | CBD Raw Materials & OEM/ODM',
     description:
       'Contact Vetrux CBD for CBD raw material supply, OEM/ODM cooperation, and technical support inquiries.',
     canonicalPath: '/inquiry',
@@ -525,7 +524,7 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     },
   },
   '/blog': {
-    title: 'Blog | CBD Industry Knowledge — Vetrux CBD',
+    title: 'Blog | CBD Industry Knowledge',
     description:
       'Articles on CBD industry topics, extraction technology, compliance considerations, and supply chain knowledge.',
     canonicalPath: '/blog',
@@ -544,7 +543,7 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     },
   },
   '/wholesale-cbd-isolate': {
-    title: 'Bulk CBD Isolate Supplier | Wholesale CBD Isolate | Vetrux',
+    title: 'Bulk CBD Isolate Supplier | Wholesale CBD Isolate',
     description:
       'Wholesale CBD isolate supply for B2B buyers, with 5 kg packaging, documentation support, and OEM/ODM cooperation from Vetrux in China.',
     canonicalPath: '/wholesale-cbd-isolate',
@@ -567,7 +566,7 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     ],
   },
   '/quality-assurance': {
-    title: 'CBD Isolate COA, SDS & Quality Assurance | Vetrux',
+    title: 'CBD Isolate COA, SDS & Quality Assurance',
     description:
       'Learn how Vetrux supports CBD isolate quality review with in-house HPLC analytical capability, COA/SDS support, test reports, and shipment documentation by order terms.',
     canonicalPath: '/quality-assurance',
@@ -590,7 +589,7 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     ],
   },
   '/cbd-isolate-manufacturer': {
-    title: 'CBD Isolate Manufacturer in China | Vetrux',
+    title: 'CBD Isolate Manufacturer in China',
     description:
       'Vetrux supplies bulk CBD isolate for B2B buyers from Yunnan, China, with in-house analytical capability, OEM/ODM support, and buyer documentation support.',
     canonicalPath: '/cbd-isolate-manufacturer',
@@ -613,7 +612,7 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     ],
   },
   '/about': {
-    title: 'About Vetrux CBD | Company Profile',
+    title: 'About Us | Company Profile',
     description:
       'VETRUX — the CBD raw material brand operated by Vetrux Biotechnology (Chuxiong) Co., Ltd. CBD raw material sales, OEM/ODM, and technical support. Based in Chuxiong, Yunnan, China.',
     canonicalPath: '/about',
@@ -624,7 +623,7 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     jsonLd: organizationJsonLd,
   },
   '/privacy-policy': {
-    title: 'Privacy Policy — Vetrux CBD',
+    title: 'Privacy Policy',
     description:
       'Privacy Policy for Vetrux CBD website. Learn how we collect, use, and protect your personal data when you visit our site or submit a B2B inquiry.',
     canonicalPath: '/privacy-policy',
@@ -637,7 +636,7 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     ),
   },
   '/terms-of-service': {
-    title: 'Terms of Service — Vetrux CBD',
+    title: 'Terms of Service',
     description:
       'Terms of Service for the Vetrux CBD website.',
     canonicalPath: '/terms-of-service',
@@ -670,7 +669,7 @@ export function getSeoMetadata(pathname: string): SeoMetadata {
     const article = articles.find((entry) => entry.slug === slug);
     if (article) {
       return {
-        title: `${article.title} | Vetrux CBD Blog`,
+        title: article.title,
         description: article.excerpt,
         canonicalPath: `/blog/${article.slug}`,
         image: article.image || defaultImage,
@@ -688,7 +687,7 @@ export function getSeoMetadata(pathname: string): SeoMetadata {
 
   return (
     staticPageSeo[pathname] ?? {
-      title: 'Vetrux CBD — CBD Raw Materials',
+      title: 'CBD Raw Materials',
       description:
         'VETRUX — the CBD raw material brand operated by Vetrux Biotechnology (Chuxiong) Co., Ltd., based in Yunnan, China.',
       canonicalPath: pathname || '/',
@@ -700,7 +699,7 @@ export function getSeoMetadata(pathname: string): SeoMetadata {
 
 const localizedRoutePaths = new Set([
   '/',
-  '/products/cbd-isolate',
+  '/products',
   '/inquiry',
   '/equipment',
   '/planting',
@@ -748,8 +747,12 @@ export function buildMetadata(pathname: string, locale: Locale = 'en'): Metadata
   const description = locale !== 'en' ? localizedSeo.description : seo.description;
   const keywords = locale !== 'en' ? (localizedSeo.keywords ?? seo.keywords) : seo.keywords;
 
+  // Homepage title is already the full brand headline — use `absolute` so the
+  // layout's `%s — Vetrux CBD` template doesn't append the brand name twice.
+  const titleMeta = pathname === '/' ? { absolute: title } : title;
+
   return {
-    title,
+    title: titleMeta,
     description,
     keywords,
     alternates: buildAlternates(baseUrl, seo.canonicalPath, locale),
@@ -777,6 +780,8 @@ interface DynamicMetadataInput {
   canonicalPath: string;
   image?: string;
   type?: 'website' | 'article';
+  /** Un-prefixed path (e.g. `/products/cbd-isolate`) used to derive hreflang alternates across all locales. */
+  localizedPath?: string;
 }
 
 /**
@@ -793,10 +798,20 @@ export function buildDynamicMetadata(input: DynamicMetadataInput): Metadata {
       : `${baseUrl}${input.image}`
     : `${baseUrl}${defaultImage}`;
 
+  const alternates: NonNullable<Metadata['alternates']> = { canonical };
+  if (input.localizedPath) {
+    const languages: Record<string, string> = {};
+    for (const loc of locales) {
+      languages[localeMeta[loc].hreflang] = `${baseUrl}${localizePath(input.localizedPath, loc)}`;
+    }
+    languages['x-default'] = `${baseUrl}${input.localizedPath}`;
+    alternates.languages = languages;
+  }
+
   return {
     title: input.title,
     description: input.description,
-    alternates: { canonical },
+    alternates,
     openGraph: {
       siteName,
       title: input.title,

@@ -14,12 +14,14 @@ export default function ImageUpload({ value, onChange, folder = 'general', label
   const { t } = useAdminLocale()
   const [uploading, setUploading] = useState(false)
   const [dragOver, setDragOver] = useState(false)
+  const [error, setError] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleUpload = async (file: File) => {
     if (!file.type.startsWith('image/')) return
 
     setUploading(true)
+    setError('')
     try {
       const formData = new FormData()
       formData.append('file', file)
@@ -33,7 +35,18 @@ export default function ImageUpload({ value, onChange, folder = 'general', label
       if (res.ok) {
         const media = await res.json()
         onChange(media.url)
+      } else {
+        let reason = res.statusText
+        try {
+          const data = await res.json()
+          if (data.error) reason = data.error
+        } catch {
+          // response body was not JSON, fall back to statusText
+        }
+        setError(`Upload failed: ${reason}`)
       }
+    } catch {
+      setError('Upload failed: network error')
     } finally {
       setUploading(false)
     }
@@ -105,6 +118,8 @@ export default function ImageUpload({ value, onChange, folder = 'general', label
         placeholder={t('image.urlPlaceholder')}
         className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
       />
+
+      {error && <p className="text-sm text-red-600">{error}</p>}
     </div>
   )
 }

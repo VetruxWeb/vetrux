@@ -39,7 +39,7 @@ export async function generateMetadata({
   const dbArticle = await getArticleBySlugFromDb(slug, 'en').catch(() => null);
   if (dbArticle) {
     return buildDynamicMetadata({
-      title: `${dbArticle.translation.title} | Vetrux CBD Blog`,
+      title: dbArticle.translation.title,
       description: dbArticle.translation.excerpt || '',
       canonicalPath: `/blog/${slug}`,
       image: dbArticle.meta.image || undefined,

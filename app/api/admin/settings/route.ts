@@ -38,7 +38,7 @@ export async function PUT(request: Request) {
     if (existing) {
       await supabaseAdmin.from('SiteSetting').update({ value: String(value) }).eq('id', existing.id)
     } else {
-      await supabaseAdmin.from('SiteSetting').insert({ key, value: String(value) })
+      await supabaseAdmin.from('SiteSetting').insert({ id: crypto.randomUUID(), key, value: String(value) })
     }
   }
 

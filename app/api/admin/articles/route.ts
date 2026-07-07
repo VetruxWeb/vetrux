@@ -57,6 +57,7 @@ export async function POST(request: Request) {
   const { data: article, error } = await supabaseAdmin
     .from('Article')
     .insert({
+      id: crypto.randomUUID(),
       slug,
       status,
       category,
@@ -74,7 +75,7 @@ export async function POST(request: Request) {
 
   if (translations && translations.length > 0) {
     await supabaseAdmin.from('ArticleTranslation').insert(
-      translations.map((t) => ({ ...t, articleId: article.id }))
+      translations.map((t) => ({ ...t, id: crypto.randomUUID(), articleId: article.id }))
     )
   }
 

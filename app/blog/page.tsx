@@ -14,16 +14,19 @@ export default async function BlogPage() {
   const seo = getSeoMetadata('/blog');
   const jsonLd = seo.jsonLd;
 
-  // Try database first, fall back to static files
-  let articles: Article[] = await getAllArticlesFromDb('en').catch(() => []);
-  if (articles.length === 0) {
-    try {
-      const { articles: staticArticles } = await import('@/content/articles');
-      articles = staticArticles;
-    } catch {
-      articles = [];
-    }
+  // Union DB-backed articles with static articles not already present in the DB.
+  const dbArticles: Article[] = await getAllArticlesFromDb('en').catch(() => []);
+  let staticArticles: Article[] = [];
+  try {
+    ({ articles: staticArticles } = await import('@/content/articles'));
+  } catch {
+    staticArticles = [];
   }
+  const dbSlugs = new Set(dbArticles.map((a) => a.slug));
+  const articles: Article[] = [
+    ...dbArticles,
+    ...staticArticles.filter((a) => !dbSlugs.has(a.slug)),
+  ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
     <>

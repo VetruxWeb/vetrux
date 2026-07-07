@@ -102,7 +102,7 @@ export async function PUT(
       if (existing) {
         await supabaseAdmin.from('ProductTranslation').update(t).eq('id', existing.id)
       } else {
-        await supabaseAdmin.from('ProductTranslation').insert({ ...t, productId: id })
+        await supabaseAdmin.from('ProductTranslation').insert({ ...t, id: crypto.randomUUID(), productId: id })
       }
     }
   }
@@ -111,7 +111,7 @@ export async function PUT(
     await supabaseAdmin.from('ProductVariant').delete().eq('productId', id)
     if (variants.length > 0) {
       await supabaseAdmin.from('ProductVariant').insert(
-        variants.map((v) => ({ ...v, productId: id }))
+        variants.map((v) => ({ ...v, id: crypto.randomUUID(), productId: id }))
       )
     }
   }
@@ -120,7 +120,7 @@ export async function PUT(
     await supabaseAdmin.from('ProductQuantityTier').delete().eq('productId', id)
     if (quantityTiers.length > 0) {
       await supabaseAdmin.from('ProductQuantityTier').insert(
-        quantityTiers.map((t) => ({ ...t, productId: id }))
+        quantityTiers.map((t) => ({ ...t, id: crypto.randomUUID(), productId: id }))
       )
     }
   }
@@ -129,7 +129,7 @@ export async function PUT(
     await supabaseAdmin.from('ProductSpec').delete().eq('productId', id)
     if (specs.length > 0) {
       await supabaseAdmin.from('ProductSpec').insert(
-        specs.map((s) => ({ ...s, productId: id }))
+        specs.map((s) => ({ ...s, id: crypto.randomUUID(), productId: id }))
       )
     }
   }

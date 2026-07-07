@@ -70,7 +70,7 @@ export async function PUT(
       if (existing) {
         await supabaseAdmin.from('ArticleTranslation').update(t).eq('id', existing.id)
       } else {
-        await supabaseAdmin.from('ArticleTranslation').insert({ ...t, articleId: id })
+        await supabaseAdmin.from('ArticleTranslation').insert({ ...t, id: crypto.randomUUID(), articleId: id })
       }
     }
   }

@@ -307,6 +307,7 @@ export default function ProductDetailClient({ product, locale = 'en' }: Props) {
         onClose={() => setQuoteModalOpen(false)}
         selectedProducts={buildSelectedProducts()}
         productName={product.name}
+        locale={locale}
       />
       <DocumentRequestModal
         isOpen={docModalOpen}
