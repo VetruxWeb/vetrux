@@ -76,6 +76,9 @@ const fileOrder: Array<{ filename: string; size?: 'normal' | 'large' }> = [
   { filename: 'how-to-read-cbd-certificate-of-analysis-guide.md', size: 'large' },
   { filename: 'cbd-isolate-applications-formulation-guide.md', size: 'large' },
   { filename: 'cbd-import-regulations-europe-novel-food-2026.md', size: 'large' },
+  { filename: 'full-spectrum-broad-spectrum-isolate-cbd-comparison.md', size: 'large' },
+  { filename: 'cbd-private-label-white-label-oem-manufacturing-guide.md', size: 'normal' },
+  { filename: 'minor-cannabinoids-cbg-cbn-cbc-sourcing-guide.md', size: 'normal' },
 ]
 
 // ── Frontmatter parser ────────────────────────────────────────────────────────
