@@ -1,10 +1,10 @@
 ---
 title: "CBD Extraction Methods Compared: CO₂ vs Ethanol vs Hydrocarbon"
 category: Technology
-date: May 2025
+date: "2025-05-01"
 readTime: 18 min
 excerpt: "A comprehensive technical comparison of the three dominant CBD extraction methods — supercritical CO₂, ethanol, and hydrocarbon — covering scalability, cost, purity, safety, and environmental impact for industrial buyers."
-image: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=80&auto=format&fit=crop"
+image: "/images/articles/cbd-extraction-methods-compared-co2-ethanol-hydrocarbon.webp"
 slug: cbd-extraction-methods-compared-co2-ethanol-hydrocarbon
 ---
 
@@ -18,7 +18,7 @@ Three extraction methods dominate commercial CBD production globally: **supercri
 
 This technical comparison provides the data-driven framework B2B buyers need to evaluate extraction methodologies, qualify suppliers, and align raw material sourcing with downstream product requirements and target market regulations.
 
-![Industrial CBD extraction facility with stainless steel equipment](https://images.unsplash.com/photo-1581093458791-9d42e3c7e117?w=1200&q=80&auto=format&fit=crop)
+![Industrial CBD extraction facility with stainless steel equipment](/images/equipment/extraction-tanks.jpg)
 
 ## Overview of Each Extraction Method
 
@@ -107,7 +107,7 @@ Hydrocarbon extraction faces fundamental scalability barriers. Safety regulation
 
 These constraints are not merely regulatory — they reflect genuine safety engineering requirements. Butane-air mixtures are explosive at concentrations of 1.8–8.4% by volume, requiring Class 1 Division 1 electrical classification throughout the extraction area. Scaling hydrocarbon extraction to industrial CBD isolate volumes would require dozens of parallel extraction lines with proportional safety infrastructure investment.
 
-![Laboratory quality control testing of CBD extract purity](https://images.unsplash.com/photo-1579154204601-01588f351e67?w=1200&q=80&auto=format&fit=crop)
+![Laboratory quality control testing of CBD extract purity](/images/vetrux_images/cbd-isolate-hplc-quality-control-system.jpg)
 
 ## Capital Expenditure Comparison by Production Scale
 
@@ -241,7 +241,7 @@ Insurance costs reflect the risk hierarchy directly:
 
 For B2B buyers conducting supplier audits, the extraction method employed is a direct indicator of operational risk management maturity and long-term supply reliability.
 
-![Quality control laboratory with HPLC equipment for cannabinoid analysis](https://images.unsplash.com/photo-1582719471384-894fbb16f461?w=1200&q=80&auto=format&fit=crop)
+![Quality control laboratory with HPLC equipment for cannabinoid analysis](/images/vetrux_images/cbd-isolate-hplc-quality-control-system.jpg)
 
 ## Making the Right Choice: Decision Framework for B2B Buyers
 

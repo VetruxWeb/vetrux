@@ -4,7 +4,6 @@ import { createMemoryRateLimiter } from '@/lib/inquiry';
 import { handleDocumentRequestSubmission } from '@/lib/documentRequest';
 import type { DocumentRequestPayload } from '@/lib/documentRequest';
 import type { HumanVerificationResult } from '@/lib/inquiry';
-import { supabaseAdmin } from '@/lib/supabase';
 
 export const runtime = 'nodejs';
 
@@ -163,7 +162,7 @@ async function verifyTurnstile(args: { token: string; ip: string }): Promise<Hum
 
 export async function POST(req: NextRequest) {
   try {
-    if (!process.env.SMTP_PASS) {
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
       return NextResponse.json(
         {
           ok: false,
@@ -233,21 +232,6 @@ export async function POST(req: NextRequest) {
     });
 
     if (response.status === 200) {
-      // Store document request in database
-      await supabaseAdmin.from('DocumentRequest').insert({
-        id: response.body.referenceId,
-        name: payload.name ?? '',
-        email: payload.email ?? '',
-        documentType: payload.documentType ?? 'both',
-        productInterest: payload.productInterest ?? null,
-        sourcePage: payload.sourcePage ?? null,
-        status: 'pending',
-        createdAt: new Date().toISOString(),
-        ip: getClientIp(req),
-      }).then(({ error }) => {
-        if (error) console.error('[document-request.db.error]', error.message);
-      });
-
       console.info('[document-request.accepted]', {
         provider, host: mailProviderConfig.host, authUser: process.env.SMTP_USER ?? '',
         mailFrom: effectiveMailFrom, mailTo: effectiveMailTo,

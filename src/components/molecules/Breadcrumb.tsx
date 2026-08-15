@@ -3,6 +3,10 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { ChevronRight } from 'lucide-react'
+import { breadcrumbStrings } from '@/content/pages/breadcrumb.content'
+import type { BreadcrumbStrings } from '@/content/pages/breadcrumb.content'
+import type { Locale } from '@/i18n/locales'
+import generatedArticleTitles from '@/content/articles/generated-breadcrumb-titles.json'
 
 /**
  * Breadcrumb design:
@@ -10,19 +14,7 @@ import { ChevronRight } from 'lucide-react'
  *   — When the current route IS a top-level nav root, we render nothing.
  *   — When the current route is a sub-page, we render "[Category] > [Self]".
  *   — Orphan routes (privacy, terms, etc.) render nothing.
- *
- * Categories reflect the Navbar structure:
- *   Products   → /products/cbd-isolate (+ /wholesale-cbd-isolate)
- *   Process    → /process
- *     ├─ Cultivation         → /planting
- *     ├─ Extraction          → /equipment
- *     └─ Quality Assurance   → /quality-assurance
- *   Gallery    → /gallery
- *   Blog       → /blog (+ /blog/[slug])
- *   About      (dropdown label — not a route itself)
- *     ├─ Company             → /about
- *     └─ Manufacturer Profile → /cbd-isolate-manufacturer
- *   Contact (CTA)            → /inquiry  (root, hidden)
+ *   — All visible labels are localized per route locale.
  */
 
 type Crumb = { label: string; href?: string; itemHref: string }
@@ -30,58 +22,60 @@ type Crumb = { label: string; href?: string; itemHref: string }
 const siteUrl = 'https://www.vetrux.tech'
 
 interface CategoryDef {
-  label: string
+  /** i18n key for the category label */
+  labelKey: keyof BreadcrumbStrings
   /** href the category label links to, or null if it is a non-route dropdown label */
   href: string | null
   /** URL path used only for structured data when the visible category is not linked */
   structuredPath?: string
-  /** child routes belonging to this category */
-  children: Record<string, string>
+  /** child routes belonging to this category (i18n key → route) */
+  children: Record<string, keyof BreadcrumbStrings>
 }
-
-const categories: CategoryDef[] = [
-  {
-    label: 'Products',
-    href: '/products',
-    children: {
-      '/wholesale-cbd-isolate': 'Wholesale CBD Isolate',
+function buildCategories(): CategoryDef[] {
+  return [
+    {
+      labelKey: 'products',
+      href: '/products',
+      children: {
+        '/wholesale-cbd-isolate': 'wholesaleCbdIsolate',
+      },
     },
-  },
-  {
-    label: 'Process',
-    href: '/process',
-    children: {
-      '/planting': 'Cultivation',
-      '/equipment': 'Extraction',
-      '/quality-assurance': 'Quality Assurance',
+    {
+      labelKey: 'process',
+      href: '/process',
+      children: {
+        '/planting': 'cultivation',
+        '/equipment': 'extraction',
+        '/quality-assurance': 'qualityAssurance',
+      },
     },
-  },
-  {
-    label: 'Gallery',
-    href: '/gallery',
-    children: {
-      '/gallery/campus': 'Main Campus & Infrastructure',
-      '/gallery/cultivation': 'Planting Base & Cultivation',
-      '/gallery/extraction': 'Extraction & Refinement',
-      '/gallery/products': 'Product & Laboratory',
+    {
+      labelKey: 'gallery',
+      href: '/gallery',
+      children: {
+        '/gallery/campus': 'campus',
+        '/gallery/cultivation': 'plantingBase',
+        '/gallery/extraction': 'extractionRefinement',
+        '/gallery/products': 'productLaboratory',
+      },
     },
-  },
-  {
-    label: 'Blog',
-    href: '/blog',
-    // blog/[slug] handled dynamically via pathname startsWith match
-    children: {},
-  },
-  {
-    label: 'About',
-    href: null,
-    structuredPath: '/about',
-    children: {
-      '/about': 'Company',
-      '/cbd-isolate-manufacturer': 'Manufacturer Profile',
+    {
+      labelKey: 'blog',
+      href: '/blog',
+      // blog/[slug] handled dynamically via pathname startsWith match
+      children: {},
     },
-  },
-]
+    {
+      labelKey: 'about',
+      href: null,
+      structuredPath: '/about',
+      children: {
+        '/about': 'company',
+        '/cbd-isolate-manufacturer': 'manufacturerProfile',
+      },
+    },
+  ]
+}
 
 /** Routes where breadcrumb is hidden — only the homepage. */
 const rootRoutes = new Set<string>(['/'])
@@ -90,26 +84,29 @@ const rootRoutes = new Set<string>(['/'])
 const orphanRoutes = new Set<string>(['/privacy-policy', '/terms-of-service'])
 
 /** Top-level nav pages — shown as "Home > Self" */
-const topLevelPages: Record<string, string> = {
-  '/products': 'Products',
-  '/process': 'Process',
-  '/gallery': 'Gallery',
-  '/blog': 'Blog',
-  '/inquiry': 'Inquiry',
-  '/planting': 'Cultivation',
-  '/equipment': 'Equipment',
+function buildTopLevelPages(t: BreadcrumbStrings): Record<string, string> {
+  return {
+    '/products': t.products,
+    '/process': t.process,
+    '/gallery': t.gallery,
+    '/blog': t.blog,
+    '/inquiry': t.inquiry,
+    '/planting': t.cultivation,
+    '/equipment': t.equipment,
+  }
 }
 
-function findCategoryForPath(normalizedPath: string): {
-  category: CategoryDef
-  selfLabel: string
-  parent?: { label: string; href: string }
-} | null {
+function findCategoryForPath(
+  normalizedPath: string,
+  categories: CategoryDef[],
+  t: BreadcrumbStrings,
+  locale: Locale,
+): { category: CategoryDef; selfLabel: string; parent?: { label: string; href: string } } | null {
   // /blog/[slug] → Blog category, self = slug-derived label
   if (normalizedPath.startsWith('/blog/') && normalizedPath !== '/blog') {
-    const blogCat = categories.find((c) => c.label === 'Blog')!
+    const blogCat = categories.find((c) => c.labelKey === 'blog')!
     const slug = normalizedPath.replace('/blog/', '')
-    const selfLabel = slug
+    const selfLabel = (generatedArticleTitles as Record<Locale, Record<string, string>>)[locale]?.[slug] ?? slug
       .replace(/-/g, ' ')
       .replace(/\b\w/g, (ch) => ch.toUpperCase())
     return { category: blogCat, selfLabel }
@@ -117,17 +114,22 @@ function findCategoryForPath(normalizedPath: string): {
 
   // /products/[slug] → Products > Product Name (derived from slug)
   if (normalizedPath.startsWith('/products/') && normalizedPath !== '/products') {
-    const productsCat = categories.find((c) => c.label === 'Products')!
+    const productsCat = categories.find((c) => c.labelKey === 'products')!
     const slug = normalizedPath.replace('/products/', '')
-    const selfLabel = slug
+    const productLabels: Record<string, string> = {
+      'cbd-isolate': t.cbdIsolate,
+      'cbd-oil': t.cbdOil,
+    }
+    const selfLabel = productLabels[slug] ?? slug
       .replace(/-/g, ' ')
       .replace(/\b\w/g, (ch) => ch.toUpperCase())
     return { category: productsCat, selfLabel }
   }
 
   for (const cat of categories) {
-    if (cat.children[normalizedPath]) {
-      return { category: cat, selfLabel: cat.children[normalizedPath] }
+    const childLabelKey = cat.children[normalizedPath]
+    if (childLabelKey) {
+      return { category: cat, selfLabel: t[childLabelKey] }
     }
   }
 
@@ -140,6 +142,9 @@ export default function Breadcrumb() {
   // Strip locale prefix (/de, /fr, /es, /it, /pt, /ja, /fi).
   const localeMatch = pathname.match(/^\/(de|fr|es|it|pt|ja|fi)(\/|$)/)
   const langPrefix = localeMatch ? `/${localeMatch[1]}` : ''
+  const locale = (localeMatch?.[1] ?? 'en') as Locale
+  const t = breadcrumbStrings[locale]
+  const categories = buildCategories()
   const normalized = langPrefix ? pathname.slice(langPrefix.length) || '/' : pathname
 
   // Hide on: homepage, orphan routes.
@@ -147,15 +152,16 @@ export default function Breadcrumb() {
   if (orphanRoutes.has(normalized)) return null
 
   const crumbs: Crumb[] = []
+  const topLevelPages = buildTopLevelPages(t)
 
   // Check if it's a top-level page (Home > Self)
   const topLevel = topLevelPages[normalized]
-  const found = findCategoryForPath(normalized)
+  const found = findCategoryForPath(normalized, categories, t, locale)
 
   if (topLevel && !found) {
     // Top-level nav page: Home > Self
     crumbs.push({
-      label: 'Home',
+      label: t.home,
       href: langPrefix || '/',
       itemHref: `${siteUrl}${langPrefix || '/'}`,
     })
@@ -167,13 +173,15 @@ export default function Breadcrumb() {
     // Sub-page: Home > Category > [Parent] > Self
     const { category, selfLabel, parent } = found
     const categoryPath = category.href ?? category.structuredPath
+    const categoryLabel = t[category.labelKey]
+
     crumbs.push({
-      label: 'Home',
+      label: t.home,
       href: langPrefix || '/',
       itemHref: `${siteUrl}${langPrefix || '/'}`,
     })
     crumbs.push({
-      label: category.label,
+      label: categoryLabel,
       href: category.href ? langPrefix + category.href : undefined,
       itemHref: `${siteUrl}${langPrefix}${categoryPath ?? normalized}`,
     })
@@ -194,7 +202,7 @@ export default function Breadcrumb() {
 
   return (
     <nav
-      aria-label="Breadcrumb"
+      aria-label={t.ariaLabel}
       className="relative z-10 max-w-container mx-auto px-6 lg:px-12 pt-2 pb-4"
     >
       <ol

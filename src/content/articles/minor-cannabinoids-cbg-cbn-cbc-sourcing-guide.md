@@ -5,7 +5,7 @@ excerpt: "A technical sourcing guide to the leading minor cannabinoids — CBG, 
 category: "Education"
 date: "2026-07-17"
 readTime: "13 min"
-image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80&auto=format&fit=crop"
+image: "/images/articles/minor-cannabinoids-cbg-cbn-cbc-sourcing-guide.webp"
 ---
 
 # Minor Cannabinoids Explained: A B2B Sourcing Guide to CBG, CBN, and CBC

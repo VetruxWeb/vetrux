@@ -5,7 +5,7 @@ excerpt: "A structured due diligence framework for B2B procurement teams evaluat
 category: "Sourcing Guide"
 date: "2026-04-18"
 readTime: "9 min"
-image: "https://images.unsplash.com/photo-1523705480679-b5d0cc17a656?w=800&q=80&auto=format&fit=crop"
+image: "/images/articles/cbd-supplier-due-diligence-checklist.webp"
 ---
 
 Sourcing [CBD isolate](/products/cbd-isolate) at scale is not a commodity decision. The supplier you choose directly affects your product quality, regulatory standing, and brand reputation in markets that are increasingly scrutinized by regulators in the EU, US, UK, and beyond. A single batch of non-compliant material — whether due to residual THC, solvent contamination, or falsified certificates — can trigger product recalls, customs seizures, or loss of retail partnerships.

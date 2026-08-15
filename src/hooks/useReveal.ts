@@ -7,7 +7,7 @@
 //
 // For custom GSAP timelines (e.g. hero choreography) use `useRevealTimeline`.
 
-import { useEffect, useState } from 'react'
+import { useEffect, useSyncExternalStore } from 'react'
 import type { RefObject } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
@@ -34,6 +34,25 @@ interface UseRevealOpts {
 }
 
 const REVEAL_EASE = 'cubic-bezier(0.22, 1, 0.36, 1)'
+
+const subscribeToReducedMotion = (onStoreChange: () => void) => {
+  const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+  mediaQuery.addEventListener('change', onStoreChange)
+  return () => mediaQuery.removeEventListener('change', onStoreChange)
+}
+
+const getReducedMotionSnapshot = () =>
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+const getServerReducedMotionSnapshot = () => false
+
+function usePrefersReducedMotion() {
+  return useSyncExternalStore(
+    subscribeToReducedMotion,
+    getReducedMotionSnapshot,
+    getServerReducedMotionSnapshot,
+  )
+}
 
 export function useReveal<T extends HTMLElement>(
   scope: RefObject<T | null>,
@@ -63,16 +82,7 @@ export function useReveal<T extends HTMLElement>(
     }
   }
 
-  const [reduced, setReduced] = useState(false)
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-    setReduced(mq.matches)
-    const handler = (e: MediaQueryListEvent) => setReduced(e.matches)
-    mq.addEventListener('change', handler)
-    return () => mq.removeEventListener('change', handler)
-  }, [])
+  const reduced = usePrefersReducedMotion()
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -186,16 +196,7 @@ export function useRevealTimeline<T extends HTMLElement>(
   build: (ctx: { reduced: boolean; gsap: typeof gsap }) => void,
   dependencies: ReadonlyArray<unknown> = [],
 ) {
-  const [reduced, setReduced] = useState(false)
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-    setReduced(mq.matches)
-    const handler = (e: MediaQueryListEvent) => setReduced(e.matches)
-    mq.addEventListener('change', handler)
-    return () => mq.removeEventListener('change', handler)
-  }, [])
+  const reduced = usePrefersReducedMotion()
 
   useGSAP(
     () => {

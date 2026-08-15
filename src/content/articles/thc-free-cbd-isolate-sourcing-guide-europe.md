@@ -5,7 +5,7 @@ excerpt: "A comprehensive sourcing guide for European B2B buyers seeking THC-fre
 category: "Sourcing Guide"
 date: "2026-04-18"
 readTime: "11 min"
-image: "https://images.unsplash.com/photo-1589262804704-c5aa9e6def89?w=800&q=80&auto=format&fit=crop"
+image: "/images/articles/thc-free-cbd-isolate-sourcing-guide-europe.webp"
 ---
 
 # THC-Free CBD Isolate: Sourcing Guide for European Buyers

@@ -6,9 +6,10 @@ import type { FaqItem } from '@/lib/articleParser'
 
 interface FaqAccordionProps {
   items: FaqItem[]
+  title?: string
 }
 
-export default function FaqAccordion({ items }: FaqAccordionProps) {
+export default function FaqAccordion({ items, title = 'Frequently Asked Questions' }: FaqAccordionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   if (items.length === 0) return null
@@ -16,7 +17,7 @@ export default function FaqAccordion({ items }: FaqAccordionProps) {
   return (
     <section className="mt-12 mb-8" id="faq">
       <h2 className="font-display text-2xl font-bold text-on-background mb-6">
-        Frequently Asked Questions
+        {title}
       </h2>
       <div className="space-y-3">
         {items.map((item, i) => {

@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import { createMemoryRateLimiter, isOriginAllowed } from '@/lib/inquiry';
 import type { HumanVerificationResult } from '@/lib/inquiry';
-import { supabaseAdmin } from '@/lib/supabase';
 
 export const runtime = 'nodejs';
 
@@ -132,7 +131,7 @@ async function verifyTurnstile(args: { token: string; ip: string }): Promise<Hum
 
 export async function POST(req: NextRequest) {
   try {
-    if (!process.env.SMTP_PASS) {
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
       return NextResponse.json(
         {
           ok: false,
@@ -329,19 +328,6 @@ export async function POST(req: NextRequest) {
       subject: `[Vetrux Quote] ${company} — ${products.length} item(s)`,
       text: textBody,
       html: htmlBody,
-    });
-
-    await supabaseAdmin.from('Inquiry').insert({
-      id: crypto.randomUUID(),
-      type: 'quote',
-      name,
-      email,
-      company,
-      message: message || null,
-      productInterest: products.join('; '),
-      ip,
-    }).then(({ error }) => {
-      if (error) console.error('[quote-inquiry.db.error]', { message: error.message, type: 'quote', email });
     });
 
     return NextResponse.json({ ok: true, message: 'Inquiry sent successfully.', referenceId: refId });

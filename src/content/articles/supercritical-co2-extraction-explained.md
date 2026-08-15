@@ -5,7 +5,7 @@ category: "Technology"
 date: "2026-04-18"
 readTime: "9 min"
 excerpt: "A technical explainer on supercritical CO₂ extraction for CBD production — covering the science behind the process, equipment requirements, advantages over solvent-based methods, and what it means for product quality."
-image: "https://images.unsplash.com/photo-1607398027609-fbd1a06fb5d4?w=800&q=80&auto=format&fit=crop"
+image: "/images/articles/supercritical-co2-extraction-explained.webp"
 ---
 
 If you're sourcing CBD isolate at scale, the extraction method behind your supplier's process isn't just a technical footnote — it directly determines the purity, consistency, and regulatory profile of what ends up in your product. Supercritical CO₂ extraction has become the gold standard in pharmaceutical-grade cannabinoid production, and understanding why helps you ask better questions and make better sourcing decisions.

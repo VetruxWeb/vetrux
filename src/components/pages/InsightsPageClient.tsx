@@ -1,12 +1,11 @@
 'use client'
 
 import type { Locale } from '@/i18n/locales';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import {
+  ArrowLeft,
   ArrowRight,
-  ChevronLeft,
-  ChevronRight,
   Clock,
   Search,
   SlidersHorizontal,
@@ -25,7 +24,7 @@ interface InsightsPageClientProps {
 
 type SortOption = 'newest' | 'oldest' | 'title-asc' | 'read-time';
 
-const pageSizeOptions = [6, 9, 12];
+const ARTICLES_PER_PAGE = 12;
 
 function getDateValue(date: string): number {
   const parsed = Date.parse(date);
@@ -44,7 +43,6 @@ export default function InsightsPageClient({ articles, locale = 'en' }: Insights
   const gridRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState('');
   const [sortBy, setSortBy] = useState<SortOption>('newest');
-  const [pageSize, setPageSize] = useState(6);
   const [currentPage, setCurrentPage] = useState(1);
 
   const filteredArticles = useMemo(() => {
@@ -83,31 +81,68 @@ export default function InsightsPageClient({ articles, locale = 'en' }: Insights
     });
   }, [articles, query, sortBy]);
 
-  const totalPages = Math.max(1, Math.ceil(filteredArticles.length / pageSize));
-  const safeCurrentPage = Math.min(currentPage, totalPages);
-  const paginatedArticles = filteredArticles.slice(
-    (safeCurrentPage - 1) * pageSize,
-    safeCurrentPage * pageSize,
-  );
-  const resultStart = filteredArticles.length === 0 ? 0 : (safeCurrentPage - 1) * pageSize + 1;
-  const resultEnd = Math.min(safeCurrentPage * pageSize, filteredArticles.length);
+  const totalPages = Math.max(1, Math.ceil(filteredArticles.length / ARTICLES_PER_PAGE));
+  const activePage = Math.min(currentPage, totalPages);
+  const resultStart = filteredArticles.length === 0 ? 0 : (activePage - 1) * ARTICLES_PER_PAGE + 1;
+  const resultEnd = Math.min(activePage * ARTICLES_PER_PAGE, filteredArticles.length);
+  const paginatedArticles = filteredArticles.slice(resultStart === 0 ? 0 : resultStart - 1, resultEnd);
+
+  useEffect(() => {
+    const syncPageFromUrl = () => {
+      const value = Number(new URLSearchParams(window.location.search).get('page'));
+      const requestedPage = Number.isInteger(value) && value > 0 ? value : 1;
+      const nextPage = Math.min(requestedPage, totalPages);
+
+      setCurrentPage(nextPage);
+
+      if (requestedPage !== nextPage) {
+        const url = new URL(window.location.href);
+        if (nextPage === 1) {
+          url.searchParams.delete('page');
+        } else {
+          url.searchParams.set('page', String(nextPage));
+        }
+        window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
+      }
+    };
+
+    syncPageFromUrl();
+    window.addEventListener('popstate', syncPageFromUrl);
+    return () => window.removeEventListener('popstate', syncPageFromUrl);
+  }, [totalPages]);
 
   useReveal(pageRef, { y: 32, stagger: 0.08, start: 'top 85%' });
   useReveal(gridRef, { y: 40, stagger: 0.1, start: 'top 80%' });
 
+  const updatePage = (page: number, historyMode: 'push' | 'replace' = 'push', scroll = true) => {
+    const nextPage = Math.min(Math.max(page, 1), totalPages);
+    setCurrentPage(nextPage);
+
+    const url = new URL(window.location.href);
+    if (nextPage === 1) {
+      url.searchParams.delete('page');
+    } else {
+      url.searchParams.set('page', String(nextPage));
+    }
+
+    const method = historyMode === 'push' ? 'pushState' : 'replaceState';
+    window.history[method](window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
+
+    if (scroll) {
+      requestAnimationFrame(() => {
+        gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
+  };
+
   const handleQueryChange = (value: string) => {
     setQuery(value);
-    setCurrentPage(1);
+    updatePage(1, 'replace', false);
   };
 
   const handleSortChange = (value: SortOption) => {
     setSortBy(value);
-    setCurrentPage(1);
-  };
-
-  const handlePageSizeChange = (value: number) => {
-    setPageSize(value);
-    setCurrentPage(1);
+    updatePage(1, 'replace', false);
   };
 
   return (
@@ -137,14 +172,16 @@ export default function InsightsPageClient({ articles, locale = 'en' }: Insights
                 </h2>
               </div>
 
-              <p className="text-xs font-semibold uppercase tracking-widest text-on-surface-muted">
-                {t.showingText} {resultStart}-{resultEnd} {t.ofText} {filteredArticles.length} {t.articlesText}
+              <p className="flex flex-wrap items-center gap-x-2 text-xs font-semibold uppercase tracking-widest text-on-surface-muted">
+                <span>{t.showingText} {resultStart}-{resultEnd} {t.ofText} {filteredArticles.length} {t.articlesText}</span>
+                <span aria-hidden="true" className="text-outline">·</span>
+                <span>{ARTICLES_PER_PAGE} {t.perPage}</span>
               </p>
             </div>
 
-            <div className="mt-8 grid gap-4 border-y border-outline-variant/70 py-5 lg:grid-cols-[minmax(0,1fr)_220px_160px]">
+            <div className="mt-8 grid gap-4 border-y border-outline-variant/70 py-5 lg:grid-cols-[minmax(0,1fr)_220px]">
               <label className="relative block">
-                <span className="sr-only">Search articles</span>
+                <span className="sr-only">{t.searchLabel}</span>
                 <Search
                   size={18}
                   className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-muted"
@@ -161,7 +198,7 @@ export default function InsightsPageClient({ articles, locale = 'en' }: Insights
                     type="button"
                     onClick={() => handleQueryChange('')}
                     className="absolute right-3 top-1/2 inline-flex h-7 w-7 -translate-y-1/2 items-center justify-center text-on-surface-muted transition-colors duration-200 hover:text-accent"
-                    aria-label="Clear search"
+                    aria-label={t.clearSearch}
                   >
                     <X size={16} />
                   </button>
@@ -169,7 +206,7 @@ export default function InsightsPageClient({ articles, locale = 'en' }: Insights
               </label>
 
               <label className="relative block">
-                <span className="sr-only">Sort articles</span>
+                <span className="sr-only">{t.sortLabel}</span>
                 <SlidersHorizontal
                   size={16}
                   className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-muted"
@@ -186,24 +223,10 @@ export default function InsightsPageClient({ articles, locale = 'en' }: Insights
                 </select>
               </label>
 
-              <label className="block">
-                <span className="sr-only">Articles per page</span>
-                <select
-                  value={pageSize}
-                  onChange={(event) => handlePageSizeChange(Number(event.target.value))}
-                  className="h-12 w-full appearance-none border border-outline-variant bg-surface-high px-4 text-xs font-semibold uppercase tracking-wider text-on-surface transition-colors duration-200 focus:border-accent focus:outline-none"
-                >
-                  {pageSizeOptions.map((option) => (
-                    <option key={option} value={option}>
-                      {option} {t.perPage}
-                    </option>
-                  ))}
-                </select>
-              </label>
             </div>
           </div>
 
-          {paginatedArticles.length > 0 ? (
+          {filteredArticles.length > 0 ? (
             <div className="grid grid-cols-1 gap-x-6 gap-y-10 md:grid-cols-2 xl:grid-cols-3">
               {paginatedArticles.map((article) => (
                 <Link
@@ -262,18 +285,18 @@ export default function InsightsPageClient({ articles, locale = 'en' }: Insights
             </div>
           )}
 
-          <div className="mt-12 flex flex-col gap-4 border-t border-outline-variant/70 pt-6 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-xs font-semibold uppercase tracking-widest text-on-surface-muted">
-              {t.pageLabel} {safeCurrentPage} {t.ofText} {totalPages}
-            </p>
-            <div className="flex flex-wrap items-center gap-2">
+          {filteredArticles.length > ARTICLES_PER_PAGE && (
+            <nav
+              className="mt-12 flex flex-wrap items-center justify-center gap-2 border-t border-outline-variant/70 pt-8"
+              aria-label={t.pageLabel}
+            >
               <button
                 type="button"
-                onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
-                disabled={safeCurrentPage === 1}
-                className="inline-flex h-10 items-center justify-center gap-2 border border-outline-variant bg-surface-high px-4 text-xs font-semibold uppercase tracking-wider text-on-surface transition-colors duration-200 hover:border-accent hover:text-accent disabled:cursor-not-allowed disabled:opacity-40"
+                onClick={() => updatePage(activePage - 1)}
+                disabled={activePage === 1}
+                className="inline-flex h-11 items-center justify-center gap-2 border border-outline-variant bg-surface px-4 text-xs font-semibold uppercase tracking-wider text-on-surface transition-colors hover:border-accent hover:text-accent disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-outline-variant disabled:hover:text-on-surface"
               >
-                <ChevronLeft size={14} />
+                <ArrowLeft size={14} />
                 {t.previousBtn}
               </button>
 
@@ -281,12 +304,13 @@ export default function InsightsPageClient({ articles, locale = 'en' }: Insights
                 <button
                   key={page}
                   type="button"
-                  onClick={() => setCurrentPage(page)}
-                  aria-current={page === safeCurrentPage ? 'page' : undefined}
-                  className={`h-10 w-10 border text-xs font-semibold transition-colors duration-200 ${
-                    page === safeCurrentPage
+                  onClick={() => updatePage(page)}
+                  aria-current={page === activePage ? 'page' : undefined}
+                  aria-label={`${t.pageLabel} ${page}`}
+                  className={`inline-flex h-11 min-w-11 items-center justify-center border px-3 text-sm font-semibold transition-colors ${
+                    page === activePage
                       ? 'border-primary bg-primary text-white'
-                      : 'border-outline-variant bg-surface-high text-on-surface hover:border-accent hover:text-accent'
+                      : 'border-outline-variant bg-surface text-on-surface hover:border-accent hover:text-accent'
                   }`}
                 >
                   {page}
@@ -295,15 +319,16 @@ export default function InsightsPageClient({ articles, locale = 'en' }: Insights
 
               <button
                 type="button"
-                onClick={() => setCurrentPage((page) => Math.min(totalPages, page + 1))}
-                disabled={safeCurrentPage === totalPages}
-                className="inline-flex h-10 items-center justify-center gap-2 border border-outline-variant bg-surface-high px-4 text-xs font-semibold uppercase tracking-wider text-on-surface transition-colors duration-200 hover:border-accent hover:text-accent disabled:cursor-not-allowed disabled:opacity-40"
+                onClick={() => updatePage(activePage + 1)}
+                disabled={activePage === totalPages}
+                className="inline-flex h-11 items-center justify-center gap-2 border border-outline-variant bg-surface px-4 text-xs font-semibold uppercase tracking-wider text-on-surface transition-colors hover:border-accent hover:text-accent disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-outline-variant disabled:hover:text-on-surface"
               >
                 {t.nextBtn}
-                <ChevronRight size={14} />
+                <ArrowRight size={14} />
               </button>
-            </div>
-          </div>
+            </nav>
+          )}
+
         </div>
       </section>
     </div>

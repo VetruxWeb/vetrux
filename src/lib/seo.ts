@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
-import { articles } from '../content/articles';
-import { locales, localeMeta, localizePath, isLocalizedRoute, type Locale } from '@/i18n/locales';
+import { getArticle, getArticleLocales } from '../content/articles';
+import { getProductBySlug } from '../content/pages/products.data';
+import { getGallerySector } from '@/lib/gallery';
+import { locales, localeMeta, localizePath, type Locale } from '@/i18n/locales';
 import { getPageSeo } from '@/content/pages/seo.content';
 
 export interface SeoMetadata {
@@ -18,11 +20,6 @@ const siteUrl = 'https://www.vetrux.tech';
 const siteName = 'Vetrux CBD';
 const siteLogo = `${siteUrl}/logo.png`;
 
-interface FaqItem {
-  question: string;
-  answer: string;
-}
-
 interface BreadcrumbItem {
   name: string;
   path: string;
@@ -38,7 +35,6 @@ const organizationJsonLd = {
   logo: siteLogo,
   description:
     'Vetrux Biotechnology (Chuxiong) Co., Ltd. operates the VETRUX brand — a vertically integrated CBD raw material manufacturer based in Chuxiong, Yunnan, China. Services include CBD raw material sales, OEM/ODM, and technical support.',
-  foundingDate: '2026',
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Chuxiong',
@@ -72,52 +68,6 @@ const websiteJsonLd = {
 
 export { websiteJsonLd };
 
-const productJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Product',
-  name: 'CBD Isolate',
-  image: `${siteUrl}/images/vetrux_images/cbd-isolate-crystals-white-powder.jpg`,
-  description:
-    'Crystalline CBD raw material supplied for qualified B2B discussions, with product information, packaging details, and documentation support available by order requirements.',
-  brand: { '@type': 'Brand', name: 'VETRUX' },
-  manufacturer: {
-    '@type': 'Organization',
-    name: 'Vetrux Biotechnology (Chuxiong) Co., Ltd.',
-    url: siteUrl,
-  },
-  category: 'CBD Raw Materials',
-  additionalProperty: [
-    { '@type': 'PropertyValue', name: 'CBD Content', value: '99%+ reference value; confirm by batch-specific COA' },
-    { '@type': 'PropertyValue', name: 'THC Content', value: '<0.05%; batch-specific verification applies' },
-    { '@type': 'PropertyValue', name: 'CAS Number', value: '13956-29-1' },
-    { '@type': 'PropertyValue', name: 'HS Code', value: '2907299020' },
-    { '@type': 'PropertyValue', name: 'Packaging', value: '5 kg PE bags / 5 kg Aluminum Foil bags / Export Cartons' },
-    { '@type': 'PropertyValue', name: 'Documentation', value: 'COA, SDS, test reports, and shipment documents may be provided according to order requirements and actual batch availability.' },
-  ],
-  offers: {
-    '@type': 'Offer',
-    priceCurrency: 'USD',
-    availability: 'https://schema.org/InStock',
-    seller: { '@type': 'Organization', name: 'Vetrux Biotechnology (Chuxiong) Co., Ltd.' },
-    url: `${siteUrl}/inquiry`,
-  },
-};
-
-export function buildFaqJsonLd(items: FaqItem[]): Record<string, unknown> {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: items.map((item) => ({
-      '@type': 'Question',
-      name: item.question,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: item.answer,
-      },
-    })),
-  };
-}
-
 export function buildBreadcrumbJsonLd(items: BreadcrumbItem[]): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
@@ -149,16 +99,30 @@ interface ArticleSchemaInput {
   image?: string;
   datePublished?: string;
   dateModified?: string;
+  locale?: Locale;
 }
+
+const breadcrumbLabels: Record<Locale, { home: string; blog: string; products: string }> = {
+  en: { home: 'Home', blog: 'Blog', products: 'Products' },
+  de: { home: 'Startseite', blog: 'Blog', products: 'Produkte' },
+  fr: { home: 'Accueil', blog: 'Blog', products: 'Produits' },
+  es: { home: 'Inicio', blog: 'Blog', products: 'Productos' },
+  it: { home: 'Home', blog: 'Blog', products: 'Prodotti' },
+  pt: { home: 'Início', blog: 'Blog', products: 'Produtos' },
+  ja: { home: 'ホーム', blog: 'ブログ', products: '製品' },
+  fi: { home: 'Etusivu', blog: 'Blogi', products: 'Tuotteet' },
+};
 
 /**
  * Build Article + BreadcrumbList JSON-LD for a blog post.
- * Shared by static (markdown) and database-backed articles so both emit
- * identical structured data.
+ * The URLs and breadcrumb labels match the page's real localized route.
  */
 export function buildArticleJsonLd(input: ArticleSchemaInput): Record<string, unknown>[] {
   const image = input.image || defaultImage;
   const published = input.datePublished || '';
+  const locale = input.locale || 'en';
+  const articlePath = localizePath(`/blog/${input.slug}`, locale);
+  const labels = breadcrumbLabels[locale];
   return [
     {
       '@context': 'https://schema.org',
@@ -172,8 +136,6 @@ export function buildArticleJsonLd(input: ArticleSchemaInput): Record<string, un
         '@type': 'Organization',
         name: siteName,
         url: siteUrl,
-        description:
-          'Editorial team at VETRUX — technical and regulatory analysis from Vetrux Biotechnology (Chuxiong) Co., Ltd., a vertically integrated CBD raw material manufacturer.',
       },
       publisher: {
         '@type': 'Organization',
@@ -183,13 +145,13 @@ export function buildArticleJsonLd(input: ArticleSchemaInput): Record<string, un
       },
       mainEntityOfPage: {
         '@type': 'WebPage',
-        '@id': `${siteUrl}/blog/${input.slug}`,
+        '@id': `${siteUrl}${articlePath}`,
       },
     },
     buildBreadcrumbJsonLd([
-      { name: 'Home', path: '/' },
-      { name: 'Blog', path: '/blog' },
-      { name: input.title, path: `/blog/${input.slug}` },
+      { name: labels.home, path: localizePath('/', locale) },
+      { name: labels.blog, path: localizePath('/blog', locale) },
+      { name: input.title, path: articlePath },
     ]),
   ];
 }
@@ -201,12 +163,16 @@ interface ProductSchemaInput {
   image?: string | null;
   category?: string | null;
   specs?: { label: string; value: string }[];
+  locale?: Locale;
 }
 
 /**
- * Build Product + BreadcrumbList JSON-LD for a database-backed product page.
+ * Build Product + BreadcrumbList JSON-LD for a localized static product page.
  */
 export function buildProductJsonLd(input: ProductSchemaInput): Record<string, unknown>[] {
+  const locale = input.locale || 'en';
+  const productPath = localizePath(`/products/${input.slug}`, locale);
+  const labels = breadcrumbLabels[locale];
   const image = input.image
     ? input.image.startsWith('http')
       ? input.image
@@ -222,19 +188,13 @@ export function buildProductJsonLd(input: ProductSchemaInput): Record<string, un
       input.description ||
       `${input.name} supplied by Vetrux Biotechnology (Chuxiong) Co., Ltd. for qualified B2B discussions.`,
     brand: { '@type': 'Brand', name: 'VETRUX' },
+    url: `${siteUrl}${productPath}`,
     manufacturer: {
       '@type': 'Organization',
       name: 'Vetrux Biotechnology (Chuxiong) Co., Ltd.',
       url: siteUrl,
     },
     category: input.category || 'CBD Raw Materials',
-    offers: {
-      '@type': 'Offer',
-      priceCurrency: 'USD',
-      availability: 'https://schema.org/InStock',
-      seller: { '@type': 'Organization', name: 'Vetrux Biotechnology (Chuxiong) Co., Ltd.' },
-      url: `${siteUrl}/inquiry`,
-    },
   };
 
   if (input.specs && input.specs.length > 0) {
@@ -248,128 +208,13 @@ export function buildProductJsonLd(input: ProductSchemaInput): Record<string, un
   return [
     product,
     buildBreadcrumbJsonLd([
-      { name: 'Home', path: '/' },
-      { name: 'Products', path: '/products' },
-      { name: input.name, path: `/products/${input.slug}` },
+      { name: labels.home, path: localizePath('/', locale) },
+      { name: labels.products, path: localizePath('/products', locale) },
+      { name: input.name, path: productPath },
     ]),
   ];
 }
 
-
-const homepageFaqJsonLd = buildFaqJsonLd([
-  {
-    question: 'What does Vetrux manufacture?',
-    answer:
-      'Vetrux manufactures bulk CBD isolate and related CBD raw material solutions for qualified B2B discussions, supported by cultivation, extraction, purification, quality-control, and packaging workflows in Yunnan, China.',
-  },
-  {
-    question: 'Who does Vetrux serve?',
-    answer:
-      'Vetrux serves B2B buyers, brand owners, trading companies, channel partners, and formulation teams that need bulk CBD isolate, OEM/ODM support, documentation support, and recurring supply discussions.',
-  },
-  {
-    question: 'What documents can buyers request?',
-    answer:
-      'Buyers can request COA, SDS, test reports, product information, commercial invoice, packing list, and export paperwork support. Availability depends on actual batch, order terms, and verification results.',
-  },
-  {
-    question: 'Where is Vetrux based?',
-    answer:
-      'Vetrux Biotechnology (Chuxiong) Co., Ltd. is based in Chuxiong, Yunnan, China, with CBD raw material operations connected to local cultivation, processing, quality-control, and packaging workflows.',
-  },
-]);
-
-const productFaqJsonLd = buildFaqJsonLd([
-  {
-    question: 'What is Vetrux CBD isolate?',
-    answer:
-      'Vetrux CBD isolate is a crystalline CBD raw material supplied for qualified B2B discussions, with product information, packaging details, and documentation support available by order requirements.',
-  },
-  {
-    question: 'What packaging formats are available?',
-    answer:
-      'Available packaging includes 5 kg PE bags or 5 kg aluminum-foil bags packed in export cartons. Palletization with shrink wrap may be arranged according to order requirements.',
-  },
-  {
-    question: 'What documents can be requested?',
-    answer:
-      'Buyers can request COA, SDS, test reports, product information, commercial invoice, packing list, and shipment documents. Batch-specific availability depends on actual batch, order terms, and verification results.',
-  },
-  {
-    question: 'Who is responsible for import compliance?',
-    answer:
-      "Destination-country import compliance, including permits, licenses, approvals, labels, and customs declarations, is the buyer/importer's responsibility. Vetrux can provide documentation support by order terms.",
-  },
-]);
-
-const manufacturerFaqJsonLd = buildFaqJsonLd([
-  {
-    question: 'Is Vetrux a CBD isolate manufacturer?',
-    answer:
-      'Yes. Vetrux Biotechnology (Chuxiong) Co., Ltd. is a China-based CBD isolate manufacturer supporting qualified B2B buyers with bulk CBD isolate, OEM/ODM cooperation, packaging, and documentation support.',
-  },
-  {
-    question: 'What manufacturing capabilities does Vetrux operate?',
-    answer:
-      'Vetrux operates connected cultivation, extraction, purification, concentration, quality-control, and packaging workflows for CBD raw materials in Chuxiong, Yunnan, China.',
-  },
-  {
-    question: 'Does Vetrux support OEM/ODM?',
-    answer:
-      'Yes. Vetrux supports OEM/ODM cooperation covering raw material support, formulation discussions, production coordination, packaging design, and finished product delivery according to project requirements.',
-  },
-  {
-    question: 'What quality-control capabilities are available?',
-    answer:
-      'Vetrux has in-house HPLC analytical capability for quality-control support. Batch-specific documents depend on actual batch, order terms, and verification results.',
-  },
-]);
-
-const wholesaleFaqJsonLd = buildFaqJsonLd([
-  {
-    question: 'Can B2B buyers request bulk CBD isolate?',
-    answer:
-      'Yes. Qualified B2B buyers can request bulk CBD isolate discussions, product information, packaging details, documentation support, and quote review through the Vetrux inquiry process.',
-  },
-  {
-    question: 'What cooperation models are available?',
-    answer:
-      'Vetrux supports standard supply, long-term supply discussions, project-based cooperation, and OEM/ODM services for brand clients, channel partners, trading companies, and recurring procurement teams.',
-  },
-  {
-    question: 'What packaging is used for bulk orders?',
-    answer:
-      'Bulk orders can use 5 kg PE bags or 5 kg aluminum-foil bags in export cartons, with palletization and shrink wrap arranged according to order requirements.',
-  },
-  {
-    question: 'What should buyers prepare before requesting a quote?',
-    answer:
-      'Buyers should prepare target quantity, packaging needs, document requirements, intended application, destination market, delivery timeline, and importer compliance responsibilities before requesting a quote.',
-  },
-]);
-
-const qualityFaqJsonLd = buildFaqJsonLd([
-  {
-    question: 'What documents can Vetrux provide?',
-    answer:
-      'Vetrux can provide COA, SDS, test reports, product information, commercial invoice, packing list, and shipment documents according to order requirements and actual batch availability.',
-  },
-  {
-    question: 'How does Vetrux test CBD isolate quality?',
-    answer:
-      'Vetrux uses in-house HPLC analytical capability to support CBD isolate quality-control review. Additional batch-specific documents depend on actual batch, order terms, and verification results.',
-  },
-  {
-    question: 'What is tested in-house vs batch-specific?',
-    answer:
-      'In-house HPLC supports analytical review during quality-control workflows. Batch-specific COA, SDS, test reports, and shipment documents depend on the actual batch, order terms, and verification results.',
-  },
-  {
-    question: 'Who is responsible for import compliance?',
-    answer:
-      "Destination-country import compliance, including permits, licenses, approvals, labels, customs declarations, and regulatory review, is the buyer/importer's responsibility.",
-  },
-]);
 
 const staticPageSeo: Record<string, SeoMetadata> = {
   '/': {
@@ -382,13 +227,13 @@ const staticPageSeo: Record<string, SeoMetadata> = {
     keywords:
       'CBD isolate manufacturer China, bulk CBD isolate supplier, B2B CBD isolate, CBD isolate OEM ODM, Vetrux CBD, Yunnan',
     jsonLd: [
+      websiteJsonLd,
       organizationJsonLd,
       buildWebPageJsonLd(
         '/',
         'CBD Isolate Manufacturer in China | Bulk B2B Supplier | Vetrux',
         'Vetrux supplies bulk CBD isolate for B2B buyers from Yunnan, China, with OEM/ODM support, in-house quality control, and buyer documentation support.',
       ),
-      homepageFaqJsonLd,
       buildBreadcrumbJsonLd([{ name: 'Home', path: '/' }]),
     ],
   },
@@ -408,7 +253,6 @@ const staticPageSeo: Record<string, SeoMetadata> = {
         'CBD Raw Material Products | Bulk Isolate & Oil',
         'Browse Vetrux CBD raw material products, including bulk CBD isolate, for qualified B2B buyers. Product information, packaging details, and documentation support by order requirements.',
       ),
-      productFaqJsonLd,
       buildBreadcrumbJsonLd([
         { name: 'Home', path: '/' },
         { name: 'Products', path: '/products' },
@@ -558,7 +402,6 @@ const staticPageSeo: Record<string, SeoMetadata> = {
         'Bulk CBD Isolate Supplier | Wholesale CBD Isolate | Vetrux',
         'Wholesale CBD isolate supply for B2B buyers, with 5 kg packaging, documentation support, and OEM/ODM cooperation from Vetrux in China.',
       ),
-      wholesaleFaqJsonLd,
       buildBreadcrumbJsonLd([
         { name: 'Home', path: '/' },
         { name: 'Wholesale CBD Isolate', path: '/wholesale-cbd-isolate' },
@@ -581,7 +424,6 @@ const staticPageSeo: Record<string, SeoMetadata> = {
         'CBD Isolate COA, SDS & Quality Assurance | Vetrux',
         'Learn how Vetrux supports CBD isolate quality review with in-house HPLC analytical capability, COA/SDS support, test reports, and shipment documentation by order terms.',
       ),
-      qualityFaqJsonLd,
       buildBreadcrumbJsonLd([
         { name: 'Home', path: '/' },
         { name: 'Quality Assurance', path: '/quality-assurance' },
@@ -604,7 +446,6 @@ const staticPageSeo: Record<string, SeoMetadata> = {
         'CBD Isolate Manufacturer in China | Vetrux',
         'Vetrux supplies bulk CBD isolate for B2B buyers from Yunnan, China, with in-house analytical capability, OEM/ODM support, and buyer documentation support.',
       ),
-      manufacturerFaqJsonLd,
       buildBreadcrumbJsonLd([
         { name: 'Home', path: '/' },
         { name: 'CBD Isolate Manufacturer', path: '/cbd-isolate-manufacturer' },
@@ -663,10 +504,10 @@ export function getBaseUrl(): string {
   return 'https://www.vetrux.tech';
 }
 
-export function getSeoMetadata(pathname: string): SeoMetadata {
+export function getSeoMetadata(pathname: string, locale: Locale = 'en'): SeoMetadata {
   if (pathname.startsWith('/blog/') && pathname !== '/blog') {
     const slug = pathname.replace('/blog/', '');
-    const article = articles.find((entry) => entry.slug === slug);
+    const article = getArticle(slug, locale);
     if (article) {
       return {
         title: article.title,
@@ -680,6 +521,7 @@ export function getSeoMetadata(pathname: string): SeoMetadata {
           excerpt: article.excerpt,
           image: article.image || defaultImage,
           datePublished: article.date,
+          locale,
         }),
       };
     }
@@ -718,15 +560,20 @@ const localizedRoutePaths = new Set([
   '/terms-of-service',
 ]);
 
-function buildAlternates(baseUrl: string, canonicalPath: string, locale: Locale = 'en'): Metadata['alternates'] {
+function buildAlternates(
+  baseUrl: string,
+  canonicalPath: string,
+  locale: Locale = 'en',
+  availableLocales: readonly Locale[] = locales,
+): Metadata['alternates'] {
   const localizedCanonical = localizePath(canonicalPath, locale);
   const alternates: NonNullable<Metadata['alternates']> = {
     canonical: `${baseUrl}${localizedCanonical}`,
   };
 
-  if (localizedRoutePaths.has(canonicalPath)) {
+  if (localizedRoutePaths.has(canonicalPath) || availableLocales.length > 1) {
     const languages: Record<string, string> = {};
-    for (const loc of locales) {
+    for (const loc of availableLocales) {
       languages[localeMeta[loc].hreflang] = `${baseUrl}${localizePath(canonicalPath, loc)}`;
     }
     languages['x-default'] = `${baseUrl}${canonicalPath}`;
@@ -737,15 +584,20 @@ function buildAlternates(baseUrl: string, canonicalPath: string, locale: Locale 
 }
 
 export function buildMetadata(pathname: string, locale: Locale = 'en'): Metadata {
-  const seo = getSeoMetadata(pathname);
+  const seo = getSeoMetadata(pathname, locale);
   const baseUrl = getBaseUrl();
   const imageUrl = seo.image ? `${baseUrl}${seo.image}` : undefined;
   const localizedCanonical = localizePath(seo.canonicalPath, locale);
 
-  const localizedSeo = getPageSeo(pathname, locale);
-  const title = locale !== 'en' ? localizedSeo.title : seo.title;
-  const description = locale !== 'en' ? localizedSeo.description : seo.description;
-  const keywords = locale !== 'en' ? (localizedSeo.keywords ?? seo.keywords) : seo.keywords;
+  // Article and product detail pages carry their own localized metadata; only
+  // static routes fall back to the per-locale SEO table.
+  const isContentPath =
+    (pathname.startsWith('/blog/') && pathname !== '/blog') ||
+    (pathname.startsWith('/products/') && pathname !== '/products');
+  const localizedSeo = isContentPath ? null : getPageSeo(pathname, locale);
+  const title = localizedSeo ? localizedSeo.title : seo.title;
+  const description = localizedSeo ? localizedSeo.description : seo.description;
+  const keywords = localizedSeo ? (localizedSeo.keywords ?? seo.keywords) : seo.keywords;
 
   // Homepage title is already the full brand headline — use `absolute` so the
   // layout's `%s — Vetrux CBD` template doesn't append the brand name twice.
@@ -774,50 +626,50 @@ export function buildMetadata(pathname: string, locale: Locale = 'en'): Metadata
   };
 }
 
-interface DynamicMetadataInput {
+interface ContentMetadataInput {
   title: string;
   description: string;
-  canonicalPath: string;
+  /** Un-prefixed content path, e.g. `/products/cbd-isolate` or `/blog/<slug>`. */
+  path: string;
   image?: string;
   type?: 'website' | 'article';
-  /** Un-prefixed path (e.g. `/products/cbd-isolate`) used to derive hreflang alternates across all locales. */
-  localizedPath?: string;
+  /** Locale list that actually has localized content for this URL. */
+  availableLocales: readonly Locale[];
 }
 
 /**
- * Build Metadata for database-backed pages (articles, products) that aren't in
- * the static SEO table. Resolves canonical/OG/Twitter consistently and accepts
- * both relative and absolute (e.g. Vercel Blob) image URLs.
+ * Build Metadata for locally sourced content pages (articles, products).
+ * The hreflang cluster only advertises locales that really exist, and the
+ * canonical always points at the current locale's URL.
  */
-export function buildDynamicMetadata(input: DynamicMetadataInput): Metadata {
+export function buildContentMetadata(
+  input: ContentMetadataInput,
+  locale: Locale = 'en',
+): Metadata {
   const baseUrl = getBaseUrl();
-  const canonical = `${baseUrl}${input.canonicalPath}`;
+  const canonical = `${baseUrl}${localizePath(input.path, locale)}`;
   const imageUrl = input.image
     ? input.image.startsWith('http')
       ? input.image
       : `${baseUrl}${input.image}`
     : `${baseUrl}${defaultImage}`;
 
-  const alternates: NonNullable<Metadata['alternates']> = { canonical };
-  if (input.localizedPath) {
-    const languages: Record<string, string> = {};
-    for (const loc of locales) {
-      languages[localeMeta[loc].hreflang] = `${baseUrl}${localizePath(input.localizedPath, loc)}`;
-    }
-    languages['x-default'] = `${baseUrl}${input.localizedPath}`;
-    alternates.languages = languages;
+  const languages: Record<string, string> = {};
+  for (const loc of input.availableLocales) {
+    languages[localeMeta[loc].hreflang] = `${baseUrl}${localizePath(input.path, loc)}`;
   }
+  languages['x-default'] = `${baseUrl}${input.path}`;
 
   return {
     title: input.title,
     description: input.description,
-    alternates,
+    alternates: { canonical, languages },
     openGraph: {
       siteName,
       title: input.title,
       description: input.description,
       url: canonical,
-      locale: 'en_US',
+      locale: localeMeta[locale].ogLocale,
       images: [{ url: imageUrl }],
       type: input.type === 'article' ? 'article' : 'website',
     },
@@ -828,4 +680,67 @@ export function buildDynamicMetadata(input: DynamicMetadataInput): Metadata {
       images: [imageUrl],
     },
   };
+}
+
+/** Metadata for a localized article detail page. */
+export function buildArticleMetadata(slug: string, locale: Locale = 'en'): Metadata {
+  const article = getArticle(slug, locale);
+  if (!article) return {};
+  return buildContentMetadata(
+    {
+      title: article.title,
+      description: article.excerpt,
+      path: `/blog/${article.slug}`,
+      image: article.image || defaultImage,
+      type: 'article',
+      availableLocales: getArticleLocales(article.slug),
+    },
+    locale,
+  );
+}
+
+/** Metadata for a localized product detail page (all eight locales exist). */
+export function buildProductMetadata(slug: string, locale: Locale = 'en'): Metadata {
+  const product = getProductBySlug(slug, locale);
+  if (!product) return {};
+  return buildContentMetadata(
+    {
+      title: product.name,
+      description: product.description.slice(0, 160),
+      path: `/products/${product.slug}`,
+      image: product.heroImage || product.images[0],
+      type: 'website',
+      availableLocales: locales,
+    },
+    locale,
+  );
+}
+
+const galleryTitleSuffix: Record<Locale, string> = {
+  en: 'Vetrux Facility Gallery',
+  de: 'Vetrux Anlagengalerie',
+  fr: 'Galerie des installations Vetrux',
+  es: 'Galería de instalaciones Vetrux',
+  it: 'Galleria degli impianti Vetrux',
+  pt: 'Galeria de instalações Vetrux',
+  ja: 'Vetrux施設ギャラリー',
+  fi: 'Vetruxin laitosgalleria',
+};
+
+/** Metadata for one localized gallery sector. */
+export function buildGalleryMetadata(slug: string, locale: Locale = 'en'): Metadata {
+  const sector = getGallerySector(slug);
+  if (!sector) return {};
+  const content = sector.content[locale];
+  return buildContentMetadata(
+    {
+      title: `${content.title} | ${galleryTitleSuffix[locale]}`,
+      description: content.description,
+      path: `/gallery/${sector.slug}`,
+      image: sector.cover.src,
+      type: 'website',
+      availableLocales: locales,
+    },
+    locale,
+  );
 }

@@ -5,7 +5,6 @@ import {
   handleInquirySubmission,
 } from '@/lib/inquiry';
 import type { HumanVerificationResult, InquiryPayload } from '@/lib/inquiry';
-import { supabaseAdmin } from '@/lib/supabase';
 
 export const runtime = 'nodejs';
 
@@ -164,7 +163,7 @@ async function verifyTurnstile(args: { token: string; ip: string }): Promise<Hum
 
 export async function POST(req: NextRequest) {
   try {
-    if (!process.env.SMTP_PASS) {
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
       return NextResponse.json(
         { ok: false, message: 'SMTP credentials are not configured.', error: { code: 'mail_configuration_error', message: 'SMTP credentials are not configured.' } },
         { status: 500 },
@@ -223,20 +222,6 @@ export async function POST(req: NextRequest) {
     });
 
     if (response.status === 200) {
-      // Store inquiry in database
-      await supabaseAdmin.from('Inquiry').insert({
-        id: crypto.randomUUID(),
-        type: 'general',
-        name: payload.contactPerson ?? '',
-        email: payload.email ?? '',
-        company: payload.companyName ?? null,
-        message: payload.requirements ?? null,
-        productInterest: payload.monthlyVolume ?? null,
-        ip: getClientIp(req),
-      }).then(({ error }) => {
-        if (error) console.error('[inquiry.db.error]', { message: error.message, type: 'general', email: payload.email ?? '' });
-      });
-
       console.info('[inquiry.accepted]', {
         provider, host: mailProviderConfig.host, authUser: process.env.SMTP_USER ?? '',
         mailFrom: effectiveMailFrom, mailTo: effectiveMailTo,

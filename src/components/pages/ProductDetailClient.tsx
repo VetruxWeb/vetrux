@@ -10,7 +10,7 @@ import DocumentRequestModal from '@/components/molecules/DocumentRequestModal';
 import { useReveal } from '@/hooks/useReveal';
 import type { DocumentRequestDocumentType } from '@/lib/documentRequest';
 import type { Locale } from '@/i18n/locales';
-import type { ProductDetail } from '@/lib/productData';
+import type { ProductDetail } from '@/content/pages/products.data';
 import { productDetailStrings } from '@/content/pages/productDetail.content';
 
 const plantingImages = [
@@ -191,7 +191,7 @@ export default function ProductDetailClient({ product, locale = 'en' }: Props) {
               <div className="text-xs text-on-surface-variant space-y-1">
                 {product.specs.length > 0 && (
                   <p>
-                    {product.specs.filter((s) => ['CAS Number', 'HS Code'].includes(s.label)).map((s) => `${s.label}: ${s.value}`).join(' | ')}
+                    {product.specs.filter((s) => s.key === 'cas' || s.key === 'hs-code').map((s) => `${s.label}: ${s.value}`).join(' | ')}
                   </p>
                 )}
                 {product.moq && <p>{t.moqPrefix} {product.moq} | {t.customization}</p>}
@@ -302,21 +302,25 @@ export default function ProductDetailClient({ product, locale = 'en' }: Props) {
         </div>
       </section>
 
-      <QuoteInquiryModal
-        isOpen={quoteModalOpen}
-        onClose={() => setQuoteModalOpen(false)}
-        selectedProducts={buildSelectedProducts()}
-        productName={product.name}
-        locale={locale}
-      />
-      <DocumentRequestModal
-        isOpen={docModalOpen}
-        onClose={() => setDocModalOpen(false)}
-        defaultDocumentType={docModalType}
-        sourcePage={`/products/${product.slug}`}
-        productInterest={product.name}
-        locale={locale}
-      />
+      {quoteModalOpen && (
+        <QuoteInquiryModal
+          isOpen
+          onClose={() => setQuoteModalOpen(false)}
+          selectedProducts={buildSelectedProducts()}
+          productName={product.name}
+          locale={locale}
+        />
+      )}
+      {docModalOpen && (
+        <DocumentRequestModal
+          isOpen
+          onClose={() => setDocModalOpen(false)}
+          defaultDocumentType={docModalType}
+          sourcePage={`/products/${product.slug}`}
+          productInterest={product.name}
+          locale={locale}
+        />
+      )}
     </div>
   );
 }

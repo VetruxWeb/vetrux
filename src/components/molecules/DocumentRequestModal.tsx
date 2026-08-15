@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { ArrowRight, CheckCircle2, FileText, ShieldCheck, X } from 'lucide-react';
 import Button from '@/components/atoms/Button';
@@ -302,11 +302,6 @@ export default function DocumentRequestModal({
   locale = 'en',
 }: DocumentRequestModalProps) {
   const t = modalStrings[locale];
-  const documentTypeLabels: Record<DocumentRequestDocumentType, string> = {
-    COA: 'COA',
-    SDS: 'SDS',
-    both: t.coaAndSds,
-  };
   const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY?.trim() ?? '';
   const turnstileContainerRef = useRef<HTMLDivElement | null>(null);
   const turnstileWidgetIdRef = useRef<string | null>(null);
@@ -320,10 +315,7 @@ export default function DocumentRequestModal({
   const [referenceId, setReferenceId] = useState('');
 
   const hasAccess = referenceId !== '';
-  const documentLabel = useMemo(
-    () => documentTypeLabels[form.documentType] ?? documentTypeLabels.both,
-    [form.documentType],
-  );
+  const documentLabel = form.documentType === 'both' ? t.coaAndSds : form.documentType;
 
   const resetTurnstile = () => {
     setForm((currentForm) => ({
@@ -335,19 +327,6 @@ export default function DocumentRequestModal({
       window.turnstile.reset(turnstileWidgetIdRef.current);
     }
   };
-
-  useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
-
-    setForm(initialForm(defaultDocumentType, sourcePage, productInterest));
-    setErrorMessage('');
-    setFieldError('');
-    setReferenceId('');
-    setIsTurnstileReady(false);
-    turnstileWidgetIdRef.current = null;
-  }, [defaultDocumentType, isOpen, productInterest, sourcePage]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -421,7 +400,7 @@ export default function DocumentRequestModal({
     document.head.appendChild(script);
 
     return () => { isCancelled = true; };
-  }, [hasAccess, isOpen, turnstileSiteKey]);
+  }, [hasAccess, isOpen, t.turnstileFailed, turnstileSiteKey]);
 
   const validate = (): boolean => {
     setFieldError('');

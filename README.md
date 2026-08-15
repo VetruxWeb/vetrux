@@ -1,254 +1,116 @@
+# Vetrux CBD website
 
-# Vetrux CBD — B2B CBD Extract Website
+The public Vetrux B2B website is built with Next.js 16, React 19, TypeScript, Tailwind CSS, and local Markdown content. Products and articles are stored in the repository and generated without Supabase or a database-backed CMS.
 
-Premium B2B frontend for Vetrux CBD, the public-facing brand for 蔚萃生物科技（楚雄）有限公司. Built as a marketing site with React, TypeScript, Next.js, Tailwind CSS, and GSAP animations. Optimized for Vercel deployment.
+## Requirements
 
----
+- Node.js 24 LTS (see `.nvmrc` and `.node-version`)
+- npm 11 or the npm version bundled with Node 24
 
-## Overview
-
-This project is a brand and lead-generation website focused on:
-- presenting Vetrux CBD's extraction and cultivation capabilities
-- showcasing flagship CBD isolate product information
-- publishing industry insight articles from local Markdown content
-- capturing wholesale / partnership inquiries through a reusable inquiry form UI
-
-The inquiry form now submits to a Vercel serverless endpoint (`/api/inquiry`) that validates input, enforces anti-abuse controls, and delivers leads to the configured mailbox over SMTP.
-
----
-
-## Tech Stack
-
-| Layer | Technology |
-|-------|-----------|
-| Framework | React 19 + TypeScript |
-| Build Tool | Vite 8 |
-| Styling | Tailwind CSS v3 |
-| Routing | React Router DOM v7 |
-| Animation | GSAP + ScrollTrigger + `@gsap/react` |
-| Content Rendering | React Markdown + `remark-gfm` |
-| Icons | Lucide React |
-| Font | Manrope |
-| Deployment | Vercel |
-
----
-
-## Getting Started
+## Local setup
 
 ```bash
-npm install
+npm ci
+copy .env.example .env.local
 npm run dev
 ```
 
-Open the local dev server URL shown by Vite.
+Next.js uses `http://localhost:3000` by default. Use `npm run dev -- --port 3080` only when you intentionally want port 3080.
 
-### Environment Variables
+The site renders without service credentials. Inquiry submissions require the Turnstile and SMTP variables described below.
 
-The inquiry API supports provider switching through `INQUIRY_MAIL_PROVIDER`.
-
-Supported values:
-- `aliyun` — recommended default for Vetrux using Aliyun enterprise mailbox
-- `gmail` — optional for temporary local testing only
-- `custom` — use another SMTP service
-
-Aliyun enterprise mailbox example:
+## Quality checks
 
 ```bash
-INQUIRY_MAIL_PROVIDER=aliyun
-SMTP_HOST=smtp.qiye.aliyun.com
-SMTP_PORT=465
-SMTP_SECURE=true
-SMTP_USER=postmaster@vetrux.tech
-SMTP_PASS=your-postmaster-password-or-security-password
-INQUIRY_MAIL_FROM=postmaster@vetrux.tech
-INQUIRY_MAIL_TO=postmaster@vetrux.tech
-INQUIRY_ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173,https://vetrux.tech,https://www.vetrux.tech
-VITE_TURNSTILE_SITE_KEY=your-cloudflare-turnstile-site-key
-TURNSTILE_SECRET_KEY=your-cloudflare-turnstile-secret-key
+npm test
+npm run typecheck
+npm run lint
+npm run build
+npm start
 ```
 
-How to get `SMTP_PASS` for Aliyun enterprise mailbox:
+`npm run build` must succeed without Supabase, database, or authentication variables. The production server defaults to port 3000; pass `-- -p <port>` to `npm start` to choose another port.
 
-1. Log in to the mailbox web console as `postmaster@vetrux.tech`.
-2. Open settings or security settings and find the SMTP / IMAP / POP service area.
-3. If third-party client security password is not enabled, use the mailbox login password.
-4. If third-party client security password is enabled, generate or reset that security password and use it for `SMTP_PASS`.
+## Content architecture
 
-Important:
-- by default, Aliyun enterprise mailbox SMTP uses the mailbox login password
-- if third-party client security password is enabled, SMTP uses that generated security password instead
-- if the console only shows “reset” instead of “view”, create a new one and save it immediately
+### Articles
 
-Optional Gmail local testing example:
+Article files live in `src/content/articles`.
 
-```bash
-INQUIRY_MAIL_PROVIDER=gmail
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=465
-SMTP_SECURE=true
-SMTP_USER=your-gmail-address@gmail.com
-SMTP_PASS=your-gmail-app-password
-INQUIRY_MAIL_FROM=your-gmail-address@gmail.com
-INQUIRY_MAIL_TO=your-gmail-address@gmail.com
-INQUIRY_ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173,https://vetrux.tech,https://www.vetrux.tech
-VITE_TURNSTILE_SITE_KEY=your-cloudflare-turnstile-site-key
-TURNSTILE_SECRET_KEY=your-cloudflare-turnstile-secret-key
+- English: `<slug>.md`
+- Localized: `<slug>.<locale>.md`
+- Supported locales: `en`, `de`, `fr`, `es`, `it`, `pt`, `ja`, `fi`
+
+Required frontmatter:
+
+```yaml
+---
+title: "Article title"
+slug: article-slug
+category: Quality
+date: "2026-08-14"
+readTime: 10 min
+excerpt: "Search and listing description."
+image: "/images/articles/article-slug.webp"
+imageAlt: "Meaningful description of the hero image"
+---
 ```
 
-Local development origins `http://localhost:5173` and `http://127.0.0.1:5173` are allowed by default.
-Detailed environment templates and switching guidance live in `docs/inquiry-env-template.md`.
+Only locale files that actually exist are published and advertised in `hreflang`. Do not copy English text into a localized file as a placeholder. Article images are local assets under `public/images/articles`; `PROVENANCE.md` records how those assets were produced.
 
-### Abuse Protection
+`npm run dev` and `npm run build` regenerate `generated-articles.json` from the Markdown files. Commit that generated snapshot with content changes so type checking and other read-only checks see the same deterministic registry.
 
-The inquiry pipeline currently defends against common form abuse by combining:
-- Cloudflare Turnstile widget on the frontend with server-side token verification
-- server-side field validation and payload length limits
-- origin / referer allow-list enforcement
-- honeypot bot detection
-- minimum form-fill time checks
-- suspicious-content filtering for scripts / link spam
-- in-memory rate limiting per IP and per lead fingerprint
+### Products
 
-### Available Scripts
+The two public product records and all localized copy live in `src/content/pages/products.data.ts`. Product list and detail pages are generated for every supported locale. Update that file and the related page strings together when changing a product.
 
-```bash
-npm run dev      # start development server
-npm run build    # type-check and build production bundle
-npm run lint     # run ESLint
-npm run preview  # preview the production build locally
-```
+### Public pages and SEO
 
----
+- Route wrappers: `app/`
+- Shared localized page content: `src/content/pages/`
+- Metadata and JSON-LD: `src/lib/seo.ts`
+- Sitemap: `app/sitemap.ts`
+- Locale definitions: `src/i18n/locales.ts`
 
-## Routes
+Keep canonical URLs, `hreflang`, visible content, and JSON-LD in the same locale. Sitemap `lastModified` values come from complete ISO dates in article frontmatter; the generator does not substitute the current date.
 
-| Path | Page | Purpose |
-|------|------|---------|
-| `/` | HomePage | Brand hero, trust signals, facility overview |
-| `/products/cbd-isolate` | ProductPage | Product detail page for CBD isolate |
-| `/equipment` | EquipmentPage | Extraction equipment and technical showcase |
-| `/planting` | PlantingPage | Cultivation base, growing zones, traceability |
-| `/gallery` | GalleryPage | Campus / facility gallery |
-| `/insights` | InsightsPage | Article listing and featured insight |
-| `/insights/:slug` | ArticlePage | Markdown-rendered article detail page |
-| `/inquiry` | InquiryPage | B2B inquiry / partnership form |
-| `*` | NotFound | 404 fallback |
+## Inquiry configuration
 
----
+Copy `.env.example` to `.env.local` and provide real values locally or in the deployment environment. Never commit credentials.
 
-## Project Structure
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | For forms | Cloudflare Turnstile site key exposed to the browser |
+| `TURNSTILE_SECRET_KEY` | For forms | Server-side Turnstile verification key |
+| `SMTP_USER` | For forms | SMTP login |
+| `SMTP_PASS` | For forms | SMTP password or app password |
+| `INQUIRY_MAIL_PROVIDER` | Optional | `aliyun` (default), `gmail`, or `custom` |
+| `SMTP_HOST` | Optional | Provider SMTP host |
+| `SMTP_PORT` | Optional | Provider SMTP port; default 465 |
+| `SMTP_SECURE` | Optional | TLS mode; default `true` |
+| `INQUIRY_MAIL_FROM` | Optional | Envelope/from mailbox |
+| `INQUIRY_MAIL_TO` | Optional | Lead destination mailbox |
+| `INQUIRY_ALLOWED_ORIGINS` | Optional | Comma-separated additional origins |
+| `NEXT_PUBLIC_SITE_URL` | Optional | Canonical site origin; production default is `https://www.vetrux.tech` |
 
-```text
-vetrux/
-├── public/
-│   ├── images/
-│   │   ├── equipment/
-│   │   ├── gallery/
-│   │   ├── hero/
-│   │   ├── planting/
-│   │   └── products/
-│   └── logo.svg
-├── src/
-│   ├── assets/
-│   ├── components/
-│   │   ├── atoms/
-│   │   ├── molecules/
-│   │   └── organisms/
-│   ├── content/
-│   │   └── articles/
-│   ├── pages/
-│   ├── App.tsx
-│   ├── index.css
-│   └── main.tsx
-├── README.md
-├── package.json
-├── tailwind.config.js
-├── vite.config.ts
-└── vercel.json
-```
+The three public endpoints are:
 
-### Component Organization
+- `POST /api/inquiry`
+- `POST /api/quote-inquiry`
+- `POST /api/document-request`
 
-- `atoms/`: small reusable UI primitives such as buttons, badges, and labels
-- `molecules/`: composed UI blocks such as `InquiryForm`, `SpecRow`, and `StatCard`
-- `organisms/`: full layout sections such as `Navbar`, `Footer`, and `Layout`
-- `pages/`: route-level page components
+They validate fields, check request origin, use a honeypot and elapsed-time guard, verify Turnstile, apply an in-memory rate limit, escape user-controlled HTML, and send mail through SMTP. The in-memory limiter is per running server instance; use a shared rate-limit store before relying on it as a distributed control across many serverless instances.
 
----
+## Retired architecture
 
-## Content Model
-
-Articles are stored as local Markdown files in `src/content/articles/`.
-
-`src/content/articles/index.ts`:
-- imports Markdown files with Vite's `?raw` loader
-- parses frontmatter metadata
-- builds the article list used by `InsightsPage`
-- maps raw article content by slug for `ArticlePage`
-
-### To add a new article
-
-1. Create a new Markdown file in `src/content/articles/`
-2. Add frontmatter fields such as:
-   - `slug`
-   - `category`
-   - `title`
-   - `excerpt`
-   - `date`
-   - `readTime`
-   - `image`
-3. Import the file in `src/content/articles/index.ts`
-4. Add it to the `rawFiles` array in the desired display order
-
----
-
-## Design System Notes
-
-The UI uses a custom Tailwind token setup defined in `tailwind.config.js`.
-
-Highlights:
-- deep green primary brand palette
-- layered surface colors for soft hierarchy
-- Manrope typography
-- compact radius values for a sharper industrial feel
-- minimal bottom-border form fields
-- animated section reveals with GSAP
-
-Global styles and shared utility classes live in `src/index.css`.
-
----
+The Supabase/Prisma/NextAuth admin CMS has been removed. `/admin` deliberately returns the site 404 page. Do not restore database migrations, seed credentials, service-role keys, admin APIs, or authentication packages unless the project intentionally reintroduces a reviewed CMS architecture.
 
 ## Deployment
 
-### Vercel
+The repository is configured for Vercel in `vercel.json`. Set the form environment variables in the deployment project, deploy, then verify:
 
-```bash
-vercel deploy
-```
-
-Client-side routing is supported by `vercel.json`:
-
-```json
-{
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
-}
-```
-
-No environment variables are currently required for the static frontend.
-
----
-
-## Current Status
-
-Verified locally:
-- `npm run build` passes
-- `npm run lint` passes
-- `npm run test` passes
-
-Known follow-up opportunities:
-- add persistent distributed rate limiting (for example Redis / Upstash) if traffic volume grows beyond single-instance memory limits
-- replace remaining placeholder product imagery if needed
-- introduce route-level code splitting to reduce the main JS bundle size
-- move hard-coded page data into structured content/config if content updates become frequent
+1. canonical and `hreflang` tags on one English and one localized page;
+2. `/sitemap.xml` and `/robots.txt`;
+3. a successful Turnstile-protected test inquiry;
+4. mailbox delivery and reply-to behavior;
+5. the production CSP in the browser console.

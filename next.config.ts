@@ -2,12 +2,14 @@ import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   // 301-redirect legacy /insights URLs (renamed to /blog) so indexed links don't 404.
   async redirects() {
     return [
+      {
+        source: '/blog/how-to-read-cbd-certificate-of-analysis',
+        destination: '/blog/how-to-read-cbd-certificate-of-analysis-guide',
+        permanent: true,
+      },
       {
         source: '/insights',
         destination: '/blog',
@@ -30,38 +32,20 @@ const nextConfig: NextConfig = {
       },
     ]
   },
-  outputFileTracingIncludes: {
-    '/blog': ['./src/content/articles/*.md'],
-    '/blog/[slug]': ['./src/content/articles/*.md'],
-    '/de/blog': ['./src/content/articles/*.md'],
-    '/de/blog/[slug]': ['./src/content/articles/*.md'],
-    '/fr/blog': ['./src/content/articles/*.md'],
-    '/fr/blog/[slug]': ['./src/content/articles/*.md'],
-    '/es/blog': ['./src/content/articles/*.md'],
-    '/es/blog/[slug]': ['./src/content/articles/*.md'],
-    '/it/blog': ['./src/content/articles/*.md'],
-    '/it/blog/[slug]': ['./src/content/articles/*.md'],
-    '/pt/blog': ['./src/content/articles/*.md'],
-    '/pt/blog/[slug]': ['./src/content/articles/*.md'],
-    '/ja/blog': ['./src/content/articles/*.md'],
-    '/ja/blog/[slug]': ['./src/content/articles/*.md'],
-    '/fi/blog': ['./src/content/articles/*.md'],
-    '/fi/blog/[slug]': ['./src/content/articles/*.md'],
-  },
   images: {
+    localPatterns: [
+      {
+        pathname: '/images/articles/**',
+        search: '?v=20260815-photoreal',
+      },
+      {
+        pathname: '/images/**',
+        search: '',
+      },
+    ],
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-      },
-      {
-        protocol: 'https',
-        hostname: '*.public.blob.vercel-storage.com',
-      },
-    ],
   },
 }
 

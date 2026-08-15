@@ -472,14 +472,16 @@ export default function HomePageClient({ locale = 'en' }: { locale?: Locale }) {
         </div>
       </section>
 
-      <DocumentRequestModal
-        isOpen={isDocumentModalOpen}
-        onClose={() => setIsDocumentModalOpen(false)}
-        defaultDocumentType="both"
-        sourcePage="/"
-        productInterest="CBD Isolate"
-        locale={locale}
-      />
+      {isDocumentModalOpen && (
+        <DocumentRequestModal
+          isOpen
+          onClose={() => setIsDocumentModalOpen(false)}
+          defaultDocumentType="both"
+          sourcePage="/"
+          productInterest="CBD Isolate"
+          locale={locale}
+        />
+      )}
 
     </div>
   );

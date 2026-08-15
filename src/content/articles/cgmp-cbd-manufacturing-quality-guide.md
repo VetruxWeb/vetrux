@@ -5,7 +5,7 @@ excerpt: "A practical guide to current Good Manufacturing Practice (cGMP) standa
 category: "Quality Assurance"
 date: "2026-04-18"
 readTime: "10 min"
-image: "https://images.unsplash.com/photo-1669101602124-f5b78895d91c?w=800&q=80&auto=format&fit=crop"
+image: "/images/articles/cgmp-cbd-manufacturing-quality-guide.webp"
 ---
 
 For B2B buyers sourcing [CBD isolate](/products/cbd-isolate) at pharmaceutical or nutraceutical grade, the supplier's manufacturing quality system is as important as the product specification itself. A Certificate of Analysis tells you what a batch tested at; a cGMP-compliant manufacturing system tells you whether that result is reliable, reproducible, and representative of what you will receive next time.

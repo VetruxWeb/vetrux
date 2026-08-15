@@ -1,0 +1,288 @@
+{
+  "generatedAt": "2026-08-15T14:56:13.533Z",
+  "total": 27,
+  "stock": 7,
+  "generated": 20,
+  "uniqueSha256": 27,
+  "exactDuplicates": 0,
+  "nearestVisualPairs": [
+    {
+      "left": "cbd-isolate-applications-formulation-guide",
+      "right": "cbd-raw-material-change-control-protocol",
+      "normalizedRmse": 0.1864
+    },
+    {
+      "left": "cbd-extraction-methods-compared-co2-ethanol-hydrocarbon",
+      "right": "european-cbd-market-outlook-2026",
+      "normalizedRmse": 0.1963
+    },
+    {
+      "left": "co2-vs-ethanol-extraction-comparison",
+      "right": "esg-decarbonizing-cannabis-supply-chain",
+      "normalizedRmse": 0.2033
+    },
+    {
+      "left": "cbd-isolate-vs-distillate-formulation-guide",
+      "right": "esg-decarbonizing-cannabis-supply-chain",
+      "normalizedRmse": 0.2108
+    },
+    {
+      "left": "co2-vs-ethanol-extraction-comparison",
+      "right": "supercritical-co2-extraction-explained",
+      "normalizedRmse": 0.2147
+    },
+    {
+      "left": "co2-vs-ethanol-extraction-comparison",
+      "right": "how-to-source-cbd-raw-materials-2026",
+      "normalizedRmse": 0.218
+    },
+    {
+      "left": "apac-cbd-market-outlook-2025",
+      "right": "global-cbd-extraction-standards-2024",
+      "normalizedRmse": 0.2217
+    },
+    {
+      "left": "esg-decarbonizing-cannabis-supply-chain",
+      "right": "supercritical-co2-extraction-explained",
+      "normalizedRmse": 0.2237
+    },
+    {
+      "left": "how-to-source-cbd-raw-materials-2026",
+      "right": "supercritical-co2-extraction-explained",
+      "normalizedRmse": 0.2251
+    },
+    {
+      "left": "cbd-extraction-methods-compared-co2-ethanol-hydrocarbon",
+      "right": "what-is-cbd-isolate-complete-guide",
+      "normalizedRmse": 0.2282
+    },
+    {
+      "left": "cbd-import-regulations-europe-novel-food-2026",
+      "right": "cbd-isolate-applications-formulation-guide",
+      "normalizedRmse": 0.2296
+    },
+    {
+      "left": "esg-decarbonizing-cannabis-supply-chain",
+      "right": "how-to-source-cbd-raw-materials-2026",
+      "normalizedRmse": 0.2322
+    }
+  ],
+  "images": [
+    {
+      "slug": "apac-cbd-market-outlook-2025",
+      "kind": "generated",
+      "sha256": "ac65157026b38906894be82d09a2ff430ff25dcaeb3ce0fae832c3de59bc553d",
+      "bytes": 202758,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "botanical-biotechnology-innovation-whitepaper",
+      "kind": "stock",
+      "sha256": "90450f10dd4713e07ef3e39039e836fe01ee15cfef46f7c5fbdffc343a7afef8",
+      "bytes": 150980,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "cbd-extraction-methods-compared-co2-ethanol-hydrocarbon",
+      "kind": "generated",
+      "sha256": "a25a2766b5882f16937ce46574becc7cbc46898934c4b947e666d99aa21dd6e2",
+      "bytes": 171366,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "cbd-import-regulations-europe-novel-food-2026",
+      "kind": "stock",
+      "sha256": "cfd5cff525176daaf356dda3a92426ab90a30a229984e8ddaf98394038baf0da",
+      "bytes": 89868,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "cbd-isolate-applications-formulation-guide",
+      "kind": "generated",
+      "sha256": "b970ff4e784e6102e2b0094e10007faa01659e5d4505e51a351daa26c119199b",
+      "bytes": 75424,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "cbd-isolate-bulk-purchasing-guide-2026",
+      "kind": "stock",
+      "sha256": "3708d7a5d351bce40091199723bf6e4448628c17df84e356aad4bbc4a5ff0fc7",
+      "bytes": 380726,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "cbd-isolate-import-documentation-checklist",
+      "kind": "generated",
+      "sha256": "4aed416e3935cbc9e98ebbfdfc795ae8a9f3d235cbd31c5fc2b78b29a72302d7",
+      "bytes": 117206,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "cbd-isolate-packaging-storage-shelf-life-guide",
+      "kind": "stock",
+      "sha256": "e9d49e6cd5dc693d0b9a629d41f5004d3312df1f27d29f4f6338159c9cd5ca54",
+      "bytes": 265318,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "cbd-isolate-reference-standards-vs-bulk-material",
+      "kind": "generated",
+      "sha256": "f2ec52a59c35362ebd17024a089cd26ef9912b7dd9c4f6cf71029eaf2895bddb",
+      "bytes": 57026,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "cbd-isolate-vs-distillate-formulation-guide",
+      "kind": "generated",
+      "sha256": "fe424e6e0bff3a7c175af2569ef1f2c2bb595baff61012b60915a94cb7e3be69",
+      "bytes": 61504,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "cbd-isolate-wholesale-pricing-cost-factors",
+      "kind": "generated",
+      "sha256": "6119c1254c9fe158c0ed28b60f0d73976a7ea9e5bcfbdaf4ea8d528a4368a8ce",
+      "bytes": 113156,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "cbd-private-label-white-label-oem-manufacturing-guide",
+      "kind": "generated",
+      "sha256": "987ff813f2c629311e83714bdadd21d292896215317cdae3cf16747544698f00",
+      "bytes": 98810,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "cbd-raw-material-change-control-protocol",
+      "kind": "generated",
+      "sha256": "9e40f906e25589d7642770969857d9704b42d2083d6b987f106a94c478c0858e",
+      "bytes": 72804,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "cbd-supplier-due-diligence-checklist",
+      "kind": "generated",
+      "sha256": "dd01002c421852ba1c04ddd54b76fa659058472ed63c4155dc3900f78ef8d622",
+      "bytes": 141702,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "cgmp-cbd-manufacturing-quality-guide",
+      "kind": "stock",
+      "sha256": "24c290b7966ddfc2121f5ff7fe2e71c322bf3abcb4125cb1a2da9585957f7dbb",
+      "bytes": 54730,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "co2-vs-ethanol-extraction-comparison",
+      "kind": "generated",
+      "sha256": "2b202ff92711a12129661a5d3202910f452da350bed4341349064cf9b57b45da",
+      "bytes": 304408,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "esg-decarbonizing-cannabis-supply-chain",
+      "kind": "stock",
+      "sha256": "19e0f4f5d29d80fc9c895aa262f1bd964064df7e97df08804ebdb591e37d292b",
+      "bytes": 72692,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "eu-novel-food-regulation-cbd-importers-guide",
+      "kind": "stock",
+      "sha256": "e7cfe1e8867f8054de4ad4799e7f159b7d7f40ef2bb43a0b33a7ffc0c516cb37",
+      "bytes": 129190,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "european-cbd-market-outlook-2026",
+      "kind": "generated",
+      "sha256": "d3dd0f8f494fd6027a86d68be95383eeff73d15274faea5dd37a6172d3c1c870",
+      "bytes": 221008,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "full-spectrum-broad-spectrum-isolate-cbd-comparison",
+      "kind": "generated",
+      "sha256": "c47e037cc1b08b1375bc09c4f5b8600d87cb0a4adb8d7592b2085d8e42f59301",
+      "bytes": 76146,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "global-cbd-extraction-standards-2024",
+      "kind": "generated",
+      "sha256": "7d549828732d26385ef9373ceb1be7b1a6a69c95aea4c7e52f6f26788667849f",
+      "bytes": 114612,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "how-to-read-cbd-certificate-of-analysis-guide",
+      "kind": "generated",
+      "sha256": "e3ff8e8989e773e1e6b1ac08e9cfd43b89091b0384ce7681ac0fffe18e5f65f6",
+      "bytes": 63380,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "how-to-source-cbd-raw-materials-2026",
+      "kind": "generated",
+      "sha256": "1c4ce9081eabc1483a487d9b2eff32fcdc7a5ff6ad78e9a55920a069bfb32217",
+      "bytes": 159018,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "minor-cannabinoids-cbg-cbn-cbc-sourcing-guide",
+      "kind": "generated",
+      "sha256": "757458f3f03ba5c2ae4dc6bc61e68882aea0c8a7cf3c1ee6239fc1cae2c41749",
+      "bytes": 178978,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "supercritical-co2-extraction-explained",
+      "kind": "generated",
+      "sha256": "bd60a982fc8ef310f4eafa76369fd7057fa8e0471c351166a8d054217cab6282",
+      "bytes": 132656,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "thc-free-cbd-isolate-sourcing-guide-europe",
+      "kind": "generated",
+      "sha256": "87f8fd06ff7c27b729d52ec518a8a55cbd9e1a11836c8bce5e816f615cae35ac",
+      "bytes": 148812,
+      "width": 1600,
+      "height": 900
+    },
+    {
+      "slug": "what-is-cbd-isolate-complete-guide",
+      "kind": "generated",
+      "sha256": "a8efffb210ac823df071c231d7e7eef09a18f7e5de194e95c3e9deb23c8c71b6",
+      "bytes": 79898,
+      "width": 1600,
+      "height": 900
+    }
+  ]
+}

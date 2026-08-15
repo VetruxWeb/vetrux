@@ -1,12 +1,30 @@
 'use client'
 
-import { useState, useRef, useEffect, useMemo } from 'react'
+import { useState, useRef, useEffect, useMemo, useCallback, useSyncExternalStore } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { Menu, X, Globe, ChevronDown } from 'lucide-react'
 import { navbarStrings } from '@/content/pages/navbar.content'
-import type { Locale } from '@/i18n/locales'
+import { isSupportedLocale, type Locale } from '@/i18n/locales'
+
+const ALL_LOCALES = ['en', 'de', 'fr', 'es', 'it', 'pt', 'ja', 'fi'] as const
+
+const subscribeToLocaleAvailability = (onStoreChange: () => void) => {
+  const observer = new MutationObserver(onStoreChange)
+  observer.observe(document.body, {
+    subtree: true,
+    childList: true,
+    attributes: true,
+    attributeFilter: ['data-locales'],
+  })
+  return () => observer.disconnect()
+}
+
+const getLocaleAvailabilitySnapshot = () =>
+  document.querySelector('[data-locales]')?.getAttribute('data-locales') ?? ''
+
+const getServerLocaleAvailabilitySnapshot = () => ''
 
 type NavItem = {
   label: string
@@ -22,7 +40,7 @@ function buildNavLinks(t: typeof navbarStrings.en): NavItem[] {
       children: [
         { label: t.productsChildren.allProducts, href: '/products' },
         { label: t.productsChildren.cbdIsolate, href: '/products/cbd-isolate' },
-        { label: t.productsChildren.cbdCrudeOil, href: '/products/cbd-crude-oil' },
+        { label: t.productsChildren.cbdOil, href: '/products/cbd-oil' },
       ],
     },
     {
@@ -55,7 +73,7 @@ const languages = [
   { code: 'pt', label: 'Português', flag: '/flags/pt.svg', href: '/pt' },
   { code: 'ja', label: '日本語', flag: '/flags/ja.svg', href: '/ja' },
   { code: 'fi', label: 'Suomi', flag: '/flags/fi.svg', href: '/fi' },
-]
+] as const
 
 const supportedLangPrefixes = ['/de', '/fr', '/es', '/it', '/pt', '/ja', '/fi']
 
@@ -92,6 +110,12 @@ function FlagIcon({ src, label, size = 16 }: { src: string; label: string; size?
   )
 }
 
+/**
+ * Desktop dropdown with complete keyboard interaction:
+ * — Escape closes the menu and returns focus to the trigger
+ * — outside click closes without racing the hover-close timer
+ * — focus remains inside the menu while tabbing
+ */
 function DesktopDropdown({
   item,
   pathname,
@@ -103,11 +127,18 @@ function DesktopDropdown({
 }) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLLIElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  const menuRef = useRef<HTMLDivElement>(null)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const isChildActive = item.children?.some(
-    (c) => pathname === localizeHref(c.href, langPrefix)
+    (c) => pathname === localizeHref(c.href, langPrefix),
   )
+
+  const close = useCallback(() => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    setOpen(false)
+  }, [])
 
   const handleEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current)
@@ -116,6 +147,32 @@ function DesktopDropdown({
   const handleLeave = () => {
     timeoutRef.current = setTimeout(() => setOpen(false), 150)
   }
+
+  // Escape closes the menu and returns focus to the trigger.
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Escape' && open) {
+      event.stopPropagation()
+      close()
+      buttonRef.current?.focus()
+    }
+  }
+
+  // Close on outside click, and cancel the pending hover-close when the
+  // pointer re-enters the menu (no race between mouse and click handlers).
+  useEffect(() => {
+    if (!open) return
+    function onPointerDown(event: MouseEvent | TouchEvent) {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        close()
+      }
+    }
+    document.addEventListener('mousedown', onPointerDown)
+    document.addEventListener('touchstart', onPointerDown)
+    return () => {
+      document.removeEventListener('mousedown', onPointerDown)
+      document.removeEventListener('touchstart', onPointerDown)
+    }
+  }, [open, close])
 
   useEffect(() => {
     return () => {
@@ -131,14 +188,17 @@ function DesktopDropdown({
       onMouseLeave={handleLeave}
     >
       <button
+        ref={buttonRef}
         className={`inline-flex items-center gap-1 h-8 text-xs font-semibold tracking-widest uppercase transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface rounded-sm ${
           isChildActive
             ? 'text-primary'
             : 'text-on-surface-variant hover:text-on-surface'
         }`}
         onClick={() => setOpen(!open)}
+        onKeyDown={handleKeyDown}
         aria-expanded={open}
         aria-haspopup="true"
+        aria-controls={`dropdown-${item.label}`}
       >
         {item.label}
         <ChevronDown
@@ -147,17 +207,24 @@ function DesktopDropdown({
         />
       </button>
       {open && (
-        <div className="absolute left-0 top-full pt-2 z-50">
+        <div
+          ref={menuRef}
+          id={`dropdown-${item.label}`}
+          className="absolute left-0 top-full pt-2 z-50"
+          onKeyDown={handleKeyDown}
+        >
           <div className="bg-surface-container-lowest border border-outline-variant/20 shadow-soft py-1.5 min-w-[180px] rounded-md">
             {item.children!.map((child) => {
               const childHref = localizeHref(child.href, langPrefix)
+              const isActive = pathname === childHref
               return (
                 <Link
                   key={child.href}
                   href={childHref}
                   onClick={() => setOpen(false)}
-                  className={`block px-4 py-2.5 text-xs font-semibold tracking-wider transition-colors duration-150 ${
-                    pathname === childHref
+                  aria-current={isActive ? 'page' : undefined}
+                  className={`flex items-center min-h-[40px] px-4 py-2 text-xs font-semibold tracking-wider transition-colors duration-150 ${
+                    isActive
                       ? 'text-primary bg-primary-fixed/30'
                       : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
                   }`}
@@ -178,6 +245,8 @@ export default function Navbar() {
   const [langOpen, setLangOpen] = useState(false)
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
   const langRef = useRef<HTMLDivElement>(null)
+  const langButtonRef = useRef<HTMLButtonElement>(null)
+  const mobileToggleRef = useRef<HTMLButtonElement>(null)
   const pathname = usePathname()
 
   const langPrefix = useMemo(() => detectLangPrefix(pathname), [pathname])
@@ -200,6 +269,53 @@ export default function Navbar() {
   }
   const basePath = stripPrefix(pathname)
 
+  // Article pages expose their real locale cluster in the DOM. A small
+  // external-store subscription keeps the switcher in sync across client
+  // navigations without introducing an effect-driven render cascade.
+  const rawAvailableLocales = useSyncExternalStore(
+    subscribeToLocaleAvailability,
+    getLocaleAvailabilitySnapshot,
+    getServerLocaleAvailabilitySnapshot,
+  )
+  const localeSet = useMemo(
+    () => rawAvailableLocales
+      ? rawAvailableLocales.split(',').map((value) => value.trim()).filter(isSupportedLocale)
+      : ALL_LOCALES,
+    [rawAvailableLocales],
+  )
+
+  const buildLangHref = useCallback(
+    (code: Locale) => {
+      if (localeSet.includes(code)) {
+        if (code === 'en') return basePath === '/' ? '/' : basePath
+        return basePath === '/' ? `/${code}` : `/${code}${basePath}`
+      }
+      // The route does not exist in the target locale (e.g. an English-only
+      // article) — fall back to that locale's homepage instead of a 404.
+      return code === 'en' ? '/' : `/${code}`
+    },
+    [localeSet, basePath],
+  )
+
+  // Escape closes every overlay.
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        if (mobileOpen) {
+          setMobileOpen(false)
+          mobileToggleRef.current?.focus()
+        }
+        if (langOpen) {
+          setLangOpen(false)
+          langButtonRef.current?.focus()
+        }
+      }
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [mobileOpen, langOpen])
+
+  // Close the language menu on outside click.
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (langRef.current && !langRef.current.contains(e.target as Node)) {
@@ -210,8 +326,23 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', handleClick)
   }, [])
 
+  // Prevent the page from scrolling while the mobile menu is open.
+  useEffect(() => {
+    if (!mobileOpen) return
+    const previous = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = previous
+    }
+  }, [mobileOpen])
+
   const toggleMobileGroup = (label: string) => {
     setMobileExpanded(mobileExpanded === label ? null : label)
+  }
+
+  const closeMobile = () => {
+    setMobileOpen(false)
+    mobileToggleRef.current?.focus()
   }
 
   return (
@@ -220,7 +351,7 @@ export default function Navbar() {
         <Link
           href={homePath}
           className="flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface rounded-sm"
-          aria-label="Vetrux CBD home"
+          aria-label={t.homeAria}
         >
           <Image
             src="/logo.svg"
@@ -250,6 +381,7 @@ export default function Navbar() {
               <li key={item.href}>
                 <Link
                   href={linkHref}
+                  aria-current={isActive ? 'page' : undefined}
                   className={`inline-flex items-center h-8 text-xs font-semibold tracking-widest uppercase transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface rounded-sm ${
                     isActive
                       ? 'text-primary'
@@ -266,9 +398,17 @@ export default function Navbar() {
         <div className="hidden lg:flex items-center gap-4">
           <div ref={langRef} className="relative">
             <button
+              ref={langButtonRef}
               onClick={() => setLangOpen(!langOpen)}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 min-h-[36px] text-xs font-semibold tracking-wider text-on-surface-variant hover:text-on-surface transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface rounded-sm"
-              aria-label={`Switch language, current: ${currentLang.label}`}
+              onKeyDown={(event) => {
+                if (event.key === 'Escape' && langOpen) {
+                  event.stopPropagation()
+                  setLangOpen(false)
+                  langButtonRef.current?.focus()
+                }
+              }}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 min-h-[44px] text-xs font-semibold tracking-wider text-on-surface-variant hover:text-on-surface transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface rounded-sm"
+              aria-label={`${t.switchLanguage}, ${t.currentLanguage}: ${currentLang.label}`}
               aria-expanded={langOpen}
               aria-haspopup="true"
             >
@@ -276,21 +416,22 @@ export default function Navbar() {
               <FlagIcon src={currentLang.flag} label={currentLang.label} />
             </button>
             {langOpen && (
-              <div className="absolute right-0 top-full mt-1 bg-surface-container-lowest border border-outline-variant/20 shadow-soft py-1 min-w-[160px] z-50 rounded-md">
+              <div
+                className="absolute right-0 top-full mt-1 bg-surface-container-lowest border border-outline-variant/20 shadow-soft py-1 min-w-[160px] z-50 rounded-md"
+                role="menu"
+              >
                 {languages.map((lang) => {
-                  const langHref =
-                    lang.code === 'en'
-                      ? basePath
-                      : basePath === '/'
-                        ? `/${lang.code}`
-                        : `/${lang.code}${basePath}`
+                  const langHref = buildLangHref(lang.code)
+                  const isCurrent = currentLang.code === lang.code
                   return (
                     <Link
                       key={lang.code}
                       href={langHref}
+                      role="menuitem"
                       onClick={() => setLangOpen(false)}
-                      className={`flex items-center gap-2.5 px-4 py-2 text-xs font-semibold tracking-wider transition-colors duration-150 ${
-                        currentLang.code === lang.code
+                      aria-current={isCurrent ? 'true' : undefined}
+                      className={`flex items-center gap-2.5 px-4 py-2 min-h-[44px] text-xs font-semibold tracking-wider transition-colors duration-150 ${
+                        isCurrent
                           ? 'text-primary bg-primary-fixed/30'
                           : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
                       }`}
@@ -306,30 +447,35 @@ export default function Navbar() {
 
           <Link
             href={localizeHref('/inquiry', langPrefix)}
-            className="inline-flex items-center px-4 py-2 bg-accent text-white text-xs font-semibold tracking-widest uppercase rounded-md hover:bg-accent-hover transition-all duration-200 ease-industrial whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+            className="inline-flex items-center px-4 py-2 min-h-[44px] bg-accent text-white text-xs font-semibold tracking-widest uppercase rounded-md hover:bg-accent-hover transition-all duration-200 ease-industrial whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
           >
             {t.contactUs}
           </Link>
         </div>
 
         <button
+          ref={mobileToggleRef}
           className="lg:hidden p-2 text-on-surface min-h-[44px] min-w-[44px] flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm"
           onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Toggle mobile menu"
+          aria-label={mobileOpen ? t.closeMenu : t.openMenu}
           aria-expanded={mobileOpen}
+          aria-controls="mobile-menu"
         >
           {mobileOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </nav>
 
       {mobileOpen && (
-        <div className="lg:hidden bg-surface-container-lowest border-t border-outline-variant/20 px-6 py-6">
+        <div
+          id="mobile-menu"
+          className="lg:hidden bg-surface-container-lowest border-t border-outline-variant/20 px-6 py-6 max-h-[calc(100vh-4rem)] overflow-y-auto"
+        >
           <ul className="flex flex-col gap-2">
             {navLinks.map((item) => {
               if (item.children) {
                 const isExpanded = mobileExpanded === item.label
                 const isChildActive = item.children.some(
-                  (c) => pathname === localizeHref(c.href, langPrefix)
+                  (c) => pathname === localizeHref(c.href, langPrefix),
                 )
                 return (
                   <li key={item.label}>
@@ -341,6 +487,7 @@ export default function Navbar() {
                           : 'text-on-surface-variant hover:text-on-surface'
                       }`}
                       aria-expanded={isExpanded}
+                      aria-controls={`mobile-group-${item.label}`}
                     >
                       {item.label}
                       <ChevronDown
@@ -351,16 +498,21 @@ export default function Navbar() {
                       />
                     </button>
                     {isExpanded && (
-                      <ul className="pl-4 flex flex-col gap-1 pb-2">
+                      <ul
+                        id={`mobile-group-${item.label}`}
+                        className="pl-4 flex flex-col gap-1 pb-2"
+                      >
                         {item.children.map((child) => {
                           const childHref = localizeHref(child.href, langPrefix)
+                          const isActive = pathname === childHref
                           return (
                             <li key={child.href}>
                               <Link
                                 href={childHref}
-                                onClick={() => setMobileOpen(false)}
+                                onClick={closeMobile}
+                                aria-current={isActive ? 'page' : undefined}
                                 className={`block text-xs font-semibold tracking-wider py-1.5 min-h-[44px] flex items-center transition-colors duration-200 ${
-                                  pathname === childHref
+                                  isActive
                                     ? 'text-primary'
                                     : 'text-on-surface-variant/70 hover:text-on-surface'
                                 }`}
@@ -381,7 +533,8 @@ export default function Navbar() {
                 <li key={item.href}>
                   <Link
                     href={mobileLinkHref}
-                    onClick={() => setMobileOpen(false)}
+                    onClick={closeMobile}
+                    aria-current={isActive ? 'page' : undefined}
                     className={`block text-xs font-semibold tracking-widest uppercase py-2 min-h-[44px] flex items-center transition-colors duration-200 ${
                       isActive
                         ? 'text-primary'
@@ -396,8 +549,8 @@ export default function Navbar() {
             <li className="pt-2">
               <Link
                 href={localizeHref('/inquiry', langPrefix)}
-                onClick={() => setMobileOpen(false)}
-                className="inline-flex items-center px-4 py-2 bg-accent text-white text-xs font-semibold tracking-widest uppercase rounded-md hover:bg-accent-hover transition-all duration-200 mt-2"
+                onClick={closeMobile}
+                className="inline-flex items-center px-4 py-2 min-h-[44px] bg-accent text-white text-xs font-semibold tracking-widest uppercase rounded-md hover:bg-accent-hover transition-all duration-200 mt-2"
               >
                 {t.contactUs}
               </Link>
@@ -408,19 +561,16 @@ export default function Navbar() {
               </p>
               <div className="flex flex-wrap gap-3">
                 {languages.map((lang) => {
-                  const langHref =
-                    lang.code === 'en'
-                      ? basePath
-                      : basePath === '/'
-                        ? `/${lang.code}`
-                        : `/${lang.code}${basePath}`
+                  const langHref = buildLangHref(lang.code)
+                  const isCurrent = currentLang.code === lang.code
                   return (
                     <Link
                       key={lang.code}
                       href={langHref}
-                      onClick={() => setMobileOpen(false)}
+                      onClick={closeMobile}
+                      aria-current={isCurrent ? 'page' : undefined}
                       className={`flex items-center gap-2 px-3 py-2 min-h-[44px] text-xs font-semibold tracking-wider rounded-md transition-colors duration-150 ${
-                        currentLang.code === lang.code
+                        isCurrent
                           ? 'text-primary bg-primary-fixed/30'
                           : 'text-on-surface-variant hover:text-on-surface bg-surface-container'
                       }`}

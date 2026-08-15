@@ -325,23 +325,6 @@ export default function QuoteInquiryModal({ isOpen, onClose, selectedProducts, p
   }, [isOpen]);
 
   useEffect(() => {
-    if (isOpen) {
-      setName('');
-      setCompany('');
-      setEmail('');
-      setMessage('');
-      setWebsite('');
-      setFormStartedAt(new Date().toISOString());
-      setTurnstileToken('');
-      setStatus('idle');
-      setErrorMsg('');
-      setReferenceId('');
-      setIsTurnstileReady(false);
-      turnstileWidgetIdRef.current = null;
-    }
-  }, [isOpen]);
-
-  useEffect(() => {
     if (!isOpen || status === 'success') return;
     if (!turnstileSiteKey || !turnstileContainerRef.current) return;
     if (turnstileWidgetIdRef.current) return;

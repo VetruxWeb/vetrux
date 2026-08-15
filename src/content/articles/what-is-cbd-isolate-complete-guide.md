@@ -5,7 +5,7 @@ category: "Education"
 date: "2026-04-18"
 readTime: "10 min"
 excerpt: "A comprehensive introduction to CBD isolate for B2B buyers — covering what it is, how it's made, purity grades, applications across industries, and what to look for when sourcing at scale."
-image: "https://images.unsplash.com/photo-1605039982749-c2fe1dd2a588?w=800&q=80&auto=format&fit=crop"
+image: "/images/articles/what-is-cbd-isolate-complete-guide.webp"
 ---
 
 If you're sourcing cannabinoid ingredients for the first time — or evaluating suppliers for a new product line — understanding what CBD isolate actually is will save you time, money, and formulation headaches. This guide covers everything a B2B buyer needs to know: the chemistry, the manufacturing process, purity grades, industry applications, and the quality signals that separate reliable suppliers from risky ones.

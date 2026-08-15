@@ -5,7 +5,7 @@ excerpt: "A regulatory deep-dive into the EU Novel Food framework for CBD produc
 category: "Compliance"
 date: "2026-04-18"
 readTime: "14 min"
-image: "https://images.unsplash.com/photo-1625440153141-1ae4c27ff33b?w=800&q=80&auto=format&fit=crop"
+image: "/images/articles/eu-novel-food-regulation-cbd-importers-guide.webp"
 ---
 
 The European CBD market has matured considerably since the early days of regulatory ambiguity. Today, any business importing CBD isolate into the EU — whether for use in food supplements, functional beverages, or nutraceutical formulations — must navigate a well-defined but demanding regulatory pathway. At the centre of that pathway sits EU Regulation 2015/2283 on Novel Foods.

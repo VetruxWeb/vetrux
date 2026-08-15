@@ -1,87 +1,47 @@
 // src/content/articles/index.ts
-// Parses YAML frontmatter from each markdown file to build the Article[] list.
-// Uses fs.readFileSync for Next.js server-side rendering (no Vite ?raw imports).
+// Local-first article registry.
+//
+// Content files live in this directory:
+//   <slug>.md          → English article (canonical)
+//   <slug>.<locale>.md → fully localized variant (locale ∈ de/fr/es/it/pt/ja/fi)
+//
+// Enumeration is deterministic: a prebuild script snapshots every *.md file
+// into generated-articles.json, then this module registers the slug declared
+// in frontmatter. This avoids runtime filesystem access and keeps deployment
+// tracing scoped to the content that is actually used. Localized routes only
+// exist for locales that actually have a file — there is no silent fallback
+// to English content beneath a non-English URL.
+//
+// Dates are normalized to ISO 8601 (YYYY-MM-DD). Ambiguous values such as
+// "May 2026" or "2024" are normalized to the first day of the period; values
+// that cannot be parsed are preserved verbatim and omitted from the sitemap.
 
-import fs from 'node:fs'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
+import generatedArticleFiles from './generated-articles.json'
+import { locales, type Locale } from '@/i18n/locales'
 
 export interface Article {
-  slug: string;
-  category: string;
-  title: string;
-  excerpt: string;
-  date: string;
-  readTime: string;
-  image: string;
-  size?: 'normal' | 'large';
+  slug: string
+  category: string
+  title: string
+  excerpt: string
+  /** ISO 8601 date (YYYY-MM-DD). */
+  date: string
+  /** Raw read time, e.g. "9 min". Localized label suffixes are applied by the UI. */
+  readTime: string
+  /** Repository-local public image path, e.g. `/images/articles/<slug>.webp`. */
+  image: string
+  /** Localized alternative text for the hero image. */
+  imageAlt: string
+  size: 'normal' | 'large'
+  locale: Locale
 }
 
-// Resolve the articles directory resiliently regardless of the invoking cwd.
-// Priority: 1) next to this module file, 2) project cwd, 3) vetrux-prefixed cwd.
-function resolveArticlesDir(): string {
-  const candidates: string[] = []
-  try {
-    // In ESM this would be import.meta.url; under CJS transpile __dirname works.
-    // Keep both to be safe across Next.js runtimes.
-    const here = typeof __dirname !== 'undefined'
-      ? __dirname
-      : path.dirname(fileURLToPath(import.meta.url))
-    candidates.push(here)
-  } catch {
-    // ignore
-  }
-  candidates.push(
-    path.join(process.cwd(), 'src/content/articles'),
-    path.join(process.cwd(), 'vetrux/src/content/articles'),
-  )
-  for (const dir of candidates) {
-    try {
-      if (fs.existsSync(dir) && fs.statSync(dir).isDirectory()) {
-        // Verify it looks like the articles dir by probing a known file.
-        const probe = path.join(dir, 'cbd-isolate-vs-distillate-formulation-guide.md')
-        if (fs.existsSync(probe)) return dir
-      }
-    } catch {
-      // try next
-    }
-  }
-  // Last-resort fallback — let the readFileSync throw a clearer error.
-  return path.join(process.cwd(), 'src/content/articles')
+export interface LocalizedArticle extends Article {
+  content: string
 }
 
-const articlesDir = resolveArticlesDir()
+// ── Frontmatter parsing ──────────────────────────────────────────────────────
 
-// ── Article order + size overrides ───────────────────────────────────────────
-const fileOrder: Array<{ filename: string; size?: 'normal' | 'large' }> = [
-  { filename: 'cbd-isolate-import-documentation-checklist.md',     size: 'large' },
-  { filename: 'cbd-isolate-vs-distillate-formulation-guide.md',   size: 'large' },
-  { filename: 'how-to-read-cbd-certificate-of-analysis.md',       size: 'normal' },
-  { filename: 'thc-free-cbd-isolate-sourcing-guide-europe.md',    size: 'normal' },
-  { filename: 'cbd-isolate-wholesale-pricing-cost-factors.md',    size: 'normal' },
-  { filename: 'cbd-supplier-due-diligence-checklist.md',          size: 'normal' },
-  { filename: 'cbd-isolate-packaging-storage-shelf-life-guide.md', size: 'large' },
-  { filename: 'eu-novel-food-regulation-cbd-importers-guide.md',  size: 'large' },
-  { filename: 'cgmp-cbd-manufacturing-quality-guide.md',          size: 'normal' },
-  { filename: 'supercritical-co2-extraction-explained.md',        size: 'normal' },
-  { filename: 'what-is-cbd-isolate-complete-guide.md',            size: 'large' },
-  { filename: 'european-cbd-market-outlook-2026.md',              size: 'normal' },
-  { filename: 'apac-cbd-market-outlook-2025.md',                  size: 'normal' },
-  { filename: 'botanical-biotechnology-innovation-whitepaper.md',  size: 'normal' },
-  { filename: 'co2-vs-ethanol-extraction-comparison.md',          size: 'normal' },
-  { filename: 'esg-decarbonizing-cannabis-supply-chain.md',       size: 'normal' },
-  { filename: 'global-cbd-extraction-standards-2024.md',          size: 'normal' },
-  { filename: 'cbd-extraction-methods-compared-co2-ethanol-hydrocarbon.md', size: 'large' },
-  { filename: 'cbd-isolate-bulk-purchasing-guide-2026.md', size: 'large' },
-  { filename: 'how-to-read-cbd-certificate-of-analysis-guide.md', size: 'large' },
-  { filename: 'cbd-isolate-applications-formulation-guide.md', size: 'large' },
-  { filename: 'cbd-import-regulations-europe-novel-food-2026.md', size: 'large' },
-  { filename: 'full-spectrum-broad-spectrum-isolate-cbd-comparison.md', size: 'large' },
-  { filename: 'cbd-private-label-white-label-oem-manufacturing-guide.md', size: 'normal' },
-  { filename: 'minor-cannabinoids-cbg-cbn-cbc-sourcing-guide.md', size: 'normal' },
-]
-
-// ── Frontmatter parser ────────────────────────────────────────────────────────
 function parseFrontmatter(raw: string): Record<string, string> {
   const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/)
   if (!match) return {}
@@ -90,7 +50,10 @@ function parseFrontmatter(raw: string): Record<string, string> {
     const colonIdx = line.indexOf(':')
     if (colonIdx === -1) continue
     const key = line.slice(0, colonIdx).trim()
-    const val = line.slice(colonIdx + 1).trim().replace(/^["']|["']$/g, '')
+    const val = line
+      .slice(colonIdx + 1)
+      .trim()
+      .replace(/^["']|["']$/g, '')
     if (key) result[key] = val
   }
   return result
@@ -100,38 +63,157 @@ function stripFrontmatter(raw: string): string {
   return raw.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '')
 }
 
-function readArticleFile(filename: string): string {
-  return fs.readFileSync(path.join(articlesDir, filename), 'utf8')
+const MONTH_INDEX: Record<string, string> = {
+  january: '01',
+  february: '02',
+  march: '03',
+  april: '04',
+  may: '05',
+  june: '06',
+  july: '07',
+  august: '08',
+  september: '09',
+  october: '10',
+  november: '11',
+  december: '12',
 }
 
-// ── Build Article[] from parsed frontmatter ───────────────────────────────────
-export const articles: Article[] = fileOrder.map(({ filename, size }) => {
-  const raw = readArticleFile(filename)
-  const fm = parseFrontmatter(raw)
-  return {
-    slug:     fm.slug     ?? '',
-    category: fm.category ?? 'Insight',
-    title:    fm.title    ?? '',
-    excerpt:  fm.excerpt  ?? '',
-    date:     fm.date     ?? '',
-    readTime: fm.readTime ? `${fm.readTime} Read` : '',
-    image:    fm.image    ?? '',
-    size,
+/** Normalize frontmatter dates to ISO YYYY-MM-DD where possible. */
+export function normalizeArticleDate(value: string): string {
+  const trimmed = value.trim()
+  if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return trimmed
+  const yearOnly = trimmed.match(/^(\d{4})$/)
+  if (yearOnly) return `${yearOnly[1]}-01-01`
+  const monthYear = trimmed.match(/^([A-Za-z]+)\s+(\d{4})$/)
+  if (monthYear) {
+    const month = MONTH_INDEX[monthYear[1].toLowerCase()]
+    if (month) return `${monthYear[2]}-${month}-01`
   }
-})
+  return trimmed
+}
 
-// ── Raw content map (for ArticlePage renderer) ────────────────────────────────
-export const articleContent: Record<string, string> = Object.fromEntries(
-  fileOrder.map(({ filename }) => {
-    const raw = readArticleFile(filename)
+// ── Deterministic enumeration ────────────────────────────────────────────────
+
+const localizedLocales = locales.filter((locale) => locale !== 'en')
+const articleImageVersion = '20260815-photoreal'
+
+/**
+ * Keep article image URLs cache-safe when the photography collection is
+ * replaced without changing the human-readable asset filenames.
+ */
+function versionArticleImage(image: string): string {
+  if (!image.startsWith('/images/articles/')) return image
+  return `${image}?v=${articleImageVersion}`
+}
+
+function isLocalizedLocale(value: string): value is Exclude<Locale, 'en'> {
+  return (localizedLocales as readonly string[]).includes(value)
+}
+
+interface ArticleFileEntry {
+  slug: string
+  locale: Locale
+  filename: string
+  raw: string
+}
+
+/** Enumerate every article file once, keyed by slug::locale (deterministic). */
+function enumerateArticleFiles(): ArticleFileEntry[] {
+  const seen = new Map<string, { filename: string; raw: string }>()
+
+  for (const { filename, raw } of generatedArticleFiles) {
     const fm = parseFrontmatter(raw)
-    return [fm.slug, stripFrontmatter(raw)]
-  })
-)
+    const slug = (fm.slug ?? '').trim()
+    if (!slug) {
+      console.warn(`[articles] skipping "${filename}": no frontmatter slug`)
+      continue
+    }
 
-// ── Helper for dynamic route pages ────────────────────────────────────────────
-export function getArticleBySlug(slug: string): { meta: Article; content: string } | null {
-  const meta = articles.find((a) => a.slug === slug)
-  if (!meta) return null
-  return { meta, content: articleContent[slug] ?? '' }
+    let locale: Locale = 'en'
+    const suffixMatch = filename.match(/\.([a-z]{2})\.md$/)
+    if (suffixMatch && isLocalizedLocale(suffixMatch[1])) {
+      locale = suffixMatch[1]
+    }
+
+    const key = `${slug}::${locale}`
+    const previous = seen.get(key)
+    if (previous) {
+      console.warn(
+        `[articles] duplicate "${key}": keeping "${previous.filename}", ignoring "${filename}"`,
+      )
+      continue
+    }
+    seen.set(key, { filename, raw })
+  }
+
+  return Array.from(seen.entries())
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([key, file]) => {
+      const [slug, locale] = key.split('::')
+      return { slug, locale: locale as Locale, filename: file.filename, raw: file.raw }
+    })
+}
+
+function readLocalizedArticle(entry: ArticleFileEntry): LocalizedArticle {
+  const raw = entry.raw
+  const fm = parseFrontmatter(raw)
+  const size = fm.size === 'large' ? 'large' : 'normal'
+  const readTime = (fm.readTime ?? '').trim().replace(/\s+Read$/i, '')
+  return {
+    slug: entry.slug,
+    locale: entry.locale,
+    category: fm.category ?? 'Insight',
+    title: fm.title ?? entry.slug,
+    excerpt: fm.excerpt ?? '',
+    date: normalizeArticleDate(fm.date ?? ''),
+    readTime,
+    image: versionArticleImage(fm.image ?? ''),
+    imageAlt: fm.imageAlt ?? fm.title ?? entry.slug,
+    size,
+    content: stripFrontmatter(raw),
+  }
+}
+
+// ── Registry ─────────────────────────────────────────────────────────────────
+
+const registry: LocalizedArticle[] = enumerateArticleFiles().map(readLocalizedArticle)
+
+/** Every localized variant of every article. */
+export function getAllLocalizedArticles(): LocalizedArticle[] {
+  return registry
+}
+
+/** All articles available in a given locale, newest first. */
+export function getArticlesForLocale(locale: Locale): Article[] {
+  return registry
+    .filter((article) => article.locale === locale)
+    .sort(
+      (a, b) =>
+        b.date.localeCompare(a.date) || a.title.localeCompare(b.title),
+    )
+}
+
+/** Exact-locale lookup. Returns null when the locale file does not exist. */
+export function getArticle(slug: string, locale: Locale): LocalizedArticle | null {
+  return registry.find((article) => article.slug === slug && article.locale === locale) ?? null
+}
+
+/** Locales that have a real localized file for this slug (always includes 'en' when the article exists). */
+export function getArticleLocales(slug: string): Locale[] {
+  return locales.filter((locale) =>
+    registry.some((article) => article.slug === slug && article.locale === locale),
+  )
+}
+
+/** All unique article slugs, sorted. */
+export function getAllArticleSlugs(): string[] {
+  return Array.from(new Set(registry.map((article) => article.slug))).sort()
+}
+
+/** Slugs that have a variant in the given locale. */
+export function getArticleSlugsForLocale(locale: Locale): string[] {
+  return registry
+    .filter((article) => article.locale === locale)
+    .map((article) => article.slug)
+    .sort()
 }

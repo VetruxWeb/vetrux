@@ -260,9 +260,6 @@ function buildMail(
   const subject = `[Document Request] ${documentLabel} requested - ${payload.email}`;
   const fallback = 'Not provided';
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.vetrux.tech';
-  const adminUrl = `${siteUrl}/admin/document-requests`;
-
   const text = [
     'A visitor requested quality documents.',
     '',
@@ -276,8 +273,6 @@ function buildMail(
     '',
     `Source Page: ${payload.sourcePage || fallback}`,
     `Source IP: ${ip}`,
-    '',
-    `Manage requests: ${adminUrl}`,
   ].join('\n');
 
   const html = `
@@ -293,13 +288,8 @@ function buildMail(
       <p><strong>Source Page:</strong> ${escapeHtml(payload.sourcePage || fallback)}</p>
       <p><strong>Source IP:</strong> ${escapeHtml(ip)}</p>
       <hr style="border: 0; border-top: 1px solid #e5e7eb; margin: 18px 0;" />
-      <p>
-        <a href="${adminUrl}" style="display: inline-block; padding: 12px 24px; background-color: #111827; color: #ffffff; text-decoration: none; border-radius: 6px; font-weight: 600;">
-          Send Documents to Customer
-        </a>
-      </p>
       <p style="font-size: 12px; color: #6b7280; margin-top: 12px;">
-        Or manage all document requests in the admin panel.
+        Reply to the requester to arrange document delivery.
       </p>
     </div>
   `;

@@ -1,10 +1,10 @@
 ---
 title: "ESG Initiatives: Decarbonizing the Cannabis Extract Supply Chain"
 category: Sustainability
-date: November 2024
+date: "2024-11-01"
 readTime: 12 min
 excerpt: "How Vetrux CBD achieved carbon neutrality through biomass recycling, solar integration, and closed-loop CO₂ recapture systems."
-image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&q=80&auto=format&fit=crop"
+image: "/images/articles/esg-decarbonizing-cannabis-supply-chain.webp"
 slug: esg-decarbonizing-cannabis-supply-chain
 ---
 
@@ -12,7 +12,7 @@ slug: esg-decarbonizing-cannabis-supply-chain
 
 **Category:** Sustainability | **Published:** November 2024 | **Read Time:** 12 min
 
-![Sustainable Cannabis Extraction](https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1200&q=80&auto=format&fit=crop)
+![Sustainable Cannabis Extraction](/images/articles/esg-decarbonizing-cannabis-supply-chain.webp)
 
 ---
 

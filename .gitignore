@@ -13,9 +13,14 @@ dist-ssr
 .next/
 .env
 .env.*
+!.env.example
 *.local
 next-env.d.ts
 tsconfig.tsbuildinfo
+coverage/
+__pycache__/
+*.py[cod]
+tmp/
 
 # Editor directories and files
 .vscode/*
@@ -30,4 +35,5 @@ tsconfig.tsbuildinfo
 
 docs
 .playwright-mcp
+.vibio/
 CLAUDE.md

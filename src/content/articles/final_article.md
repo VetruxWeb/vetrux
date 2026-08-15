@@ -1,16 +1,16 @@
 ---
 title: "How to Source CBD Raw Materials: The 2026 Buyer's Guide"
 category: Procurement
-date: April 2026
+date: "2026-04-01"
 readTime: 14 min
 excerpt: "A field-tested framework for vetting CBD suppliers — from hemp origin and COA interpretation to 2026 pricing benchmarks, extraction method tradeoffs, and supply chain risk management."
-image: "https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=800&q=80&auto=format&fit=crop"
+image: "/images/articles/how-to-source-cbd-raw-materials-2026.webp"
 slug: how-to-source-cbd-raw-materials-2026
 ---
 
 # How to Source CBD Raw Materials: The 2026 Buyer's Guide
 
-![Bulk CBD isolate procurement and supplier vetting](https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=1200&q=80&auto=format&fit=crop)
+![Bulk CBD isolate procurement and supplier vetting](/images/articles/how-to-source-cbd-raw-materials-2026.webp)
 
 ---
 

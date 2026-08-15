@@ -44,7 +44,7 @@ describe('validateInquiryPayload', () => {
     );
 
     expect(result.ok).toBe(false);
-    expect(result.error.code).toBe('honeypot_triggered');
+    expect(result).toMatchObject({ ok: false, error: { code: 'honeypot_triggered' } });
   });
 
   it('rejects suspicious payloads submitted unrealistically fast', () => {
@@ -53,7 +53,7 @@ describe('validateInquiryPayload', () => {
     });
 
     expect(result.ok).toBe(false);
-    expect(result.error.code).toBe('submission_too_fast');
+    expect(result).toMatchObject({ ok: false, error: { code: 'submission_too_fast' } });
   });
 
   it('requires a turnstile token for valid submissions', () => {
@@ -68,7 +68,7 @@ describe('validateInquiryPayload', () => {
     );
 
     expect(result.ok).toBe(false);
-    expect(result.error.code).toBe('missing_field');
+    expect(result).toMatchObject({ ok: false, error: { code: 'missing_field' } });
   });
 });
 
@@ -153,7 +153,7 @@ describe('handleInquirySubmission', () => {
     });
 
     expect(blocked.status).toBe(429);
-    expect(blocked.body.error.code).toBe('rate_limited');
+    expect(blocked.body).toMatchObject({ ok: false, error: { code: 'rate_limited' } });
     expect(sendMail).toHaveBeenCalledTimes(3);
   });
 
@@ -177,7 +177,7 @@ describe('handleInquirySubmission', () => {
     });
 
     expect(response.status).toBe(403);
-    expect(response.body.error.code).toBe('origin_not_allowed');
+    expect(response.body).toMatchObject({ ok: false, error: { code: 'origin_not_allowed' } });
     expect(sendMail).not.toHaveBeenCalled();
   });
 
@@ -204,7 +204,7 @@ describe('handleInquirySubmission', () => {
     });
 
     expect(response.status).toBe(400);
-    expect(response.body.error.code).toBe('invalid_payload');
+    expect(response.body).toMatchObject({ ok: false, error: { code: 'invalid_payload' } });
     expect(response.body.message).toBe('Human verification failed. Please try again.');
     expect(sendMail).not.toHaveBeenCalled();
   });

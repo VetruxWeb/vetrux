@@ -5,7 +5,7 @@ category: "Market Analysis"
 date: "2026-04-18"
 readTime: "11 min"
 excerpt: "An analysis of the European CBD market in 2026 — covering market size projections, regulatory developments across key member states, emerging product categories, and sourcing trends for B2B buyers."
-image: "https://images.unsplash.com/photo-1608817576203-3c27ed168bd2?w=800&q=80&auto=format&fit=crop"
+image: "/images/articles/european-cbd-market-outlook-2026.webp"
 ---
 
 The European CBD market has moved well past its speculative early years. What was once a fragmented, legally ambiguous space is now a maturing industry with clearer regulatory frameworks, growing institutional demand, and a supplier ecosystem that has consolidated around quality and compliance. For B2B buyers — whether you are formulating functional beverages, building a cosmetics line, or supplying the pharmaceutical pipeline — understanding where the market stands in 2026 is essential before making sourcing decisions.

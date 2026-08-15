@@ -3,7 +3,7 @@
 import type { Locale } from '@/i18n/locales';
 import { useRef } from 'react';
 import Image from 'next/image';
-import { ArrowRight, CheckCircle, Download } from 'lucide-react';
+import { ArrowRight, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import Badge from '@/components/atoms/Badge';
 import Button from '@/components/atoms/Button';

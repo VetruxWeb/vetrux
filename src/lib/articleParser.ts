@@ -26,10 +26,12 @@ export interface ParsedArticle {
   flowDiagrams: FlowDiagram[]
 }
 
-function slugify(text: string): string {
+export function slugifyArticleHeading(text: string): string {
   return text
+    .normalize('NFKD')
     .toLowerCase()
-    .replace(/[^\w\s-]/g, '')
+    .replace(/\p{M}/gu, '')
+    .replace(/[^\p{L}\p{N}\s-]/gu, '')
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
     .trim()
@@ -85,9 +87,9 @@ function extractHeadings(markdown: string): TocHeading[] {
     const h2Match = line.match(/^## (.+)/)
     const h3Match = line.match(/^### (.+)/)
     if (h2Match) {
-      headings.push({ id: slugify(h2Match[1]), text: h2Match[1], level: 2 })
+      headings.push({ id: slugifyArticleHeading(h2Match[1]), text: h2Match[1], level: 2 })
     } else if (h3Match) {
-      headings.push({ id: slugify(h3Match[1]), text: h3Match[1], level: 3 })
+      headings.push({ id: slugifyArticleHeading(h3Match[1]), text: h3Match[1], level: 3 })
     }
   }
   return headings

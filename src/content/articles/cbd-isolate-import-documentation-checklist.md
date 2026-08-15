@@ -5,7 +5,7 @@ excerpt: "A practical checklist of documents CBD isolate buyers commonly need be
 category: "Procurement"
 date: "2026-05-03"
 readTime: "11 min"
-image: "https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?w=800&q=80&auto=format&fit=crop"
+image: "/images/articles/cbd-isolate-import-documentation-checklist.webp"
 ---
 
 # CBD Isolate Import Documentation Checklist for B2B Buyers

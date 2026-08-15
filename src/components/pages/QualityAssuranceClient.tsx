@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react';
 import Image from 'next/image';
-import { ArrowRight, Shield, FileCheck, Microscope, FlaskConical, Download } from 'lucide-react';
+import { ArrowRight, Shield, Download } from 'lucide-react';
 import Link from 'next/link';
 import Badge from '@/components/atoms/Badge';
 import Button from '@/components/atoms/Button';
@@ -570,7 +570,16 @@ export default function QualityAssuranceClient({ locale }: QualityAssuranceClien
         </div>
       </section>
 
-      <DocumentRequestModal isOpen={isDocumentModalOpen} onClose={() => setIsDocumentModalOpen(false)} defaultDocumentType={documentModalType} sourcePage="/quality-assurance" productInterest="CBD Isolate" />
+      {isDocumentModalOpen && (
+        <DocumentRequestModal
+          isOpen
+          onClose={() => setIsDocumentModalOpen(false)}
+          defaultDocumentType={documentModalType}
+          sourcePage="/quality-assurance"
+          productInterest="CBD Isolate"
+          locale={locale}
+        />
+      )}
     </div>
   );
 }

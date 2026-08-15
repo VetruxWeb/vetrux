@@ -616,13 +616,10 @@ export const pageSeoContent: SeoContentMap = {
   },
 };
 
-export function getPageSeo(path: string, locale: Locale): PageSeoContent {
+export function getPageSeo(path: string, locale: Locale): PageSeoContent | null {
   const pageContent = pageSeoContent[path];
   if (!pageContent) {
-    return {
-      title: 'CBD Raw Materials',
-      description: 'VETRUX — the CBD raw material brand operated by Vetrux Biotechnology (Chuxiong) Co., Ltd., based in Yunnan, China.',
-    };
+    return null;
   }
   return pageContent[locale] ?? pageContent.en;
 }

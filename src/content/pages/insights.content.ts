@@ -10,6 +10,8 @@ export interface InsightsPageStrings {
   ofText: string;
   articlesText: string;
   searchPlaceholder: string;
+  searchLabel: string;
+  sortLabel: string;
   sortNewest: string;
   sortOldest: string;
   sortTitleAz: string;
@@ -36,6 +38,8 @@ export const insightsContent: Record<Locale, InsightsPageStrings> = {
     ofText: 'of',
     articlesText: 'articles',
     searchPlaceholder: 'Search by topic, category, or date',
+    searchLabel: 'Search articles',
+    sortLabel: 'Sort articles',
     sortNewest: 'Newest first',
     sortOldest: 'Oldest first',
     sortTitleAz: 'Title A-Z',
@@ -61,6 +65,8 @@ export const insightsContent: Record<Locale, InsightsPageStrings> = {
     ofText: 'von',
     articlesText: 'Artikeln',
     searchPlaceholder: 'Nach Thema, Kategorie oder Datum suchen',
+    searchLabel: 'Artikel durchsuchen',
+    sortLabel: 'Artikel sortieren',
     sortNewest: 'Neueste zuerst',
     sortOldest: 'Älteste zuerst',
     sortTitleAz: 'Titel A-Z',
@@ -86,6 +92,8 @@ export const insightsContent: Record<Locale, InsightsPageStrings> = {
     ofText: 'sur',
     articlesText: 'articles',
     searchPlaceholder: 'Rechercher par sujet, catégorie ou date',
+    searchLabel: 'Rechercher des articles',
+    sortLabel: 'Trier les articles',
     sortNewest: 'Plus récents d\'abord',
     sortOldest: 'Plus anciens d\'abord',
     sortTitleAz: 'Titre A-Z',
@@ -111,6 +119,8 @@ export const insightsContent: Record<Locale, InsightsPageStrings> = {
     ofText: 'de',
     articlesText: 'artículos',
     searchPlaceholder: 'Buscar por tema, categoría o fecha',
+    searchLabel: 'Buscar artículos',
+    sortLabel: 'Ordenar artículos',
     sortNewest: 'Más recientes primero',
     sortOldest: 'Más antiguos primero',
     sortTitleAz: 'Título A-Z',
@@ -136,6 +146,8 @@ export const insightsContent: Record<Locale, InsightsPageStrings> = {
     ofText: 'di',
     articlesText: 'articoli',
     searchPlaceholder: 'Cerca per argomento, categoria o data',
+    searchLabel: 'Cerca articoli',
+    sortLabel: 'Ordina articoli',
     sortNewest: 'Più recenti prima',
     sortOldest: 'Più vecchi prima',
     sortTitleAz: 'Titolo A-Z',
@@ -161,6 +173,8 @@ export const insightsContent: Record<Locale, InsightsPageStrings> = {
     ofText: 'de',
     articlesText: 'artigos',
     searchPlaceholder: 'Pesquisar por tópico, categoria ou data',
+    searchLabel: 'Pesquisar artigos',
+    sortLabel: 'Ordenar artigos',
     sortNewest: 'Mais recentes primeiro',
     sortOldest: 'Mais antigos primeiro',
     sortTitleAz: 'Título A-Z',
@@ -186,6 +200,8 @@ export const insightsContent: Record<Locale, InsightsPageStrings> = {
     ofText: '件中',
     articlesText: '件',
     searchPlaceholder: 'トピック、カテゴリー、または日付で検索',
+    searchLabel: '記事を検索',
+    sortLabel: '記事を並べ替え',
     sortNewest: '新しい順',
     sortOldest: '古い順',
     sortTitleAz: 'タイトル A-Z',
@@ -211,6 +227,8 @@ export const insightsContent: Record<Locale, InsightsPageStrings> = {
     ofText: '/',
     articlesText: 'artikkelia',
     searchPlaceholder: 'Hae aiheen, kategorian tai päivämäärän mukaan',
+    searchLabel: 'Hae artikkeleita',
+    sortLabel: 'Lajittele artikkelit',
     sortNewest: 'Uusimmat ensin',
     sortOldest: 'Vanhimmat ensin',
     sortTitleAz: 'Otsikko A-Ö',

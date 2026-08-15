@@ -1,115 +1,92 @@
 import type { MetadataRoute } from 'next'
-import { articles } from '@/content/articles'
+import {
+  getAllArticleSlugs,
+  getArticle,
+  getArticleLocales,
+} from '@/content/articles'
+import { getProductSlugs } from '@/content/pages/products.data'
 import { gallerySlugs } from '@/lib/gallery'
-import { getPublishedSlugs } from '@/lib/productData'
-import { getAllArticleSlugs } from '@/lib/articlesDb'
-import { locales, localeMeta, localizePath, localizedRoutes } from '@/i18n/locales'
+import {
+  locales,
+  localeMeta,
+  localizePath,
+  localizedRoutes,
+  type Locale,
+} from '@/i18n/locales'
 
 const BASE_URL = 'https://www.vetrux.tech'
+const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/
 
-const legalPages = new Set(['/privacy-policy', '/terms-of-service'])
-
-function buildAlternates(path: string): Record<string, string> {
+/**
+ * Self-referencing, reciprocal hreflang cluster. Only locales with real
+ * localized content are advertised; x-default always points at the canonical
+ * English URL.
+ */
+function buildAlternates(
+  path: string,
+  availableLocales: readonly Locale[],
+): MetadataRoute.Sitemap[number]['alternates'] {
   const languages: Record<string, string> = {}
-  for (const locale of locales) {
+  for (const locale of availableLocales) {
     languages[localeMeta[locale].hreflang] = `${BASE_URL}${localizePath(path, locale)}`
   }
   languages['x-default'] = `${BASE_URL}${path}`
-  return languages
+  return { languages }
 }
 
-function getRoutePriority(path: string): number {
-  if (path === '/') return 1.0
-  if (path === '/wholesale-cbd-isolate') return 0.9
-  if (path === '/quality-assurance' || path === '/cbd-isolate-manufacturer') return 0.8
-  if (legalPages.has(path)) return 0.3
-  return 0.7
-}
+export default function sitemap(): MetadataRoute.Sitemap {
+  const entries: MetadataRoute.Sitemap = []
 
-function getRouteChangeFrequency(path: string): 'weekly' | 'monthly' | 'yearly' {
-  if (path === '/' || path === '/blog') return 'weekly'
-  if (legalPages.has(path)) return 'yearly'
-  return 'monthly'
-}
-
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const today = new Date().toISOString().split('T')[0]
-
-  const localizedStaticRoutes: MetadataRoute.Sitemap = localizedRoutes.flatMap((path) => {
-    const priority = getRoutePriority(path)
-    const changeFrequency = getRouteChangeFrequency(path)
-    const alternates = { languages: buildAlternates(path) }
-
-    return locales.map((locale) => ({
-      url: `${BASE_URL}${localizePath(path, locale)}`,
-      lastModified: today,
-      changeFrequency,
-      priority: locale === 'en' ? priority : Math.max(priority - 0.1, 0.2),
-      alternates,
-    }))
-  })
-
-  const gallerySectorRoutes: MetadataRoute.Sitemap = gallerySlugs.flatMap((slug) => {
-    const path = `/gallery/${slug}`
-    const alternates = { languages: buildAlternates(path) }
-
-    return locales.map((locale) => ({
-      url: `${BASE_URL}${localizePath(path, locale)}`,
-      lastModified: today,
-      changeFrequency: 'monthly' as const,
-      priority: locale === 'en' ? 0.6 : 0.5,
-      alternates,
-    }))
-  })
-
-  const articleRoutes: MetadataRoute.Sitemap = articles.map((article) => ({
-    url: `${BASE_URL}/blog/${article.slug}`,
-    lastModified: new Date(article.date),
-    changeFrequency: 'monthly' as const,
-    priority: 0.6,
-  }))
-
-  // Merge DB-backed article slugs (published) not present in static files.
-  const staticArticleSlugs = new Set(articles.map((a) => a.slug))
-  const dbArticleSlugs = await getAllArticleSlugs().catch(() => [])
-  const dbArticleRoutes: MetadataRoute.Sitemap = dbArticleSlugs
-    .filter((row) => row.slug && !staticArticleSlugs.has(row.slug))
-    .map((row) => ({
-      url: `${BASE_URL}/blog/${row.slug}`,
-      lastModified: today,
-      changeFrequency: 'monthly' as const,
-      priority: 0.6,
-    }))
-
-  // Products: the /products listing + every published product detail page, in all 8 locales.
-  const productSlugs = await getPublishedSlugs().catch(() => [])
-  const productListAlternates = { languages: buildAlternates('/products') }
-  const productRoutes: MetadataRoute.Sitemap = [
-    ...locales.map((locale) => ({
-      url: `${BASE_URL}${localizePath('/products', locale)}`,
-      lastModified: today,
-      changeFrequency: 'monthly' as const,
-      priority: locale === 'en' ? 0.7 : 0.6,
-      alternates: productListAlternates,
-    })),
-    ...productSlugs.flatMap((row) => {
-      const path = `/products/${row.slug}`
-      const alternates = { languages: buildAlternates(path) }
-      return locales.map((locale) => ({
+  // Static localized routes (including the products listing) — every locale.
+  for (const path of [...localizedRoutes, '/products'] as const) {
+    for (const locale of locales) {
+      entries.push({
         url: `${BASE_URL}${localizePath(path, locale)}`,
-        lastModified: today,
-        changeFrequency: 'monthly' as const,
-        priority: locale === 'en' ? 0.7 : 0.6,
-        alternates,
-      }))
-    }),
-  ]
+        alternates: buildAlternates(path, locales),
+      })
+    }
+  }
 
-  return [
-    ...localizedStaticRoutes,
-    ...gallerySectorRoutes,
-    ...articleRoutes,
-    ...dbArticleRoutes,
-    ...productRoutes,
-  ]
+  // Gallery sector pages — every locale.
+  for (const slug of gallerySlugs) {
+    const path = `/gallery/${slug}`
+    for (const locale of locales) {
+      entries.push({
+        url: `${BASE_URL}${localizePath(path, locale)}`,
+        alternates: buildAlternates(path, locales),
+      })
+    }
+  }
+
+  // Articles — one entry per locale that actually has content. lastModified is
+  // emitted only when the frontmatter date is a full ISO date; ambiguous dates
+  // are omitted rather than replaced with "today".
+  for (const slug of getAllArticleSlugs()) {
+    const availableLocales = getArticleLocales(slug)
+    for (const locale of availableLocales) {
+      const article = getArticle(slug, locale)
+      if (!article) continue
+      const entry: MetadataRoute.Sitemap[number] = {
+        url: `${BASE_URL}${localizePath(`/blog/${slug}`, locale)}`,
+        alternates: buildAlternates(`/blog/${slug}`, availableLocales),
+      }
+      if (ISO_DATE_RE.test(article.date)) {
+        entry.lastModified = article.date
+      }
+      entries.push(entry)
+    }
+  }
+
+  // Products — both canonical slugs, every locale (all localized variants exist).
+  for (const slug of getProductSlugs()) {
+    const path = `/products/${slug}`
+    for (const locale of locales) {
+      entries.push({
+        url: `${BASE_URL}${localizePath(path, locale)}`,
+        alternates: buildAlternates(path, locales),
+      })
+    }
+  }
+
+  return entries
 }

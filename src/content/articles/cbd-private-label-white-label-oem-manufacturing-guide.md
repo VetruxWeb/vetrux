@@ -5,7 +5,7 @@ excerpt: "A B2B guide to CBD contract manufacturing models — private label, wh
 category: "Sourcing Guide"
 date: "2026-07-17"
 readTime: "14 min"
-image: "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=800&q=80&auto=format&fit=crop"
+image: "/images/articles/cbd-private-label-white-label-oem-manufacturing-guide.webp"
 ---
 
 # CBD Private Label vs White Label vs OEM/ODM: A Manufacturing Sourcing Guide

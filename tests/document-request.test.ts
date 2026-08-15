@@ -46,7 +46,7 @@ describe('validateDocumentRequestPayload', () => {
     );
 
     expect(result.ok).toBe(false);
-    expect(result.error.code).toBe('invalid_document_type');
+    expect(result).toMatchObject({ ok: false, error: { code: 'invalid_document_type' } });
   });
 
   it('requires name, email, and turnstile token', () => {
@@ -63,7 +63,7 @@ describe('validateDocumentRequestPayload', () => {
     );
 
     expect(result.ok).toBe(false);
-    expect(result.error.code).toBe('missing_field');
+    expect(result).toMatchObject({ ok: false, error: { code: 'missing_field' } });
   });
 
   it('rejects bot-like submissions that fill the honeypot field', () => {
@@ -78,7 +78,7 @@ describe('validateDocumentRequestPayload', () => {
     );
 
     expect(result.ok).toBe(false);
-    expect(result.error.code).toBe('honeypot_triggered');
+    expect(result).toMatchObject({ ok: false, error: { code: 'honeypot_triggered' } });
   });
 });
 
@@ -181,7 +181,7 @@ describe('handleDocumentRequestSubmission', () => {
     });
 
     expect(blocked.status).toBe(429);
-    expect(blocked.body.error.code).toBe('rate_limited');
+    expect(blocked.body).toMatchObject({ ok: false, error: { code: 'rate_limited' } });
     expect(sendMail).toHaveBeenCalledTimes(3);
   });
 });

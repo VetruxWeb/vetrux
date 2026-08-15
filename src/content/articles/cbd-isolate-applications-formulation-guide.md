@@ -1,10 +1,10 @@
 ---
 title: "CBD Isolate Applications: Formulation Guide for Cosmetics, Supplements & Pharmaceuticals"
 category: Formulation
-date: May 2026
+date: "2026-05-01"
 readTime: 15 min
 excerpt: "A technical formulation guide covering CBD isolate applications across cosmetics, dietary supplements, and pharmaceutical preparations — including solubility data, stability considerations, dosage calculations, and regulatory requirements by sector."
-image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800&q=80&auto=format&fit=crop"
+image: "/images/articles/cbd-isolate-applications-formulation-guide.webp"
 slug: cbd-isolate-applications-formulation-guide
 ---
 
@@ -18,7 +18,7 @@ For product development teams formulating with CBD isolate for the first time, t
 
 This guide provides the practical formulation knowledge that R&D teams need to successfully incorporate CBD isolate into cosmetic, supplement, and pharmaceutical products — from basic solubility data through stability optimization to regulatory considerations by market sector.
 
-![Cosmetic formulation laboratory with various CBD product prototypes](https://images.unsplash.com/photo-1556228720-195a672e8a03?w=1200&q=80&auto=format&fit=crop)
+![Cosmetic formulation laboratory with various CBD product prototypes](/images/vetrux_images/cbd-isolate-hplc-quality-control-system.jpg)
 
 ## Physicochemical Properties of CBD Isolate
 
@@ -182,7 +182,7 @@ CBD isolate's poor water solubility (bioavailability of standard oral CBD is onl
 - **Canada**: Natural Health Product (NHP) pathway. Licensed NHP numbers required.
 - **Australia**: Schedule 3 (pharmacist-only) for low-dose CBD (≤150 mg/day).
 
-![CBD supplement products including tinctures and capsules in production](https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=1200&q=80&auto=format&fit=crop)
+![CBD supplement products including tinctures and capsules in production](/images/vetrux_images/cbd-isolate-5kg-foil-bag-packaging.jpg)
 
 ## Pharmaceutical Applications
 

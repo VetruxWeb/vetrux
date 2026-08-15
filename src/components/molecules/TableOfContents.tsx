@@ -6,9 +6,11 @@ import type { TocHeading } from '@/lib/articleParser'
 
 interface TableOfContentsProps {
   headings: TocHeading[]
+  title?: string
+  mobileTitle?: string
 }
 
-export default function TableOfContents({ headings }: TableOfContentsProps) {
+export default function TableOfContents({ headings, title = 'Contents', mobileTitle = 'Table of Contents' }: TableOfContentsProps) {
   const [activeId, setActiveId] = useState<string>('')
   const [isOpen, setIsOpen] = useState(false)
   const observerRef = useRef<IntersectionObserver | null>(null)
@@ -51,7 +53,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
   }
 
   const navContent = (
-    <nav aria-label="Table of contents">
+    <nav aria-label={mobileTitle}>
       <ul className="space-y-2.5">
         {headings.map((h) => (
           <li key={h.id}>
@@ -79,7 +81,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
       <div className="hidden lg:block sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto">
         <div className="flex items-center gap-2 mb-3 text-xs font-semibold uppercase tracking-widest text-on-surface-muted">
           <List className="h-4 w-4" />
-          <span>Contents</span>
+          <span>{title}</span>
         </div>
         {navContent}
       </div>
@@ -92,7 +94,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
         >
           <span className="flex items-center gap-2">
             <List className="h-4 w-4" />
-            Table of Contents
+            {mobileTitle}
           </span>
           <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
         </button>

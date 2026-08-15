@@ -5,7 +5,7 @@ excerpt: "A technical comparison of full-spectrum, broad-spectrum, and isolate C
 category: "Product Guide"
 date: "2026-07-17"
 readTime: "13 min"
-image: "https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=800&q=80&auto=format&fit=crop"
+image: "/images/articles/full-spectrum-broad-spectrum-isolate-cbd-comparison.webp"
 ---
 
 # Full-Spectrum vs Broad-Spectrum vs CBD Isolate: A B2B Sourcing Comparison

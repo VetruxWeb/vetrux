@@ -1,10 +1,10 @@
 ---
 title: "How to Read a CBD Certificate of Analysis (COA): A Complete Buyer's Guide"
 category: Quality
-date: May 2026
+date: "2026-05-01"
 readTime: 14 min
 excerpt: "Learn how to interpret every section of a CBD Certificate of Analysis — from cannabinoid profiles and residual solvents to heavy metals and microbial testing — so you can make informed purchasing decisions and ensure regulatory compliance."
-image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=80&auto=format&fit=crop"
+image: "/images/articles/how-to-read-cbd-certificate-of-analysis-guide.webp"
 slug: how-to-read-cbd-certificate-of-analysis-guide
 ---
 
@@ -18,7 +18,7 @@ For B2B buyers sourcing CBD isolate, distillate, or crude oil at industrial volu
 
 This guide provides a systematic framework for reading, interpreting, and evaluating CBD Certificates of Analysis. By the end, you will understand what each section means, what constitutes acceptable results, and how to identify the warning signs that should trigger further investigation.
 
-![Laboratory technician analyzing CBD samples with HPLC equipment](https://images.unsplash.com/photo-1579154204601-01588f351e67?w=1200&q=80&auto=format&fit=crop)
+![Laboratory technician analyzing CBD samples with HPLC equipment](/images/vetrux_images/cbd-isolate-hplc-quality-control-system.jpg)
 
 ## Anatomy of a COA: Key Sections Explained
 
@@ -206,7 +206,7 @@ Mycotoxin testing screens for toxic metabolites produced by mold species that ca
 
 This testing is particularly important for material sourced from humid growing regions or stored under suboptimal conditions.
 
-![Close-up of a Certificate of Analysis document with laboratory stamps](https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80&auto=format&fit=crop)
+![Close-up of a Certificate of Analysis document with laboratory stamps](/images/vetrux_images/cbd-isolate-coa-certificate-page-1.png)
 
 ## How to Verify COA Authenticity
 

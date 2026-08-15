@@ -1,10 +1,10 @@
 ---
 title: "CBD Import Regulations in Europe: Novel Food Compliance Guide 2026"
 category: Regulatory
-date: May 2026
+date: "2026-05-01"
 readTime: 17 min
 excerpt: "A comprehensive regulatory guide for importing CBD products into the European Union — covering Novel Food authorization, THC limits, customs classification, member state variations, and step-by-step compliance strategies for B2B importers in 2026."
-image: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&q=80&auto=format&fit=crop"
+image: "/images/articles/cbd-import-regulations-europe-novel-food-2026.webp"
 slug: cbd-import-regulations-europe-novel-food-2026
 ---
 
@@ -18,7 +18,7 @@ For B2B importers sourcing CBD isolate, distillate, or finished products for the
 
 This guide provides a comprehensive overview of the current EU regulatory framework for CBD imports as of 2026, with practical guidance for achieving and maintaining compliance across the supply chain.
 
-![European Union flags outside parliament building representing regulatory framework](https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=1200&q=80&auto=format&fit=crop)
+![European Union flags outside parliament building representing regulatory framework](/images/articles/cbd-import-regulations-europe-novel-food-2026.webp)
 
 ## The Novel Food Regulation: Foundation of EU CBD Law
 
@@ -265,7 +265,7 @@ The UK operates independently from EU Novel Food regulation since Brexit:
 **Advantages:** Clearer pathway, validated list provides certainty, English-language process
 **Limitations:** Separate from EU market access, smaller market size
 
-![Shipping containers at European port representing CBD import logistics](https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=1200&q=80&auto=format&fit=crop)
+![Shipping containers at European port representing CBD import logistics](/images/vetrux_images/cbd-isolate-export-carton-packing.jpg)
 
 ## Upcoming Regulatory Changes
 

@@ -5,7 +5,7 @@ excerpt: "A technical comparison of CBD isolate and CBD distillate for B2B formu
 category: "Product Guide"
 date: "2026-04-18"
 readTime: "12 min"
-image: "https://images.unsplash.com/photo-1581093577421-f561a654a353?w=800&q=80&auto=format&fit=crop"
+image: "/images/articles/cbd-isolate-vs-distillate-formulation-guide.webp"
 ---
 
 # CBD Isolate vs CBD Distillate: Which Is Right for Your Formulation?

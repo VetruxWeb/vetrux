@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { buildMetadata, getSeoMetadata } from '@/lib/seo';
+import { buildGalleryMetadata, getSeoMetadata } from '@/lib/seo';
 import { gallerySlugs, getGallerySector } from '@/lib/gallery';
 import GallerySectorPageClient from '@/components/pages/GallerySectorPageClient';
 
@@ -14,7 +14,7 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  return buildMetadata(`/gallery/${slug}`);
+  return buildGalleryMetadata(slug, 'en');
 }
 
 export default async function GallerySectorPage({ params }: PageProps) {
